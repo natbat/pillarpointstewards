@@ -1,3 +1,4 @@
 def test_homepage(client):
     response = client.get("/")
-    assert response.content.decode("utf-8").strip() == "<h1>This is the homepage</h1>"
+    html = response.content.decode("utf-8")
+    assert "<title>Pillar Point Tidepool Stewards</title>" in html
