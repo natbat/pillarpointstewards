@@ -1,0 +1,849 @@
+@import url('https://fonts.googleapis.com/css?family=Amaranth:700|Nunito:400,400i,700&subset=latin-ext');
+
+/* Reset and Page Setup */
+
+/* Reset from http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol,
+ul {
+	list-style: none;
+}
+blockquote,
+q {
+	quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/* end reset */
+
+body {
+	color: black;
+	background-color: #0A4B7D;
+	margin: 0;
+	padding: 0;
+	font-family: 'Nunito', Avenir, sans-serif;
+    font-weight: 400;
+	font-size: 16px;
+	line-height: 1.25;
+}
+
+
+
+/* Helper styles */
+
+html {
+	scroll-behavior: smooth;
+}
+
+.intro {
+    font-size: 1rem;
+}
+p {
+    margin: 0 0 0.75rem 0;
+    padding: 0;
+}
+.meta {
+    color: rgba(0,0,0,0.3);
+    font-size: 0.75rem
+}
+.intro {
+	font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.header1,
+.header2,
+.header3,
+.header4,
+.header5,
+.header6  {
+  font-family: 'Amaranth', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0
+}
+h1,
+.header1 {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  margin-top: 1rem;
+}
+h2,
+.header2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  margin-top: 1rem;
+}
+h3,
+.header3 {
+  font-size: 1.25rem;
+  margin: 1rem 0 0.25rem 0;
+}
+h4,
+.header4 {
+  margin: 1rem 0 0.25rem 0;
+  font-weight: 400;
+  text-decoration: underline;
+}
+h5,
+.header5 {
+  margin: 1rem 0 0.25rem 0;
+  font-family: 'Nunito', Avenir, sans-serif;
+  font-weight: 700;
+  text-decoration: underline;
+}
+h6,
+.header6 {
+  margin: 1rem 0 0.25rem 0;
+  font-family: 'Nunito', Avenir, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+div,
+section,
+article,
+header,
+nav,
+footer,
+.wrapper {
+	display: block;
+	box-sizing: border-box;
+}
+
+a:link,
+a:visited {
+	color: #3494CC;
+	text-decoration: underline;
+}
+a:hover,
+a:focus,
+a:active  {
+	color: #176AB8;
+	text-decoration: underline;
+}
+
+a img {
+  display: block;
+  max-width: 100%;
+	border: 0;
+	vertical-align: bottom;
+}
+
+ul.bullets,
+ul.spaced,
+ol.spaced {
+	margin-bottom: 0.8rem;
+}
+ul.bullets {
+	padding-left: 0.9rem;
+}
+ul.bullets li,
+ul.spaced li,
+ol.spaced li {
+	margin-bottom: 0.4rem;
+}
+ul.bullets li {
+	list-style-type: circle;
+}
+.anchor {
+	display: block;
+	position: relative;
+	top: -90px;
+	visibility: hidden;
+}
+.content p {
+	margin-bottom: 1rem;
+}
+.content strong {
+	font-weight: bold;
+}
+.content em {
+	font-style: italic;
+}
+.context-text {
+	/* for accessibility and hiden from sight */
+	text-indent: -999em;
+	display: block;
+	width:0;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	line-height: 0;
+}
+/* Page Furniture */
+
+.page {
+	background-color: white;
+}
+.section,
+section {
+  position: relative;
+  z-index: 1;
+	display: grid;
+	grid-template-columns: 10% 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 10%;
+	column-gap: 1rem;
+	justify-items: stretch;
+	align-items: stretch;
+	margin: 0 0 1rem 0;
+}
+.primary {
+	grid-column: 2 / span 7;
+	margin: 0 0 0.5rem 0;
+}
+.secondary {
+	grid-column: 9 / span 3;
+	margin: 0 0 0.5rem 0;
+	box-sizing: border-box;
+}
+.full {
+	grid-column: 2 / span 10;
+	margin: 0 0 0.5rem 0;
+	box-sizing: border-box;
+}
+.stretch {
+	grid-column: 1 / span 12;
+	padding: 0.5rem 10% 0.3rem 10%;
+	margin: 0 0 0.5rem 0;
+	box-sizing: border-box;
+}
+h1.stretch,
+h2.stretch,
+h3.stretch,
+h4.stretch,
+h5.stretch,
+h6.stretch {
+	background-color: #0A4B7D;
+	color: white;
+}
+h1.stretch span,
+h2.stretch span,
+h3.stretch span,
+h4.stretch span,
+h5.stretch span,
+h6.stretch span {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+header.section {
+    background-color: white;
+    position: fixed;
+    width: 100%;
+    z-index: 20;
+	box-shadow: 0 0 10px rgba(0,0,0,0.7);
+	border-top: 2px solid #F7941D;
+}
+header .title {
+  color: #0A4B7D;
+	margin: 0.3rem 0 0.3rem 1rem;
+	display: inline-block;
+	background-image: url('logo.png');
+	background-position: 0 50%;
+	background-repeat: no-repeat;
+    background-size: 1.6em; 
+    padding-left: 2em;
+    font-size: 3em;
+    padding-top: 0.3em;
+}
+header .title .location {
+    display: block;
+    font-family: 'Nunito', Avenir, sans-serif;
+    text-transform: uppercase;
+    font-size: 0.416em;
+    opacity: 0.8;
+  
+}
+header .title em {
+    position: relative;
+    top:-0.2em;
+    display: block;
+}
+
+footer {
+  background-color: #0A4B7D;
+}
+footer a:link,
+footer a:visited,
+footer a:hover,
+footer a:focus,
+footer a:active {
+  display: inline;
+  color: white;
+  text-decoration: none;
+}
+footer li {
+  display: inline;
+  margin-right: 1em;
+}
+
+.title-wrapper {
+  margin: 20vw 0 0 0;
+  background-color: black;
+  background-color: rgba(247,148,29,0.5);
+  padding-top: 0.7em;
+  padding-bottom: 0.5em;
+}
+.page-title {
+  background-image: url('bg.jpg');
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-color: #0A4B7D;
+  padding: 1em 0 0 0;
+  background-size: cover;
+}
+/* .home .page-title {
+  background-image: url('img/ripples-in-a-tidepool.jpg'); */
+  /* http://www.publicdomainpictures.net/view-image.php?image=116723&picture=ripples-in-a-tidepool */
+  /* padding-bottom: 2em;
+} */
+.page-title .text {
+  font-size: 2em;
+  margin: 0;
+  line-height: 1.2;
+  color: white;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+.page-title .text span {
+	padding-left: 1rem;
+	padding-right: 1rem;
+	display: block;
+}
+/* .home .page-title .text {
+  font-size: 4em;
+} */
+
+.pull-out {
+	font-size: 0.75rem;
+	margin-top: -5.5rem;
+	background-color: rgba(255, 255, 255, 1);
+	padding: 1rem;
+	box-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+	align-self: start;
+}
+.pull-out h2 {
+	margin-top: 0;
+	font-size: 1.25rem;
+}
+.pull-out h3 {
+	margin-top: 0;
+	font-size: 1rem;
+}
+
+
+/* General */
+
+
+/* Components */
+
+.subnav {
+	border-bottom: 1px solid #3494CC;
+	margin: 0 0 1rem 0 ;
+}
+
+.subnav li {
+	display: inline-block;
+	margin: 0.3rem 1rem 0 0 ;
+}
+.subnav a:link,
+.subnav a:visited,
+.subnav a:hover,
+.subnav a:focus,
+.subnav a:active {
+	display: block;
+	text-decoration: none;
+	border-bottom: 3px solid transparent;
+	padding: 0.2rem 0 0.2rem 0;
+	margin-bottom: -1px;
+	transition: border-bottom-color 0.4s; color 0.4s;
+}
+.subnav a:hover,
+.subnav a:focus,
+.subnav a:active {
+	color: #0A4B7D;
+	border-color: #0A4B7D;
+}
+.subnav a.selected:link,
+.subnav a.selected:visited,
+.subnav a.selected:hover,
+.subnav a.selected:focus,
+.subnav a.selected:active {
+	color: #0A4B7D;
+	border-color: #0A4B7D;
+}
+
+.species-list,
+.observation-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between; /* this spacebetween wont work in some MSEdge browsers*/
+	align-items: stretch;
+	align-content: stretch;
+	margin-bottom: 1rem;
+	margin-top: 1rem;
+}
+.species,
+.observation {
+	flex-basis: 32%;
+	margin-bottom: 2rem;
+	display: block;
+}
+
+.observation {
+	box-sizing: border-box;
+	flex-basis: 23%;
+	margin-left: 2.6%;
+	margin-bottom: 1rem;
+}
+.observation:first-child,
+.observation:nth-child(4n+1) {
+	margin-left: 0;
+}
+.link-wrap,
+.link-wrap:link,
+.link-wrap:visited,
+.link-wrap:hover,
+.link-wrap:focus,
+.link-wrap:active {
+	color: black;
+	text-decoration: none;
+	border: none;
+}
+.species .image,
+.observation .image {
+	display: block;
+	max-width: 100%;
+	margin: 0 auto 1rem auto;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-size: cover;
+}
+.observation .image {
+	margin-bottom: 0.75rem;
+}
+.species .image {
+	height: 16vw;
+	width: 16vw;
+	border-radius: 50%;
+	opacity: 1;
+	transition: opacity 0.3s;
+}
+.observation .image {
+	height: 18vw;
+	position: relative;
+}
+.observation .by {
+	position: absolute;
+	display: block;;
+	bottom: 0;
+	width: 100%;
+	padding: 0.32rem 0.32rem 0.25rem 0.32rem;
+	box-sizing: border-box;
+	color: rgba(255,255,255,0.5);
+	text-shadow: 1px 1px 1px black;
+	background-color: rgba(0,0,0,0.5);
+	font-size: 0.75rem;
+}
+.species .name,
+.observation .name {
+	margin: 0 0 0.1rem 0;
+	display: block;
+	font-family: 'Nunito', Avenir, sans-serif;
+  font-weight: 400;
+	font-size: 1.125rem;
+	text-decoration: none;
+}
+.species .latin,
+.observation .latin {
+	margin: 0;
+	display: block;
+	font-size: 0.75rem;
+	font-style: italic;
+	margin-bottom: 0.3rem
+}
+.species .seen,
+.observation .seen {
+	margin: 0;
+	display: block;
+}
+.species .link-wrap:hover .image,
+.species .link-wrap:focus .image,
+.species .link-wrap:active .image {
+	opacity: 0.6;
+}
+.observation .link-wrap:hover .by,
+.observation .link-wrap:focus .by,
+.observation .link-wrap:active .by {
+	background-color: rgba(0,0,0,0.8);
+	color: rgba(255,255,255,0.9);
+}
+.link-wrap:hover .name,
+.link-wrap:focus .name,
+.link-wrap:active .name {
+	text-decoration: underline;
+}
+
+#map {
+	width: 100%;
+	height: 30vw;
+	border: 1px solid #ccc;
+}
+.tide-prediction {
+	background-color: rgba(23,106,184,0.05);
+	margin: 1rem 0 1rem 0;
+	padding: 0 0 1rem 0;
+	display: grid;
+	grid-template-columns: 0.8rem 1fr 2rem 3fr 1rem;
+	column-gap: 0;
+	justify-items: stretch;
+	align-items: center;
+}
+.tide-prediction .tide-day {
+	margin-bottom: 0.8rem;
+	margin-top: 0;
+	text-decoration: none;
+	padding: 0.6rem 0.8rem 0.5rem 0.8rem;
+	background-color: rgba(23,106,184,0.2);
+	grid-column: 1 / span 5;
+}
+
+.tide-prediction .advice {
+	grid-column: 2 / span 3;
+	margin: 0 0 1rem 0;
+}
+
+.day-view {
+	/* colours are added with inline styles for daylight etc */
+	position: relative;
+	height: 60px;
+	margin: 1rem 0 1rem 0;
+	grid-column: 4 / span 1;
+}
+.day-view.wider {
+	grid-column: 2 / span 3;
+}
+.day-view:before,
+.day-view:after {
+	content:" ";
+	display: block;
+	position: absolute;
+	top: 17px;
+	height: 26px;
+	width: 26px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	opacity: 0.4;
+}
+.day-view:before {
+	left: 15px;
+	background-image: url('stars-left.png');
+}
+.day-view:after {
+	right: 15px;
+	background-image: url('stars-right.png');
+
+}
+.day-view .minima {
+	padding-left: 3px;
+	border-left: 2px solid black;
+	display: block;
+	height: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	font-size: 0.75rem;
+	line-height: 1;
+	text-align: center;
+}
+.day-view .best-minima {
+		border-left-color: red;
+}
+.day-view .minima span {
+	display: block;
+	width: 1px;
+	overflow: visible;
+	padding: 0;
+	margin-left: -1.25rem;
+}
+.day-view .minima .time {
+	margin-top: -1rem;
+	color: rgba(23,106,184,0.9);
+
+}
+.day-view .minima .depth {
+	padding-top: 50px;
+	margin-top: 1.3rem;
+	color: rgba(23,106,184,0.9);
+}
+
+.depth-view {
+
+	height: 60px;
+	grid-column: 2 / span 1;
+	margin: 1rem 0 1rem 0;
+	position: relative;
+}
+.depth-view:before {
+	position: absolute;
+	display: block;
+	content: " ";
+	width: 100%;
+	height: 1px;
+	top: 50%;
+	left: 0;
+	border-top: 1px solid rgba(23,106,184,0.2);
+	overflow: hidden;
+}
+.depth-view:after {
+	position: absolute;
+	display: block;
+	content: " ";
+	height: 100%;
+	width: 1px;
+	overflow: hidden;
+	border-left: 1px solid rgba(23,106,184,0.2);
+	top: 0;
+	left: 50%;
+}
+.depth-view .depth {
+	display: block;
+	position: absolute;
+	top: 25%;
+	height: 30px;
+	text-indent: -999em;
+	overflow: hidden;
+	background-color: #176AB8;
+}
+.depth-view .number {
+	display: inline;
+	color: rgba(23,106,184,0.9);
+	font-size: 0.75rem;
+	position: absolute;
+	top: 0;
+}
+
+.best {
+	background-color: rgba(248,231,28,0.05);
+}
+.best .tide-day {
+	background-color: rgba(248,231,28,0.2);
+}
+
+.good-tide {
+	background-image: url('tide.png');
+	background-position: 0 0.3rem;
+	background-repeat: no-repeat;
+	background-size: 2.5rem;
+	min-height: 2.8rem;
+	padding-left: 3rem;
+}
+.good-tide span {
+	display: block;
+}
+
+
+.shifts {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 1em 0;
+}
+.shift {
+    padding-left: 7.25em; /* 116px*/
+    overflow: hidden;
+    margin-bottom: 1em;
+}
+.shift .date {
+    background-color: #F7941D;
+    width: 5em;
+    margin: 0 0 0 -5.8em;
+    float: left;
+    border-radius: 7px;
+    overflow: hidden;
+    position: relative;
+    padding: 1em 0 0 0;
+    text-align: center;
+}
+.shift .month {
+    position: absolute;
+    display: block;
+    top:0;
+    left:0;
+    padding: 0.2em 0;
+    text-transform: uppercase;
+    font-family: 'Nunito', Avenir, sans-serif;
+    font-size: 0.8em;
+    width: 100%;
+    background-color: #0A4B7D;
+    color: white;
+}
+.shift .day {
+    font-size: 1.8em;
+    display: block;
+    padding: 0.5em 0 0.5em 0;
+}
+
+
+
+.contacts {
+    margin: 1em 0 0 0;
+}
+
+
+/* Overrides */
+@media (max-width: 55rem) {
+	.title-wrapper {
+		margin-top: 30vw;
+	}
+	.section,
+	section {
+		grid-template-columns: 5% 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 5%;
+		margin-bottom: 0.8rem;
+	}
+	.stretch {
+		padding-left: 5%;
+		padding-right: 5%
+	}
+	.species .image {
+		height: 19vw;
+		width: 19vw;
+	}
+	.observation {
+		flex-basis: 30%;
+	}
+	.observation .image {
+		height: 25vw;
+	}
+	.observation,
+	.observation:nth-child(4n+1) {
+		margin-left: 1.4%;
+	}
+	.observation:first-child,
+	.observation:nth-child(3n+1) {
+		margin-left: 0;
+	}
+}
+
+@media (max-width: 40rem) {
+    header .title {
+        font-size: 2em;
+        padding-top: 0.2em;
+        padding-bottom: 0.2em;
+    }
+    header .title em {
+        line-height: 0.8;
+        top:0;
+    }
+	.section,
+	section {
+		grid-template-columns: 1% 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1%;
+		margin-bottom: 0.8rem;
+	}
+	.stretch {
+		padding-left: 1%;
+		padding-right: 1%
+	}
+	.title-wrapper {
+	  margin-top: 40vw;
+	}
+	.primary,
+	.secondary,
+	.full {
+		grid-column: 2 / span 10;
+	}
+	.page-title .text {
+	  font-size: 1.5em;
+	}
+	.pull-out {
+		font-size: 1em;
+		margin-top: 1rem;
+	}
+	.pull-out h2 {
+		margin-top: 0;
+		font-size: 1.5rem;
+	}
+	.pull-out h3 {
+		margin-top: 0;
+		font-size: 1.25rem;
+	}
+	.species .image {
+		height: 36vw;
+		width: 36vw;
+	}
+	.species {
+		flex-basis: 48%;
+	}
+	.tide-prediction {
+		grid-template-columns: 0.8rem 1fr 1rem 3fr 1rem;
+	}
+	.observation {
+		flex-basis: 49%;
+	}
+	.observation .image {
+		height: 40vw;
+	}
+	.observation,
+	.observation:nth-child(4n+1),
+	.observation:nth-child(3n+1) {
+		margin-left: 2%;
+	}
+	.observation:first-child,
+	.observation:nth-child(2n+1) {
+		margin-left: 0;
+	}
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
