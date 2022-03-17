@@ -30,6 +30,9 @@ jobs:
           DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
         run: |
           cd pillarpointstewards && python -m pytest
+      - name: Ensure collectstatic runs without errors
+        run: |
+          ./pillarpointstewards/manage.py collectstatic
       - name: Deploy to Fly
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_ACCESS_TOKEN }}
