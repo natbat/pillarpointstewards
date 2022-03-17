@@ -35,4 +35,4 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_ACCESS_TOKEN }}
         run: |
           curl -L https://fly.io/install.sh | sh
-          flyctl deploy -a pillarpointstewards
+          ~/.fly/bin/flyctl deploy -a pillarpointstewards
