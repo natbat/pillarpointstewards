@@ -1,6 +1,6 @@
 # pillarpointstewards
 
-Website for pillarpointstewards.com
+https://www.pillarpointstewards.com/
 
 ## Local development environment
 
