@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-iy$k84$=%68trrc_idv@@(n3gs00_!%jf%ymi52yzv91#ejs5^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["pillarpointstewards.fly.dev", "0.0.0.0"]
+ALLOWED_HOSTS = ["pillarpointstewards.fly.dev", "0.0.0.0", "127.0.0.1"]
 
 
 # Application definition
@@ -55,7 +55,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
