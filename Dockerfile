@@ -17,6 +17,8 @@ RUN pip install -r requirements.txt
 
 COPY pillarpointstewards .
 
+RUN python manage.py collectstatic --noinput
+
 EXPOSE 8080
 
 CMD ["gunicorn", "--bind", ":8080", "--workers", "2", "config.wsgi"]
