@@ -25,7 +25,14 @@ SECRET_KEY = "django-insecure-iy$k84$=%68trrc_idv@@(n3gs00_!%jf%ymi52yzv91#ejs5^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["pillarpointstewards.fly.dev", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "pillarpointstewards.fly.dev",
+    "0.0.0.0",
+    "127.0.0.1",
+    "dev.pillarpointstewards.com",
+    "www.pillarpointstewards.com",
+    "pillarpointstewards.com",
+]
 
 
 # Application definition
