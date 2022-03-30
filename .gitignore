@@ -1,4 +1,5 @@
 Pipfile
+pillarpointstewards/static-root
 __pycache__
 .coverage
 .vscode
