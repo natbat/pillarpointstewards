@@ -30,3 +30,16 @@ Install (or upgrade) the dependencies from `requirements.txt`:
 Start the development server, which will also run any database migrations:
 
     ./runserver.sh
+
+### Running management commands
+
+The `./manage.sh` script sets the correct environment variables for development and runs management commands, for example:
+
+    ./manage.sh shell_plus
+    ./manage.py makemigrations
+
+### Creating a superuser for the Django admin
+
+    ./manage.sh createsuperuser
+
+Follow the prompts. You can leave email blank.
