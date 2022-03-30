@@ -9,10 +9,10 @@
 <link rel="mask-icon" href="{% static "safari-pinned-tab.svg" %}" color="#0a4b7d">
 <meta name="msapplication-TileColor" content="#0a4b7d">
 <meta name="theme-color" content="#ffffff">
-
 <link rel="stylesheet" href="{% static "main.css" %}">
+<script src="{% static "htmx.min.js" %}"></script>
 </head>
-<body>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
 <header class="section">
   <div class="stretch">
@@ -43,7 +43,11 @@
                   <h3 class="date" title="{{ shift.shift_start.date }}"><span class="day">{{ shift.shift_start|date:"jS" }}</span> <span class="month">{{ shift.shift_start|date:"F" }}</span></h3>
                   <p class="shifttimes">On shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</p>
                   <!-- <p class="lowtide">Tide is at it's lowest of -1ft at 3pm</p> -->
-                  <p class="controls"><a href="#">Cancel</a></p>
+                  <p class="controls">
+                    <button hx-post="/cancel-shift/{{ shift.pk }}/" hx-swap="outerHTML">
+                      Cancel
+                    </button>
+                  </p>
               </li>
             {% endfor %}
               <li class="shift">
@@ -88,6 +92,5 @@
   {% endif %}
 
   </div>
-
   </body>
   </html>

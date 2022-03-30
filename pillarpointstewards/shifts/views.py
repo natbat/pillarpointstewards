@@ -1,6 +1,6 @@
-from django.contrib.admin.views.decorators import staff_member_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.contrib.admin.views.decorators import staff_member_required, login_required
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import get_object_or_404, render
 from .models import Shift
 import json
 
@@ -22,3 +22,13 @@ def import_shifts(request):
         return HttpResponseRedirect("/admin/shifts/shift/")
 
     return render(request, "import_shifts.html")
+
+
+@login_required
+def cancel_shift(request, shift_id):
+    shift = get_object_or_404(Shift, pk=shift_id)
+    if shift.stewards.filter(id=request.user.id).exists():
+        shift.stewards.remove(request.user)
+        return HttpResponse("Cancelled")
+    else:
+        return HttpResponse("You were not on that shift")

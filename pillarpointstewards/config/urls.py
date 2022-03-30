@@ -21,6 +21,7 @@ from shifts import views as shifts
 
 urlpatterns = [
     path("", homepage.index),
+    path("cancel-shift/<int:shift_id>/", shifts.cancel_shift),
     path("patterns/", homepage.patterns),
     path("admin/import-shifts/", shifts.import_shifts),
     path("admin/", admin.site.urls),
