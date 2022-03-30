@@ -51,3 +51,7 @@ Follow the prompts. You can leave email blank.
 
 - CSS: [pillarpointstewards/static/main.css](pillarpointstewards/static/main.css)
 - Homepage template: [pillarpointstewards/templates/index.html](pillarpointstewards/templates/index.html)
+
+## Useful URLs
+
+- Pattern portfolio: http://localhost:8000/patterns/
