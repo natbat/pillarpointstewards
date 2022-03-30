@@ -24,12 +24,20 @@
 
 <div class="page">
 
-  <section class="page-title">
-    <div class="title-wrapper stretch">
-      <h1 class="text"><span>Coming soon!</span></h1>
-    </div>
-  </section> <!-- end .page-title -->
-
+  {% if request.user.is_authenticated %}
+    <section class="page-title">
+      <div class="title-wrapper stretch">
+        <h1 class="text"><span>You are logged in as {{ request.user }}</span></h1>
+        <p>Here comes content</p>
+      </div>
+    </section> <!-- end .page-title -->
+  {% else %}
+    <section class="page-title">
+      <div class="title-wrapper stretch">
+        <h1 class="text"><span>Coming soon!</span></h1>
+      </div>
+    </section> <!-- end .page-title -->
+  {% endif %}
 
   </div>
 
