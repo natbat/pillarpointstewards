@@ -34,6 +34,10 @@ Start the development server, which will also run any database migrations:
 
     ./runserver.sh
 
+### Running the tests
+
+    pytest pillarpointstewards
+
 ### Running management commands
 
 The `./manage.sh` script sets the correct environment variables for development and runs management commands, for example:
