@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Shift
+from .models import Shift, ShiftChange
 
 
 class ShiftAdmin(admin.ModelAdmin):
@@ -12,3 +12,4 @@ class ShiftAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Shift, ShiftAdmin)
+admin.site.register(ShiftChange)

@@ -1,4 +1,5 @@
-from django.contrib.admin.views.decorators import staff_member_required, login_required
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from .models import Shift
@@ -29,6 +30,7 @@ def cancel_shift(request, shift_id):
     shift = get_object_or_404(Shift, pk=shift_id)
     if shift.stewards.filter(id=request.user.id).exists():
         shift.stewards.remove(request.user)
+        shift.shift_changes.create(user=request.user, change="cancelled")
         return HttpResponse("Cancelled")
     else:
         return HttpResponse("You were not on that shift")
