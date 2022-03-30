@@ -10,6 +10,9 @@ Create a local database called `pillarpointstewards`.
 
 Open `Postgres.app`, double click on the `postgres` database, then type the following at the prompt:
 
+    create database pillarpointstewards;
+
+It should look like this:
 ```
 postgres=# create database pillarpointstewards;
 CREATE DATABASE
