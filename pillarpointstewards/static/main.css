@@ -686,6 +686,7 @@ footer li {
 	display: block;
 }
 
+/* Your shifts */
 
 .shifts {
     list-style-type: none;
@@ -765,6 +766,8 @@ footer li {
 	background-color: #EBBE2D;
 }
 
+/* List of contacts */
+
 .contacts {
     margin: 1em 0 0 0;
 }
@@ -781,6 +784,48 @@ footer li {
 	/* designed for phone number */
 	white-space: nowrap;
 }
+
+/* shift calendar */
+.month {
+	background-color: #E6E6E6;
+	border-radius: 7px;
+	overflow: hidden;
+
+}
+
+.monthheader {
+	background-color: #0A4B7D;
+	color: white;
+	text-align: center;
+	margin: 0;
+	padding: 0.3rem 0 0.3rem 0;
+}
+.month table {
+	width: 100%;
+}
+.month th,
+.month td {
+	text-align: center;
+	padding: 0.4rem;
+}
+.month th {
+	background-color: #84a5be;
+}
+.month td.shiftday {
+	padding: 0;
+	background-color: red;
+}
+.month td.shiftday a:link,
+.month td.shiftday a:visited,
+.month td.shiftday a:hover,
+.month td.shiftday a:focus,
+.month td.shiftday a:active {
+	background-color: yellowgreen;
+	display: block;
+}
+
+
+
 
 
 
