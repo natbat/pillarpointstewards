@@ -694,7 +694,7 @@ footer li {
 
 .shifts {
     list-style-type: none;
-    margin: 0;
+    margin: 2rem 0 0 0;
     padding: 0 0 1em 0;
 }
 .shift {
@@ -726,13 +726,31 @@ footer li {
     background-color: #0A4B7D;
     color: white;
 }
+.shift a:link .day
+.shift a:visited .day,
+.shift a:hover .day,
+.shift a:focus .day,
+.shift a:active .day {
+	color: black;
+}
 .shift .day {
     font-size: 1.8em;
     display: block;
     padding: 0.5em 0 0.5em 0;
 }
 
-
+.shift .shifttimes,
+.shift .lowtide {
+	margin: 0;
+}
+.shift .shifttimes {
+	font-size: 2rem;
+	margin-bottom: 0.5rem;;
+}
+.shift .controls {
+	margin-top: 0.5rem;
+	font-style: italic;
+}
 
 .contacts {
     margin: 1em 0 0 0;
