@@ -58,4 +58,14 @@ Follow the prompts. You can leave email blank.
 
 ## Useful URLs
 
-- Pattern portfolio: http://localhost:8000/patterns/
+- Pattern portfolio: https://www.pillarpointstewards.com/patterns/ - http://127.0.0.1:8000/patterns/
+
+# Fragments
+
+Some site content - such as emergency contact phone numbers - is held in the database to avoid sharing it in a public GitHub repository.
+
+The `contact_details` fragment shows contact details and is displayed on the logged-in homepage.
+
+Content for these needs to be copiend and pasted into new databases - we keep those in the private repository [pillarpointstewards-private](https://github.com/natbat/pillarpointstewards-private).
+
+They can be edited at `/admin/homepage/fragment/`.
