@@ -46,3 +46,8 @@ The `./manage.sh` script sets the correct environment variables for development 
     ./manage.sh createsuperuser
 
 Follow the prompts. You can leave email blank.
+
+## Where the code is
+
+- CSS: [pillarpointstewards/static/main.css](pillarpointstewards/static/main.css)
+- Homepage template: [pillarpointstewards/templates/index.html](pillarpointstewards/templates/index.html)
