@@ -6,3 +6,4 @@ dj-database-url
 pytest-django
 django-extensions
 django-htmx
+pytz
