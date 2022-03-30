@@ -34,14 +34,18 @@
 
     <section class="content">
       <div class="primary">
+        {% if upcoming_shifts %}
           <h2>Your upcoming shifts</h2>
+          {{ upcoming_shifts }}
           <ol class="shifts">
+            {% for shift in upcoming_shifts %}
               <li class="shift">
-                  <h3 class="date"><span class="day">15th</span> <span class="month">April</span></h3>
-                  <p class="shifttimes">On shift from 1:30pm to 4pm</p>
-                  <p class="lowtide">Tide is at it's lowest of -1ft at 3pm</p>
+                  <h3 class="date" title="{{ shift.shift_start.date }}"><span class="day">{{ shift.shift_start|date:"jS" }}</span> <span class="month">{{ shift.shift_start|date:"F" }}</span></h3>
+                  <p class="shifttimes">On shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</p>
+                  <!-- <p class="lowtide">Tide is at it's lowest of -1ft at 3pm</p> -->
                   <p class="controls"><a href="#">Cancel</a></p>
               </li>
+            {% endfor %}
               <li class="shift">
                 <h3 class="date"><span class="day">1st</span> <span class="month">May</span></h3>
                 <p class="shifttimes">On shift from 12 noon to 2pm</p>
@@ -53,8 +57,8 @@
               <p class="shifttimes">Sign up to a shift</p>
             </a></li>
           </ol>
-
-          <h2>Your past shifts</h2>
+        {% endif %}
+        <!-- <h2>Your past shifts</h2> -->
       </div>
       <div class="secondary pull-out">
           <h2>Contact details</h2>

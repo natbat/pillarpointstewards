@@ -13,7 +13,7 @@ class Shift(models.Model):
     mllw_feet = models.IntegerField(blank=True, null=True)
     lowest_tide = models.DateTimeField(blank=True, null=True)
 
-    stewards = models.ManyToManyField("auth.User", related_name="shifts")
+    stewards = models.ManyToManyField("auth.User", related_name="shifts", blank=True)
 
     def __str__(self):
         return "{}-{}".format(self.shift_start, self.shift_end)
