@@ -53,7 +53,7 @@
           </ol>
 
           <h2>Sign up to future shifts</h2>
-
+          <!-- This interface only works if there is only one shift a day -->
           <div class="month">
             <h3 class="monthheader">April</h3>
             <table>
@@ -70,54 +70,58 @@
               </thead>
               <tbody>
                 <tr>
-                  <td class="notcurrentmonth">28</td>
-                  <td class="notcurrentmonth">29</td>
-                  <td class="notcurrentmonth">30</td>
-                  <td class="notcurrentmonth">31</td>
-                  <td>1</td>
-                  <td class="weekend">2</td>
-                  <td class="weekend">3</td>
+                  <td class="notcurrentmonth noshift">28<span class="context-text">th March</span></td>
+                  <td class="notcurrentmonth noshift">29<span class="context-text">th March</span></td>
+                  <td class="notcurrentmonth noshift">30<span class="context-text">th March</span></td>
+                  <td class="notcurrentmonth noshift">31<span class="context-text">st March</span></td>
+                  <td class="noshift">1<span class="context-text">st April</span></td>
+                  <td class="weekend noshift">2<span class="context-text">nd April</span></td>
+                  <td class="weekend noshift">3<span class="context-text">rd April</span></td>
                 </tr>
                 <tr>
-                  <td class="shiftday available"><a href="#">4</a></td>
-                  <td>5</td>
-                  <td>6</td>
-                  <td class="shiftday partful"><a href="#">7</a></td>
-                  <td>8</td>
-                  <td class="weekend">9</td>
-                  <td class="weekend">10</td>
+                  <td class="shiftday available"><a href="#">4<span class="context-text">th April, shift is between</span> <span class="shifttime">10am-2pm</span></a></td>
+                  <td class="noshift">5<span class="context-text">th April</span></td>
+                  <td class="noshift">6<span class="context-text">th April</span></td>
+                  <td class="shiftday partfull"><a href="#">7<span class="context-text">th April, shift is between</span> <span class="shifttime">10am-2pm</span></a></td>
+                  <td class="noshift">8<span class="context-text">th April</span></td>
+                  <td class="weekend noshift">9<span class="context-text">th April</span></td>
+                  <td class="weekend noshift">10<span class="context-text">th April</span></td>
                 </tr>
                 <tr>
-                  <td>11</td>
-                  <td>12</td>
-                  <td class="shiftday full"><a href="#">13</a></td>
-                  <td>14</td>
-                  <td>15</td>
-                  <td class="weekend">16</td>
-                  <td class="weekend">17</td>
+                  <td class="noshift">11<span class="context-text">th April</span></td>
+                  <td class="noshift">12<span class="context-text">th April</span></td>
+                  <td class="shiftday full"><a href="#">13<span class="context-text">th April, shift is between</span> <span class="shifttime">10am-2pm</span></a></td>
+                  <td class="noshift">14<span class="context-text">th April</span></td>
+                  <td class="noshift">15<span class="context-text">th April</span></td>
+                  <td class="weekend noshift">16<span class="context-text">th April</span></td>
+                  <td class="weekend noshift">17<span class="context-text">th April</span></td>
                 </tr>
                 <tr>
-                  <td>18</td>
-                  <td>19</td>
-                  <td>20</td>
-                  <td>21</td>
-                  <td>22</td>
-                  <td class="weekend shiftday available"><a href="#">23</a></td>
-                  <td class="weekend shiftday full"><a href="#">24</a></td>
+                  <td class="noshift">18<span class="context-text">th April</span></td>
+                  <td class="noshift">19<span class="context-text">th April</span></td>
+                  <td class="noshift">20<span class="context-text">th April</span></td>
+                  <td class="noshift">21<span class="context-text">st April</span></td>
+                  <td class="noshift">22<span class="context-text">nd April</span></td>
+                  <td class="weekend shiftday available"><a href="#">23<span class="context-text">rd April, shift is between</span> <span class="shifttime">10am-2pm</span></a></td>
+                  <td class="weekend shiftday full yours"><a href="#">24<span class="context-text">th April, shift is between</span> <span class="shifttime">10am-2pm</span></a></td>
                 </tr>
                 <tr>
-                  <td>25</td>
-                  <td>26</td>
-                  <td>27</td>
-                  <td>28</td>
-                  <td>29</td>
-                  <td class="weekend shiftday partful"><a href="#">30</a></td>
-                  <td class="weekend notcurrentmonth">1</td>
+                  <td class="noshift">25<span class="context-text">th April</span></td>
+                  <td class="noshift">26<span class="context-text">th April</span></td>
+                  <td class="noshift">27<span class="context-text">th April</span></td>
+                  <td class="noshift">28<span class="context-text">th April</span></td>
+                  <td class="noshift">29<span class="context-text">th April</span></td>
+                  <td class="weekend shiftday partfull"><a href="#">30<span class="context-text">th April, shift is between</span> <span class="shifttime">10am-11am</span></a></td>
+                  <td class="weekend notcurrentmonth noshift">1<span class="context-text">st May</span></td>
                 </tr>
               </tbody>
             </table>
           </div>
 
+        <h3>Key</h3>
+        <ul class="calkey">
+          <li class="yours">Your shift</li> <li class="available">volunteers needed</li> <li class="partfull">partly full shift</li> <li class="full">fully staffed shift</li>
+        </ul>
 
 
       </div>

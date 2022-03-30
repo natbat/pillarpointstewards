@@ -790,15 +790,16 @@ footer li {
 	background-color: #E6E6E6;
 	border-radius: 7px;
 	overflow: hidden;
+	margin-bottom: 2rem;
 
 }
-
 .monthheader {
 	background-color: #0A4B7D;
 	color: white;
 	text-align: center;
 	margin: 0;
-	padding: 0.3rem 0 0.3rem 0;
+	padding: 0.5rem 0 0.5rem 0;
+	text-transform: uppercase;
 }
 .month table {
 	width: 100%;
@@ -806,10 +807,30 @@ footer li {
 .month th,
 .month td {
 	text-align: center;
-	padding: 0.4rem;
+	width: 14.2857%;
+}
+.month th.weekend,
+.month td.weekend {
+	font-weight: bold;
 }
 .month th {
 	background-color: #84a5be;
+	padding: 0.3rem 0;
+	font-family: 'Amaranth', sans-serif;
+}
+.month td {
+	font-size: 1.25rem;
+}
+.month td .shifttime {
+	display: block;
+	font-size: 0.625rem;
+	font-weight: normal;
+}
+.month td.noshift {
+	padding: 0.3rem 0 1rem 0;
+}
+.month td.notcurrentmonth {
+	color: #B0B0B0;
 }
 .month td.shiftday {
 	padding: 0;
@@ -820,10 +841,74 @@ footer li {
 .month td.shiftday a:hover,
 .month td.shiftday a:focus,
 .month td.shiftday a:active {
-	background-color: yellowgreen;
+	background-color: #9ACD31;
 	display: block;
+	margin: -0.3rem 0 0 0;
+	padding: 0.3rem 0;
+	text-decoration: none;
+	color: black;
+	border: 1px solid #9ACD31;
 }
-
+.month td.shiftday a:hover,
+.month td.shiftday a:focus,
+.month td.shiftday a:active {
+	background-color: #92c32f;
+	border-color: #92c32f;
+}
+.month td.full a:link,
+.month td.full a:visited {
+	background-color: #B0B0B0;
+	border-color: #B0B0B0;
+}
+.month td.full a:hover,
+.month td.full a:focus,
+.month td.full a:active {
+	background-color: #a7a7a7;
+	border-color: #a7a7a7;
+}
+.month td.partfull a:link,
+.month td.partfull a:visited {
+	background-color: #F7941D;
+	border-color: #F7941D;
+}
+.month td.partfull a:hover,
+.month td.partfull a:focus,
+.month td.partfull a:active {
+	background-color: #eb8d1c;
+	border-color: #eb8d1c;
+}
+.month td.yours a:link,
+.month td.yours a:visited,
+.month td.yours a:hover,
+.month td.yours a:focus,
+.month td.yours a:active {
+	border-color: black;
+}
+.calkey {
+	margin: 1rem 0 0 0;
+	padding: 0;
+}
+.calkey li {
+	margin: 0 0.5rem 0.5rem 0;
+	padding: 0.3rem 0.5rem;
+	display: inline-block;
+	border: 1px solid transparent;
+}
+.calkey .yours {
+	border-color: black;
+}
+.calkey .available {
+	background-color: #9ACD31;
+	border-color: #9ACD31;
+}
+.calkey .full {
+	background-color: #B0B0B0;
+	border-color: #B0B0B0;
+}
+.calkey .partfull {
+	background-color: #F7941D;
+	border-color: #F7941D;
+}
 
 
 
