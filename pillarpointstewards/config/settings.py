@@ -33,7 +33,7 @@ ALLOWED_HOSTS = [
     "www.pillarpointstewards.com",
     "pillarpointstewards.com",
 ]
-
+CSRF_TRUSTED_ORIGINS = ["https://www.pillarpointstewards.com"]
 
 # Application definition
 
