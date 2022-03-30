@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path
 
 from homepage import views as homepage
+from shifts import views as shifts
 
 urlpatterns = [
     path("", homepage.index),
+    path("admin/import-shifts/", shifts.import_shifts),
     path("admin/", admin.site.urls),
 ]
