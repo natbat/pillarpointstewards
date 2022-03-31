@@ -73,15 +73,69 @@
       </div>
       <div class="secondary pull-out">
           {{ contact_details|safe }}
-        </div> <!-- end .secondary -->
-        </section>
+      </div> <!-- end .secondary -->
+      </section>
 
   {% else %}
     <section class="page-title">
       <div class="title-wrapper stretch">
-        <h1 class="text"><span>Coming soon!</span></h1>
+        <h1 class="text"><span>Join the Pillar Point Tidepool Stewards</span></h1>
       </div>
     </section> <!-- end .page-title -->
+    <section class="content">
+      <div class="primary">
+        <p class="intro">The pandemic has brought thousands of new visitors to Pillar Point
+        Reef and the increased harvesting is taking its toll on the ecology of the area.</p>
+        
+        <p class="intro">The <a href="https://www.mpacollaborative.org/sanmateo/">San Mateo MPA Collaborative</a> and <a href="https://calacademy.org/">California Academy of Sciences</a>
+        is launching this new initiative to inspire curiosity and discourage 
+        unsustainable harvesting practices of marine life, to help the recovery of 
+        wildlife in the area and ensure a productive, biodiverse reef for generations 
+        to come.</p>
+
+        <div class="image-wrapper">
+          <img src="{% static "content/reefabove.jpg" %}" alt"">
+          <p class="image-context meta">Photo (c) by Rob Cala</p>
+        </div>
+        
+        <h2>Sign up to be a volunteer</h2>
+
+        <img src="{% static "content/mappoint.png" %}" alt"" class="pull-left-image">
+        <p>We are looking for enthusiastic friendly adults (18+) to volunteer to talk 
+        to visitors about 3-5 times a year on Pillar Point Reef in Half Moon Bay 
+        during really low tides.</p>
+           
+        <p><a href="http://signup.pillarpointstewards.com/" class="button">Sign up to volunteer</a></p>
+           
+        <p>There is a two day training to help you get all the knowledge and techniques 
+        you’ll need. If you fill in the 
+        <a href="http://signup.pillarpointstewards.com/">volunteer application form</a>, 
+        we'll let you know when we schedule the next training</p>
+          <br>
+
+      </div>
+      <div class="secondary pull-out">
+          <h2>More information</h2>
+          
+          <h3>Sign up to volunteer</h3>
+          <ul class="bullets">
+            <li><a href="http://signup.pillarpointstewards.com/">Fill in the volunteer application form</a></li>
+          </ul>
+
+          <p><a href="http://signup.pillarpointstewards.com/" class="button">Volunteer login</a></p>
+
+
+          <h3>Fishing License information</h3>
+          <ul class="bullets">
+            <li><a href="https://wildlife.ca.gov/Fishing/Ocean/Regulations/Sport-Fishing">CDFW Ocean Sport Fishing Regulations</a></li>
+            <li><a href="https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentID=199167&inline">Download the regulatins handbook</a></li>
+            <li>You need a <a href="https://wildlife.ca.gov/Licensing/Fishing">license</a> to fish or collect invertebrates and other creatures at Pillar Point Reef. <a href="https://wildlife.ca.gov/Licensing/Online-Sales">Buy a license online</a></li>
+            <li>&hellip; or <a href="https://www.ca.wildlifelicense.com/internetsales/OutletSearch/FindOutlet">buy a license locally</a> at <strong>Ace Hardware</strong> on Main street in HMB or the <strong>Sportfishing and Tackle shop</strong> near Johnson Pier in El Granada</li>
+          </ul>
+
+          
+      </div> <!-- end .secondary -->
+    </section>
   {% endif %}
 
   </div>

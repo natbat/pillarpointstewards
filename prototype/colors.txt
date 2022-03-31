@@ -4,6 +4,9 @@
 #0A4B7D blue
 #84a5be lightblue
 
+#3494CC link blue
+
+
 #9ACD31 green
 #92c32f dark green
 

@@ -167,15 +167,35 @@ a:visited {
 a:hover,
 a:focus,
 a:active  {
-	color: #176AB8;
+	color: #0A4B7D;
 	text-decoration: underline;
 }
 
 a img {
-  display: block;
-  max-width: 100%;
+	display: block;
+	max-width: 100%;
 	border: 0;
 	vertical-align: bottom;
+}
+
+a.button:link,
+a.button:visited,
+a.button:hover,
+a.button:focus,
+a.button:active {
+	display: inline-block;
+	background-color: #3494CC;
+	color: white;
+	text-decoration: none;
+	padding: 0.5em 0.8em;
+	border-radius: 7px;
+}
+a.button:hover,
+a.button:focus {
+	background-color: #0A4B7D;
+}
+a.button:active {
+	background-color: #000000;
 }
 
 ul.bullets,
@@ -911,8 +931,26 @@ footer li {
 	border-color: #F7941D;
 }
 
+.pull-left-image {
+	display: block;
+	float: left;
+	width: 20%;
+	margin-right: 1rem;
+}
 
-
+.image-wrapper {
+	width: 100%;
+	overflow: hidden;
+}
+.image-wrapper img {
+	display: block;
+	max-width: 100%;
+	margin-bottom: 0.5rem;
+}
+.image-wrapper .image-context {
+	font-style: italic;
+	text-align: right;
+}
 
 
 /* Overrides */
