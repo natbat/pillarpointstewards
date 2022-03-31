@@ -20,8 +20,6 @@
   </div>
 </header> <!-- end header -->
 
-
-
 <div class="page">
 
   {% if request.user.is_authenticated %}
@@ -36,7 +34,6 @@
       <div class="primary">
         {% if upcoming_shifts %}
           <h2>Your upcoming shifts</h2>
-          {{ upcoming_shifts }}
           <ol class="shifts">
             {% for shift in upcoming_shifts %}
               <li class="shift">
@@ -63,25 +60,21 @@
           </ol>
         {% endif %}
         <!-- <h2>Your past shifts</h2> -->
+
+        {% for calendar in calendars %}
+          {{ calendar }}
+        {% endfor %}
+
+        <h3>Key</h3>
+        <ul class="calkey">
+          <li class="yours">Your shift</li> <li class="available">volunteers needed</li> <li class="partfull">partly full shift</li> <li class="full">fully staffed shift</li>
+        </ul>
+
       </div>
       <div class="secondary pull-out">
           {{ contact_details|safe }}
         </div> <!-- end .secondary -->
         </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   {% else %}
     <section class="page-title">

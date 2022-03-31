@@ -1,7 +1,9 @@
+import calendar
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
+from django.template.loader import get_template
 from .models import Shift
 import json
 

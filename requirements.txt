@@ -7,3 +7,4 @@ pytest-django
 django-extensions
 django-htmx
 pytz
+bs4
