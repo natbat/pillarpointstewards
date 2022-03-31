@@ -1,6 +1,8 @@
 import calendar
 import datetime
+from django.db import connection
 from django.shortcuts import render
+from django.http import JsonResponse
 from django.template.loader import get_template
 from .models import Fragment
 from shifts.models import Shift
@@ -90,4 +92,27 @@ def render_calendar(request, year, month):
             "month": datetime.date(year, month, 1),
         },
         request=request,
+    )
+
+
+def healthcheck(request):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+        SELECT
+            table_name as table, array_to_json(array_agg(column_name)) as columns
+        FROM
+            information_schema.columns
+        WHERE
+            table_schema = 'public'
+        GROUP BY
+            table_name
+        """
+        )
+        columns = [col[0] for col in cursor.description]
+        tables = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    return JsonResponse(
+        {
+            "tables": tables,
+        }
     )
