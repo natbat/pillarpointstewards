@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head>
+<title>Timeline</title>
+<style>
+  body { font-family: helvetica; line-height: 1.3em; padding: 2em; }
+  td {
+    padding: 5px;
+  }
+</style>
+</head>
+<body>
+  <h1>Timeline</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>When</th>
+        <th>User</th>
+        <th>Action</th>
+        <th>Shift</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for change in shift_changes %}
+      <tr>
+        <td>{{ change.when }}</td>
+        <td>{{ change.user }}</td>
+        <td>{{ change.change }}</td>
+        <td>{{ change.shift.shift_start.date }}: {{ change.shift.shift_start|date:"g:iA"|lower }}-{{ change.shift.shift_end|date:"g:iA"|lower }} (now has {{ change.shift.stewards.count }} stewards)</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</body>

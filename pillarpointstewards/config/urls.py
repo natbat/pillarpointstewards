@@ -25,5 +25,6 @@ urlpatterns = [
     path("assign-shift/<int:shift_id>/", shifts.assign_shift),
     path("patterns/", homepage.patterns),
     path("admin/import-shifts/", shifts.import_shifts),
+    path("admin/timeline/", shifts.timeline),
     path("admin/", admin.site.urls),
 ]

@@ -883,6 +883,7 @@ footer li {
 .month td.yours a:focus,
 .month td.yours a:active {
 	border-color: black;
+	outline: 1px solid #a7a7a7;
 }
 .calkey {
 	margin: 1rem 0 0 0;

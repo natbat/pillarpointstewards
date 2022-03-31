@@ -59,6 +59,7 @@ Follow the prompts. You can leave email blank.
 ## Useful URLs
 
 - Pattern portfolio: https://www.pillarpointstewards.com/patterns/ - http://127.0.0.1:8000/patterns/
+- Admin timeline showing various actions around the site: https://www.pillarpointstewards.com/admin/timeline/ - http://127.0.0.1:8000/admin/timeline/
 
 # Fragments
 

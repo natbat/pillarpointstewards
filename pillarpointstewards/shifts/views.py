@@ -2,7 +2,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
-from .models import Shift
+from .models import Shift, ShiftChange
 from homepage.views import render_calendar
 import json
 
@@ -48,3 +48,16 @@ def assign_shift(request, shift_id):
         )
     else:
         return HttpResponse("You were already on that shift")
+
+
+@staff_member_required
+def timeline(request):
+    return render(
+        request,
+        "timeline.html",
+        {
+            "shift_changes": ShiftChange.objects.select_related(
+                "shift", "user"
+            ).order_by("-when")[:200],
+        },
+    )
