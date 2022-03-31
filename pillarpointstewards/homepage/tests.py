@@ -59,7 +59,7 @@ def test_render_calendar(admin_client, admin_user, rf):
     request = rf.get("/")
     request.user = admin_user
     rendered = render_calendar(request, 2022, 4)
-    soup = Soup(rendered)
+    soup = Soup(rendered, "html.parser")
     # First tr is day headers
     trs = soup.find_all("tr")[1:]
     tds = [[(el["data-date"], el["class"]) for el in tr.find_all("td")] for tr in trs]
