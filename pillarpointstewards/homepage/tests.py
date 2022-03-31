@@ -11,13 +11,12 @@ def test_homepage(client):
     response = client.get("/")
     html = response.content.decode("utf-8")
     assert "<title>Pillar Point Tidepool Stewards</title>" in html
-    assert ">Coming soon!<" in html
+    assert not response.context["request"].user.is_authenticated
 
 
 def test_homepage_logged_in(admin_client):
     response = admin_client.get("/")
-    html = response.content.decode("utf-8")
-    assert ">Coming soon!<" not in html
+    assert response.context["request"].user.is_authenticated
     assert response.context["upcoming_shifts"] == []
 
 
