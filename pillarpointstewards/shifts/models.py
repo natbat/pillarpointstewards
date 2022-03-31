@@ -3,8 +3,6 @@ from django.db import models
 
 class Shift(models.Model):
     dawn = models.DateTimeField()
-    sunrise = models.DateTimeField(blank=True, null=True)
-    sunset = models.DateTimeField(blank=True, null=True)
     dusk = models.DateTimeField()
 
     shift_start = models.DateTimeField()
