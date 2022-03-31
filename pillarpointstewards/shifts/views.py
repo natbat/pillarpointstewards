@@ -1,10 +1,9 @@
-import calendar
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.template.loader import get_template
 from .models import Shift
+from homepage.views import render_calendar
 import json
 
 
@@ -36,3 +35,16 @@ def cancel_shift(request, shift_id):
         return HttpResponse("Cancelled")
     else:
         return HttpResponse("You were not on that shift")
+
+
+@login_required
+def assign_shift(request, shift_id):
+    shift = get_object_or_404(Shift, pk=shift_id)
+    if not shift.stewards.filter(id=request.user.id).exists():
+        shift.stewards.add(request.user)
+        shift.shift_changes.create(user=request.user, change="assigned")
+        return HttpResponse(
+            render_calendar(request, shift.shift_start.year, shift.shift_start.month)
+        )
+    else:
+        return HttpResponse("You were already on that shift")

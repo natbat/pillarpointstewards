@@ -1,4 +1,4 @@
-<div class="month">
+<div class="month" id="calendar-{{ month|date:"Y-m" }}">
 <h3 class="monthheader">{{ month|date:"F" }}</h3>
 <table>
     <thead>
@@ -18,7 +18,7 @@
         {% for day in week %}
         <td class="{{ day.classes }}" data-date="{{ day.date|date:"Y-m-d" }}">
             {% if day.shift %}
-              <a href="#">{{ day.date|date:"j" }}<span class="context-text">{{ day.date|date:"S F" }}</span>
+              <a hx-target="#calendar-{{ day.date|date:"Y-m" }}" hx-confirm="Are you sure?" hx-swap="outerHTML" hx-post="/assign-shift/{{ day.shift.pk }}/" href="#">{{ day.date|date:"j" }}<span class="context-text">{{ day.date|date:"S F" }}</span>
                 <span class="shifttime">{{ day.shift.shift_start|date:"g:iA"|lower }}-{{ day.shift.shift_end|date:"g:iA"|lower }}</span>
               </a>
             {% else %}
