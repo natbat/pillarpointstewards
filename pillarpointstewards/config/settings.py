@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django_htmx",
     "homepage",
     "shifts",
+    "auth0_login",
 ]
 
 MIDDLEWARE = [

@@ -18,9 +18,12 @@ from django.urls import path
 
 from homepage import views as homepage
 from shifts import views as shifts
+from auth0_login import views as auth0_login
 
 urlpatterns = [
     path("", homepage.index),
+    path("login/", auth0_login.login),
+    path("auth0-callback/", auth0_login.callback),
     path("healthcheck/", homepage.healthcheck),
     path("cancel-shift/<int:shift_id>/", shifts.cancel_shift),
     path("assign-shift/<int:shift_id>/", shifts.assign_shift),

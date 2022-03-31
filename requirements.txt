@@ -8,3 +8,4 @@ django-extensions
 django-htmx
 pytz
 bs4
+httpx
