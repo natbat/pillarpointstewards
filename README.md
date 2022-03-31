@@ -2,6 +2,8 @@
 
 https://www.pillarpointstewards.com/
 
+Login via Auth0 at https://www.pillarpointstewards.com/login/
+
 ## Local development environment
 
 You'll need Python 3 and PostgreSQL - I recommend using [Postgres.app](https://postgresapp.com/).
