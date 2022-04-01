@@ -89,8 +89,8 @@ def callback(request):
             # Create a new Djngo user for them
             user_to_sign_in = User.objects.create(
                 username=profile["nickname"],
-                first_name=profile.get("given_name"),
-                last_name=profile.get("family_name"),
+                first_name=profile.get("given_name") or "",
+                last_name=profile.get("family_name") or "",
                 email=profile["email"],
                 is_active=True,
             )
