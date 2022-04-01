@@ -329,6 +329,35 @@ header .title em {
     display: block;
 }
 
+.page-controls {
+	position: absolute;
+	right: 10%;
+	bottom: -1.5rem;
+	padding-right: 1rem;
+	font-size: 0.75rem;
+	font-weight: bold;
+}
+.page-controls svg {
+	height: 0.75rem;
+	width: 0.75rem;
+	position: relative;
+	top: 0.1rem;
+}
+.page-controls a:link,
+.page-controls a:visited,
+.page-controls a:hover,
+.page-controls a:focus,
+.page-controls a:active {
+	color: white;
+	text-decoration: 0;
+	opacity: 1;
+}
+.page-controls a:hover,
+.page-controls a:focus,
+.page-controls a:active {
+	opacity: 0.85;
+}
+
 footer {
   background-color: #0A4B7D;
 }
@@ -393,11 +422,6 @@ footer li {
 .pull-out h3 {
 	margin-top: 0;
 	font-size: 1rem;
-}
-
-.controls {
-	border: 1px solid lime;
-	float: right;
 }
 
 
@@ -973,6 +997,9 @@ footer li {
 		padding-left: 5%;
 		padding-right: 5%
 	}
+	.page-controls {
+		right: 5%;
+	}
 	.species .image {
 		height: 19vw;
 		width: 19vw;
@@ -1011,6 +1038,9 @@ footer li {
 	.stretch {
 		padding-left: 1%;
 		padding-right: 1%
+	}
+	.page-controls {
+		right: 1%;
 	}
 	.title-wrapper {
 	  margin-top: 40vw;
