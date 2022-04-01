@@ -20,6 +20,11 @@ from homepage import views as homepage
 from shifts import views as shifts
 from auth0_login import views as auth0_login
 
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
+
 urlpatterns = [
     path("", homepage.index),
     path("login/", auth0_login.login),
@@ -31,4 +36,5 @@ urlpatterns = [
     path("admin/import-shifts/", shifts.import_shifts),
     path("admin/timeline/", shifts.timeline),
     path("admin/", admin.site.urls),
+    path("sentry-debug/", trigger_error),
 ]

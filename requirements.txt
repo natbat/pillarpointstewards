@@ -9,3 +9,4 @@ django-htmx
 pytz
 bs4
 httpx
+sentry-sdk
