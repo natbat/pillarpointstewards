@@ -3,6 +3,16 @@
 {% block title %}Shift: {{ shift }}{% endblock %}
 
 {% block content %}
-  <h3 class="date" title="{{ shift.shift_start.date }}"><span class="day">{{ shift.shift_start|date:"jS" }}</span> <span class="month">{{ shift.shift_start|date:"F" }}</span></h3>
-   <p class="shifttimes">On shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</p>
-{% endblock %}
+<section class="page-title">
+  <div class="title-wrapper stretch">
+    <h1 class="text"><span>Shift {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</span></h1>
+      
+  </div>
+</section> <!-- end .page-title -->
+<section class="content">
+  <div class="primary">
+    <h3 class="date" title="{{ shift.shift_start.date }}"><span class="day">{{ shift.shift_start|date:"jS" }}</span> <span class="month">{{ shift.shift_start|date:"F" }}</span></h3>
+    <p class="shifttimes">On shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</p>
+  </div>
+</section>
+   {% endblock %}
