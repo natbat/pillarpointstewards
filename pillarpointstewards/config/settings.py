@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-iy$k84$=%68trrc_idv@@(n3gs00_!%jf%ymi52yzv91#ejs5^"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get("DJANGO_DEBUG"))
+DEBUG = True  # bool(os.environ.get("DJANGO_DEBUG"))
 
 ALLOWED_HOSTS = [
     "pillarpointstewards.fly.dev",
