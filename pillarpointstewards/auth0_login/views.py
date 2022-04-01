@@ -1,4 +1,5 @@
 from django.contrib.auth import login as django_login
+from django.contrib.auth import logout as django_logout
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
@@ -105,3 +106,8 @@ def callback(request):
         return HttpResponse(
             "Your account has not yet been activated. Please contact Natalie Downe."
         )
+
+
+def logout(request):
+    django_logout(request)
+    return HttpResponseRedirect("/")
