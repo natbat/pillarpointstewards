@@ -351,6 +351,7 @@ footer li {
   background-color: rgba(247,148,29,0.5);
   padding-top: 0.7em;
   padding-bottom: 0.5em;
+  position: relative;
 }
 .page-title {
   background-image: url('bg.jpg');
@@ -392,6 +393,13 @@ footer li {
 .pull-out h3 {
 	margin-top: 0;
 	font-size: 1rem;
+}
+
+.controls {
+	border: 1px solid lime;
+	position: absolute;
+	right: 0;
+	top:0;
 }
 
 
