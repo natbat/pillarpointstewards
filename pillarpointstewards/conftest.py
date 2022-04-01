@@ -1,6 +1,5 @@
 import datetime
 import pytest
-from django.utils.timezone import make_aware
 import pytz
 
 
@@ -21,13 +20,12 @@ def configure_whitenoise(settings):
 
 @pytest.fixture
 def admin_user_has_shift(admin_user):
-    dt = make_aware(
-        datetime.datetime.utcnow() + datetime.timedelta(hours=96),
-        timezone=pytz.timezone("America/Los_Angeles"),
-    )
+    dt = datetime.datetime.utcnow().replace(
+        tzinfo=pytz.timezone("America/Los_Angeles")
+    ) + datetime.timedelta(hours=96)
     admin_user.shifts.create(
         shift_start=dt,
         shift_end=dt + datetime.timedelta(hours=2),
         dawn=dt - datetime.timedelta(hours=1),
-        dusk=dt - +datetime.timedelta(hours=5),
+        dusk=dt + datetime.timedelta(hours=5),
     )

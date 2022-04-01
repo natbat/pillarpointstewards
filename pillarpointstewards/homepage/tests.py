@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup as Soup
 from shifts.models import Shift
 from django.contrib.auth.models import User
-from django.utils.timezone import make_aware
 from .views import render_calendar
 import datetime
 import pytz
@@ -112,7 +111,6 @@ def test_render_calendar(admin_client, admin_user, rf):
 
 
 def make_datetime(yyyy, mm, dd, h, m=0, s=0):
-    return make_aware(
-        datetime.datetime(yyyy, mm, dd, h, m, s),
-        timezone=pytz.timezone("America/Los_Angeles"),
+    return datetime.datetime(
+        yyyy, mm, dd, h, m, s, tzinfo=pytz.timezone("America/Los_Angeles")
     )

@@ -1,5 +1,6 @@
 import calendar
 import datetime
+import pytz
 from django.db import connection
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -45,7 +46,9 @@ def next_month(month):
 
 def render_calendar(request, year, month):
     cal = calendar.Calendar()
-    month_start = datetime.date(year, month, 1)
+    month_start = datetime.datetime(
+        year, month, 1, tzinfo=pytz.timezone("America/Los_Angeles")
+    )
     next_month_start = next_month(month_start)
     shifts_by_date = {
         shift.shift_start.date(): shift
