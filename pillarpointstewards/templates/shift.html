@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Shift: {{ shift }}{% endblock %}
 
@@ -14,5 +15,8 @@
     <h3 class="date" title="{{ shift.shift_start.date }}"><span class="day">{{ shift.shift_start|date:"jS" }}</span> <span class="month">{{ shift.shift_start|date:"F" }}</span></h3>
     <p class="shifttimes">On shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</p>
   </div>
+  <div class="secondary pull-out">
+    {{ contact_details|safe }}
+</div> <!-- end .secondary -->
 </section>
    {% endblock %}

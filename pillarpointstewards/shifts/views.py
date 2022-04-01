@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from .models import Shift, ShiftChange
+from homepage.models import Fragment
 from homepage.views import render_calendar
 import json
 
@@ -10,7 +11,10 @@ import json
 @login_required
 def shift(request, shift_id):
     return render(
-        request, "shift.html", {"shift": get_object_or_404(Shift, pk=shift_id)}
+        request, "shift.html", {
+            "shift": get_object_or_404(Shift, pk=shift_id),
+            "contact_details": Fragment.objects.get(slug="contact_details").fragment
+        }
     )
 
 
