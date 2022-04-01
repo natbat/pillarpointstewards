@@ -145,6 +145,10 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "static-root"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+# Don't let non-existent static references, including in commented-out CSS blocks,
+# cause Django to throw errors:
+WHITENOISE_MANIFEST_STRICT = False
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
