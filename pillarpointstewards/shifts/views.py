@@ -9,10 +9,9 @@ import json
 
 @login_required
 def shift(request, shift_id):
-    return render(request, "shift.html", {
-        "shift": get_object_or_404(Shift, pk=shift_id)
-    })
-
+    return render(
+        request, "shift.html", {"shift": get_object_or_404(Shift, pk=shift_id)}
+    )
 
 
 @staff_member_required

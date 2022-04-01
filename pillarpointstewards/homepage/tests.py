@@ -3,6 +3,7 @@ from shifts.models import Shift
 from django.contrib.auth.models import User
 from .views import render_calendar
 import datetime
+import pytest
 import pytz
 
 
@@ -114,3 +115,8 @@ def make_datetime(yyyy, mm, dd, h, m=0, s=0):
     return datetime.datetime(
         yyyy, mm, dd, h, m, s, tzinfo=pytz.timezone("America/Los_Angeles")
     )
+
+
+@pytest.mark.parametrize("path", ("/", "/patterns/"))
+def test_pages_200(admin_client, path):
+    assert admin_client.get(path).status_code == 200

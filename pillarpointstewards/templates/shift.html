@@ -1,24 +1,8 @@
-{% load static %}<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>Shift: {{ shift }}</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="{% static "main.css" %}">
-<script src="{% static "htmx.min.js" %}"></script>
-</head>
-<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+{% extends "base.html" %}
 
-<header class="section">
-  <div class="stretch">
-    <h1 class="title"><span class="location">Pillar Point</span> <em>Tidepool Stewards</em></h1>
-  </div>
-</header> <!-- end header -->
+{% block title %}Shift: {{ shift }}{% endblock %}
 
-<div class="page">
-
+{% block content %}
   <h3 class="date" title="{{ shift.shift_start.date }}"><span class="day">{{ shift.shift_start|date:"jS" }}</span> <span class="month">{{ shift.shift_start|date:"F" }}</span></h3>
    <p class="shifttimes">On shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</p>
-
-  </div>
-  </body>
-  </html>
+{% endblock %}
