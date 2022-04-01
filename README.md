@@ -2,7 +2,7 @@
 
 https://www.pillarpointstewards.com/
 
-Login via Auth0 here: https://www.pillarpointstewards.com/login/
+Login via Auth0: https://www.pillarpointstewards.com/login/
 
 ## Local development environment
 
