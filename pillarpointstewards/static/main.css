@@ -607,6 +607,11 @@ footer li {
 	margin: 0 0 1rem 0;
 }
 
+.day-alone {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	margin-bottom: 1rem;
+}
 .day-view {
 	/* colours are added with inline styles for daylight etc */
 	position: relative;
@@ -669,6 +674,41 @@ footer li {
 	padding-top: 50px;
 	margin-top: 1.3rem;
 	color: rgba(23,106,184,0.9);
+}
+
+.day-view .shift-window {
+	padding-left: 3px;
+	background-color: rgba(247,148,29,0.6);
+	display: block;
+	height: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	font-size: 0.75rem;
+	line-height: 1;
+	text-align: center;
+}
+.day-view .shift-window span {
+	display: block;
+	overflow: visible;
+	padding: 50px 0 0 0;
+	margin: 0.75rem 0 0 0;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: -1rem;
+}
+.day-view .shift-window .start-time {
+	left: 0;
+	text-align: left;
+	float:left;
+	margin-left: -1.25rem;
+}
+.day-view .shift-window .end-time {
+	right: 0;
+	text-align: right;
+	float: right;
+	margin-right: -1.25rem;
 }
 
 .depth-view {
