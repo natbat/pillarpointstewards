@@ -1130,6 +1130,25 @@ footer li {
 	font-size: 1.25rem;
 }
 
+.timeline {
+	margin-bottom: 2rem;
+	width: 100%;
+}
+.timeline td,
+.timeline th {
+	padding: 0.5rem;
+	box-sizing: border-box;
+}
+.timeline thead th {
+	background-color: #0A4B7D;
+	color: white;
+	font-weight: bold;
+}
+.timeline tbody th {
+	text-align: left;
+	background-color: #c8d6e2;
+}
+
 /* Overrides */
 @media (max-width: 55rem) {
 	.title-wrapper {

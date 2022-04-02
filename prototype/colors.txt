@@ -3,6 +3,7 @@
 #EBBE2D yellow
 #0A4B7D blue
 #84a5be lightblue
+#c8d6e2 lighterblue
 
 #3494CC link blue
 

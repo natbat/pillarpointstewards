@@ -1,28 +1,46 @@
-<!DOCTYPE html>
-<head>
-<title>Timeline</title>
-<style>
-  body { font-family: helvetica; line-height: 1.3em; padding: 2em; }
-  td {
-    padding: 5px;
-  }
-</style>
-</head>
-<body>
-  <h1>Timeline</h1>
-  <table>
+{% extends "base.html" %}
+
+{% block title %}Shifts{% endblock %}
+
+{% block content %}
+<section class="page-title">
+  <div class="title-wrapper stretch">
+    <h1 class="text"><span>Pillar Point</span></h1>
+    <div class="page-controls">
+      {% if request.user.is_authenticated %}
+        <a class="loginout" href="/logout/">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg> Logout</a>
+      {% else %}
+        <a class="loginout" href="/login/">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg> Login</a>
+      {% endif %}
+    </div>
+  </div>
+</section> <!-- end .page-title -->
+
+<section class="content">
+  <div class="stretch">
+    <h2>Timeline of activity</h2>
+
+  <table class="timeline">
     <thead>
       <tr>
-        <th>When</th>
-        <th>User</th>
-        <th>Action</th>
-        <th>Shift</th>
+        <th scope="col">When</th>
+        <th scope="col">User</th>
+        <th scope="col">Action</th>
+        <th scope="col">Shift</th>
       </tr>
     </thead>
     <tbody>
     {% for change in shift_changes %}
       <tr>
-        <td>{{ change.when }}</td>
+        <th scope="row">{{ change.when }}</th>
         <td>{{ change.user }}</td>
         <td>{{ change.change }}</td>
         <td>{{ change.shift.shift_start.date }}: {{ change.shift.shift_start|date:"g:iA"|lower }}-{{ change.shift.shift_end|date:"g:iA"|lower }} (now has {{ change.shift.stewards.count }} stewards)</td>
@@ -30,4 +48,12 @@
     {% endfor %}
     </tbody>
   </table>
-</body>
+
+
+</div> 
+
+</section>
+
+
+
+{% endblock %}
