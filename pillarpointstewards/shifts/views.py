@@ -2,6 +2,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
+from weather.models import Forecast
 from .models import Shift, ShiftChange
 from .ics_utils import calendar
 from homepage.models import Fragment
@@ -12,12 +13,14 @@ import pytz
 
 @login_required
 def shift(request, shift_id):
+    shift = get_object_or_404(Shift, pk=shift_id)
     return render(
         request,
         "shift.html",
         {
-            "shift": get_object_or_404(Shift, pk=shift_id),
+            "shift": shift,
             "contact_details": Fragment.objects.get(slug="contact_details").fragment,
+            "forecast": Forecast.for_date(shift.shift_start.date()),
         },
     )
 
@@ -82,16 +85,25 @@ def timeline(request):
 
 
 def shifts(request):
-    return render(request, "shifts.html", {
-        "shifts": Shift.objects.prefetch_related("stewards"),
-    })
+    return render(
+        request,
+        "shifts.html",
+        {
+            "shifts": Shift.objects.prefetch_related("stewards"),
+        },
+    )
 
 
 def shifts_ics(request):
     def description(shift):
         stewards = ", ".join(shift.stewards.values_list("username", flat=True))
-        stewards = "Stewards: {}".format(stewards) if stewards else "No stewards signed up yet"
-        lines = [f"Shift from {shift.shift_start.time()} to {shift.shift_end.time()}", stewards]
+        stewards = (
+            "Stewards: {}".format(stewards) if stewards else "No stewards signed up yet"
+        )
+        lines = [
+            f"Shift from {shift.shift_start.time()} to {shift.shift_end.time()}",
+            stewards,
+        ]
         if shift.mllw_feet:
             lines.append(f"Low tide {shift.mllw_feet}ft at {shift.lowest_tide}")
         lines.append(f"https://www.pillarpointstewards.com/shifts/{shift.id}/")
