@@ -2,6 +2,7 @@ import base64
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user
 from .models import Auth0User
+from .utils import suggest_username
 import pytest
 import urllib.parse
 
@@ -46,35 +47,72 @@ def test_auth0_login(client, settings):
                 "is_active": True,
             },
         ),
+        (
+            {
+                "sub": "user2",
+                "nickname": "simon+otherstuff",
+                "email": "simon+otherstuff@example.com",
+            },
+            {
+                "is_superuser": False,
+                "username": "simon-otherstuff",
+                "first_name": "",
+                "last_name": "",
+                "email": "simon+otherstuff@example.com",
+                "is_staff": False,
+                "is_active": True,
+            },
+        ),
+        (
+            {
+                "sub": "duplicate-nickname",
+                "nickname": "existing-user",
+                "email": "simon+existing@example.com",
+            },
+            {
+                "is_superuser": False,
+                "username": "existing-user-2",
+                "first_name": "",
+                "last_name": "",
+                "email": "simon+existing@example.com",
+                "is_staff": False,
+                "is_active": True,
+            },
+        ),
     ),
 )
 def test_login_creates_account(
     db, httpx_mock, client, settings, auth0_profile, expected_user_properties
 ):
     _mock_oauth0(httpx_mock, settings, auth0_profile)
+    # Create an existing user to test username conflict avoidance
+    existing_user = User.objects.create(username="existing-user")
+    Auth0User.objects.create(sub="existing", user=existing_user)
+
     assert "auth0-state" not in client.cookies
     client.get("/login/")
     assert "auth0-state" in client.cookies
     state = client.cookies["auth0-state"].value
 
-    # Should not be any users
-    assert User.objects.count() == 0
-    assert Auth0User.objects.count() == 0
+    # Should start with one user
+    assert User.objects.count() == 1
+    assert Auth0User.objects.count() == 1
+    existing_user_ids = list(User.objects.values_list("id", flat=True))
 
     response = client.get(f"/auth0-callback/?state={state}&code=x")
     assert response.status_code == 302
 
-    # Should have created a user
-    assert User.objects.count() == 1
-    assert Auth0User.objects.count() == 1
+    # Should have created another user
+    assert User.objects.count() == 2
+    assert Auth0User.objects.count() == 2
 
-    django_user = User.objects.get()
+    django_user = User.objects.exclude(id__in=existing_user_ids).get()
     assert get_user(client) == django_user
     for key, value in expected_user_properties.items():
         assert getattr(django_user, key) == value
 
     # And the Auth0User should exist and be linked to that user
-    auth0_user = Auth0User.objects.get()
+    auth0_user = django_user.auth0_users.get()
     assert auth0_user.details == auth0_profile
     assert auth0_user.sub == auth0_profile["sub"]
     assert auth0_user.user == django_user
@@ -121,3 +159,15 @@ def _mock_oauth0(httpx_mock, settings, auth0_profile):
     httpx_mock.add_response(
         url=f"https://{settings.AUTH0_DOMAIN}/userinfo", json=auth0_profile
     )
+
+
+@pytest.mark.parametrize(
+    "input,expected",
+    (
+        ("simon+otherstuff", "simon-otherstuff"),
+        ("simon willison", "simon-willison"),
+        ("simoné --willîsonø", "simone-willison"),
+    ),
+)
+def test_suggest_username(input, expected):
+    assert suggest_username(input) == expected

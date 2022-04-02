@@ -1,11 +1,12 @@
 from django.conf import settings
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
-from django.shortcuts import render
+from django.db import IntegrityError, transaction
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from urllib.parse import urlencode
 from .models import Auth0User
+from .utils import suggest_username
 import secrets
 import httpx
 
@@ -75,14 +76,31 @@ def callback(request):
         django_login(request, auth0_user.user)
         return HttpResponseRedirect("/")
 
-    # Need to create a new Django user for that auth0_user
-    django_user = User.objects.create(
-        username=profile["nickname"],
-        first_name=profile.get("given_name") or "",
-        last_name=profile.get("family_name") or "",
-        email=profile["email"],
-        is_active=True,
-    )
+    # Need to create a new Django user for that auth0_user, with a unique username
+    # derived from their nickname but avoiding duplicates
+    base_username = suggest_username(profile["nickname"])
+    suffix = None
+    while True:
+        # Keep going until we don't get an IntegrityError
+        username = base_username
+        if suffix:
+            username += f"-{suffix}"
+        with transaction.atomic():
+            try:
+                django_user = User.objects.create(
+                    username=username,
+                    first_name=profile.get("given_name") or "",
+                    last_name=profile.get("family_name") or "",
+                    email=profile["email"],
+                    is_active=True,
+                )
+                break
+            except IntegrityError:
+                if suffix is None:
+                    suffix = 1
+                # Always start at 2
+                suffix += 1
+
     auth0_user.user = django_user
     auth0_user.save()
     django_login(request, django_user)
