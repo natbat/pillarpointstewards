@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
 from django.shortcuts import render
@@ -5,22 +6,17 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from urllib.parse import urlencode
 from .models import Auth0User
-import os
 import secrets
 import httpx
-
-AUTH0_DOMAIN = "pillarpointstewards.us.auth0.com"
-AUTH0_CLIENT_ID = "DLXBMPbtamC2STUyV7R6OFJFDsSTHqEA"
-AUTH0_CLIENT_SECRET = os.environ.get("AUTH0_CLIENT_SECRET")
 
 
 def login(request):
     redirect_uri = request.build_absolute_uri("/auth0-callback/")
     state = secrets.token_hex(16)
-    url = "https://{}/authorize?".format(AUTH0_DOMAIN) + urlencode(
+    url = "https://{}/authorize?".format(settings.AUTH0_DOMAIN) + urlencode(
         {
             "response_type": "code",
-            "client_id": AUTH0_CLIENT_ID,
+            "client_id": settings.AUTH0_CLIENT_ID,
             "redirect_uri": redirect_uri,
             "scope": "openid profile email",
             "state": state,
@@ -44,13 +40,13 @@ def callback(request):
 
     # Exchange the code for an access token
     response = httpx.post(
-        "https://{}/oauth/token".format(AUTH0_DOMAIN),
+        "https://{}/oauth/token".format(settings.AUTH0_DOMAIN),
         data={
             "grant_type": "authorization_code",
             "redirect_uri": request.build_absolute_uri("/auth0-callback/"),
             "code": code,
         },
-        auth=(AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET),
+        auth=(settings.AUTH0_CLIENT_ID, settings.AUTH0_CLIENT_SECRET),
     )
     if response.status_code != 200:
         return HttpResponse(
@@ -61,7 +57,7 @@ def callback(request):
     access_token = response.json()["access_token"]
     # Exchange that for the user info
     profile_response = httpx.get(
-        "https://{}/userinfo".format(AUTH0_DOMAIN),
+        "https://{}/userinfo".format(settings.AUTH0_DOMAIN),
         headers={"Authorization": "Bearer {}".format(access_token)},
     )
     if profile_response.status_code != 200:
@@ -74,38 +70,23 @@ def callback(request):
     auth0_user, created = Auth0User.objects.get_or_create(
         sub=profile["sub"], defaults={"details": profile}
     )
-    user_to_sign_in = None
-    if created:
-        # If they have a verified email address create a Django user for them, or link to existing one
-        if (
-            profile.get("email_verified")
-            and User.objects.filter(email=profile["email"]).count() == 1
-        ):
-            django_user = User.objects.get(email=profile["email"])
-            auth0_user.user = django_user
-            auth0_user.save()
-            user_to_sign_in = django_user
-        else:
-            # Create a new Djngo user for them
-            user_to_sign_in = User.objects.create(
-                username=profile["nickname"],
-                first_name=profile.get("given_name") or "",
-                last_name=profile.get("family_name") or "",
-                email=profile["email"],
-                is_active=True,
-            )
-    else:
-        # Is there a Django user we can sign them in as?
-        if auth0_user.user:
-            user_to_sign_in = auth0_user.user
 
-    if user_to_sign_in:
-        django_login(request, user_to_sign_in)
+    if auth0_user.user:
+        django_login(request, auth0_user.user)
         return HttpResponseRedirect("/")
-    else:
-        return HttpResponse(
-            "Your account has not yet been activated. Please contact Natalie Downe."
-        )
+
+    # Need to create a new Django user for that auth0_user
+    django_user = User.objects.create(
+        username=profile["nickname"],
+        first_name=profile.get("given_name") or "",
+        last_name=profile.get("family_name") or "",
+        email=profile["email"],
+        is_active=True,
+    )
+    auth0_user.user = django_user
+    auth0_user.save()
+    django_login(request, django_user)
+    return HttpResponseRedirect("/")
 
 
 def logout(request):

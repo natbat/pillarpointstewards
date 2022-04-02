@@ -18,6 +18,9 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+AUTH0_DOMAIN = "pillarpointstewards.us.auth0.com"
+AUTH0_CLIENT_ID = "DLXBMPbtamC2STUyV7R6OFJFDsSTHqEA"
+AUTH0_CLIENT_SECRET = os.environ.get("AUTH0_CLIENT_SECRET")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/

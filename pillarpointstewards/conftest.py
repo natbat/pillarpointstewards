@@ -29,3 +29,8 @@ def admin_user_has_shift(admin_user):
         dawn=dt - datetime.timedelta(hours=1),
         dusk=dt + datetime.timedelta(hours=5),
     )
+
+
+@pytest.fixture(autouse=True)
+def use_dummy_auth0_client_secret(settings):
+    settings.AUTH0_CLIENT_SECRET = "auth0-test-client-secret"
