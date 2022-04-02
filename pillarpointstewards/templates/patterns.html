@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Pillar Point Tidepool Stewards: Pattern Portfolio{% endblock %}
 
@@ -576,6 +577,35 @@
           
         </ul>
       </div>
+
+      <h2 class="header1">You are <!--not--> scheduled for the shift onYou are scheduled for the shift on 17th April 22</h2>
+      <div class="intro">
+        <p><strong>Shift times:</strong> from from 7:04am to 8:12am</p>
+        <p><strong>Lowest tide:</strong> -1ft at 8am</p>
+        <p><strong>Sunrise:</strong> 6am</p>
+        <p><strong>Sunset:</strong> 7pm</p>
+      </div><br>
+  
+      <h2>Volunteers on this shift</h2>
+  
+      <!-- If there is no-one-->
+      <p>It looks like noone has signed up for this shift yet</p>
+      <!--endif -->
+  
+      <!-- if there are volunteers assigned -->
+  
+      <ul class="people-list">
+        <li><a href="#"><div class="pic"></div><p class="name">Deedee McGubbins</p><p class="context">Has volunteered on 5 shifts so far</p></a></li>
+        <li><div class="pic"></div><p class="name">Amit Patel</p><p class="context">Has volunteered on 1 shift so far</p></li>
+        <li><div class="pic"></div><p class="name">Zahara Emmith Williams</p><p class="context">Has not volunteered on any shifts yet</p></li>
+        <li><div class="pic" style="background-image: url({% static "logo.png" %});"></div><p class="name">Your Name if assigned</p><p class="context">You are signed up to this shift</p></li>
+      </ul>
+      
+      <!--endif -->
+  
+      <form action="#" method="POST">
+        <button type="submit" class="button shift-assign"><!--Remove me from -->Add me to this shift</button>
+      </form>
 
       </div>
       <div class="secondary pull-out">

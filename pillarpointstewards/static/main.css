@@ -1029,6 +1029,55 @@ footer li {
 }
 
 
+/* button */
+.shift-assign {
+	font-size: 2rem;
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+}
+
+.people-list li {
+	overflow: hidden;
+	margin-bottom: 1rem;
+}
+.people-list p {
+	margin: 0;
+}
+.people-list a:link,
+.people-list a:visited,
+.people-list a:hover,
+.people-list a:focus,
+.people-list a:active {
+	color: inherit;
+	display: block;
+	overflow: hidden;
+	text-decoration: none;
+	opacity: 1;
+}
+.people-list a:hover,
+.people-list a:focus {
+	opacity: 0.65;
+}
+.people-list .context {
+	color: #84a5be;
+}
+.people-list .pic {
+	overflow: hidden;
+	border-radius: 50%;
+	background-color: #F7941D;
+	background-image: url(/static/person.svg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	height: 3rem;
+	width: 3rem;
+	float: left;
+	margin: 0 1rem 0 0;
+}
+.people-list .name {
+	font-size: 1.25rem;
+}
+
 /* Overrides */
 @media (max-width: 55rem) {
 	.title-wrapper {
