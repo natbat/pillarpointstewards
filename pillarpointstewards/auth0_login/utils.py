@@ -29,7 +29,7 @@ def active_user_required(view_fn):
     @wraps(view_fn)
     def inner(request, *args, **kwargs):
         if not request.user.is_authenticated or not request.user.is_active:
-            render(request, "inactive.html")
+            return render(request, "inactive.html", status=400)
         else:
             return view_fn(request, *args, **kwargs)
 
