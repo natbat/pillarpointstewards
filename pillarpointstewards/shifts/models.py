@@ -14,6 +14,16 @@ class Shift(models.Model):
 
     stewards = models.ManyToManyField("auth.User", related_name="shifts", blank=True)
 
+    @property
+    def fullness(self):
+        count = self.stewards.count()
+        if count == 0:
+            return "empty"
+        if self.target_stewards and count >= self.target_stewards:
+            return "full"
+        else:
+            return "partfull"
+
     def __str__(self):
         return "{}-{}".format(self.shift_start, self.shift_end)
 
