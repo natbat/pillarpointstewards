@@ -71,14 +71,22 @@
 
     {% if forecast %}
       <h2>Conditions</h2>
+
       {% for item in forecast.details.weather %}
-        <img src="http://openweathermap.org/img/wn/{{ item.icon }}@2x.png" alt="{{ item.main }}">
-        <p><strong>{{ item.main }}</strong> - {{ item.description }}</p>
+        <div class="weather-item">
+          <img src="http://openweathermap.org/img/wn/{{ item.icon }}@2x.png" alt="{{ item.main }}">
+          <p><strong>{{ item.main }}</strong> - {{ item.description }}</p>
+        </div>
       {% endfor %}
+
+      <p><strong>Wind speed:</strong> {{ forecast.details.wind_speed }}mph with gusts of {{ forecast.details.wind_gust }}mph</p>
+      <p><strong>UV index:</strong> {{ forecast.details.uvi }}</p>
+      <p><strong>Humidity:</strong> {{ forecast.details.humidity }}%</p>
+      <!-- F = 1.8*(K-273) + 32 -->
       <details>
-        <summary>Details</summary>
+        <summary>Further details</summary>
         <pre style="font-family: courier">{{ forecast.details|pprint }}</pre>
-      </details>
+      </details><br>
     {% endif %}
   </div>
   <div class="secondary pull-out">
