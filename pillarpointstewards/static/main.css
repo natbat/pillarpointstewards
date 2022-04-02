@@ -332,7 +332,7 @@ header .title em {
 .page-controls {
 	position: absolute;
 	right: 10%;
-	bottom: -1.5rem;
+	top: 9rem;
 	padding-right: 1rem;
 	font-size: 0.75rem;
 	font-weight: bold;
@@ -1081,6 +1081,7 @@ footer li {
 	}
 	.page-controls {
 		right: 1%;
+		top: 6.2rem;
 	}
 	.title-wrapper {
 	  margin-top: 40vw;
