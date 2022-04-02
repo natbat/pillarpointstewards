@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "shifts",
     "auth0_login",
     "weather",
+    "tides",
 ]
 
 MIDDLEWARE = [
