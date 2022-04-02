@@ -3,21 +3,78 @@
 {% block title %}Shifts{% endblock %}
 
 {% block content %}
+<section class="page-title">
+  <div class="title-wrapper stretch">
+    <h1 class="text"><span>Pillar Point</span></h1>
+    <div class="page-controls">
+      {% if request.user.is_authenticated %}
+        <a class="loginout" href="/logout/">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg> Logout</a>
+      {% else %}
+        <a class="loginout" href="/login/">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg> Login</a>
+      {% endif %}
+    </div>
+  </div>
+</section> <!-- end .page-title -->
+
 <section class="content">
   <div class="primary">
-<ol class="shifts">
-  {% for shift in shifts %}
-    <li class="shift">
-        <h3 class="date" title="{{ shift.shift_start.date }}"><span class="day">{{ shift.shift_start|date:"jS" }}</span> <span class="month">{{ shift.shift_start|date:"F" }}</span></h3>
-        <p class="shifttimes"><a href="/shifts/{{ shift.pk }}/">Shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</a></p>
-        {% if shift.mllw_feet %}
-          <p class="lowtide">Tide is at its lowest of {{ shift.mllw_feet }}ft at {{ shift.lowest_tide|date:"g:iA"|lower }}</p>
-        {% endif %}
-        {% if shift.stewards.all %}
-          <p>Stewards: {% for steward in shift.stewards.all %}{{ steward }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-        {% endif %}
-    </li>
-  {% endfor %}
-</ol>
-</div></section>
+    <h2>Upcoming shifts</h2>
+    
+
+    <ol class="shifts">
+      {% for shift in shifts %}
+        <li class="shift">
+            <h3 class="date date-full" title="{{ shift.shift_start.date }}"><span class="day">{{ shift.shift_start|date:"jS" }}</span> <span class="month">{{ shift.shift_start|date:"F" }}</span></h3>
+            <p class="shifttimes"><a href="/shifts/{{ shift.pk }}/">Shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</a></p>
+            {% if shift.mllw_feet %}
+              <p class="lowtide"><strong>Low tide:</strong> {{ shift.mllw_feet }}ft at {{ shift.lowest_tide|date:"g:iA"|lower }}</p>
+            {% endif %}
+            {% if shift.stewards.all %}
+              <p class="stewards"><strong>Stewards:</strong> {% for steward in shift.stewards.all %}{{ steward }} {% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            {% endif %}
+        </li>
+        <li class="shift">
+          <h3 class="date date-full" title="April 19, 2022"><span class="day">19th</span> <span class="month">April</span></h3>
+          <p class="shifttimes"><a href="/shifts/136/">Shift from 7:00am to 9:00am on <strong>Thu</strong> May 9th</a></p>
+          <p class="lowtide"><strong>Low tide:</strong> -1.055ft at 7:30am</p>
+          <p class="stewards"><strong>Stewards (3/2):</strong> Deedee McGubbins, Amit Patel, Zahara Emmith Williams</p>
+        </li>
+        <li class="shift">
+          <h3 class="date date-empty" title="April 19, 2022"><span class="day">19th</span> <span class="month">April</span></h3>
+          <p class="shifttimes"><a href="/shifts/136/">Shift from 7:00am to 9:00am on <strong>Sat</strong> April 15th</a></p>
+          <p class="lowtide"><strong>Low tide:</strong> -1.055ft at 7:30am</p>
+          <p class="stewards"><strong>Stewards (0/0):</strong> noone has signed up for this shift yet</p>
+        </li>
+        <li class="shift">
+          <h3 class="date date-partfull" title="April 19, 2022"><span class="day">19th</span> <span class="month">April</span></h3>
+          <p class="shifttimes"><a href="/shifts/136/">Shift from 7:00am to 9:00am on <strong>Mon</strong> Aug 4th</a></p>
+          <p class="lowtide"><strong>Low tide:</strong> -3.055ft at 7:30am</p>
+          <p class="stewards"><strong>Stewards (2/3):</strong> Deedee McGubbins, Amit Patel</p>
+        </li>
+      {% endfor %}
+    </ol>
+  </div>
+
+
+
+  <div class="secondary pull-out">
+    <h2>Key</h2>
+    <ul class="calkey">
+      <li class="available">volunteers needed</li> <li class="partfull">partly full shift</li> <li class="full">fully staffed shift</li>
+    </ul>
+  
+  </div> <!-- end .secondary -->
+
+</section>
+
+
+
 {% endblock %}

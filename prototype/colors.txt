@@ -9,6 +9,7 @@
 
 #9ACD31 green
 #92c32f dark green
+#EB1C1C red
 
 #E6E6E6 pale grey 
 #B0B0B0 dark gray 

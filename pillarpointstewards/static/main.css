@@ -805,6 +805,15 @@ footer li {
     padding: 1em 0 0 0;
     text-align: center;
 }
+.shift .date-empty {
+	background-color: #9ACD31;
+}
+.shift .date-full {
+	background-color: #B0B0B0;
+}
+.shift .date-partfull {
+    background-color: #F7941D;
+}
 .shift .month {
     position: absolute;
     display: block;
@@ -816,7 +825,8 @@ footer li {
     font-size: 0.8em;
     width: 100%;
     background-color: #0A4B7D;
-    color: white;
+	color: white;
+	border-radius: 0;
 }
 
 .shift .day {
@@ -834,15 +844,21 @@ footer li {
 }
 
 .shift .shifttimes,
-.shift .lowtide {
-	margin: 0;
+.shift .lowtide,
+.shift .stewards {
+	margin: 0 0 0.3rem 0;
+	font-size: 0.875rem;
 }
 .shift .shifttimes {
-	font-size: 2rem;
+	font-size: 1.25rem;
 	margin-bottom: 0.5rem;;
+}
+.newshift .shifttimes {
+	font-size: 2rem;
 }
 .shift .controls {
 	margin-top: 0.5rem;
+	font-size: 0.875rem;
 	font-style: italic;
 }
 .newshift a:link,
