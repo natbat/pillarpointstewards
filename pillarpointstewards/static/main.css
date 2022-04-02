@@ -321,6 +321,21 @@ header .title {
     font-size: 3em;
     padding-top: 0.3em;
 }
+header .title-link:link,
+header .title-link:visited,
+header .title-link:hover,
+header .title-link:focus,
+header .title-link:active {
+	color: inherit;
+	text-decoration: none;
+	overflow: hidden;
+	display: block;
+	opacity: 1;
+}
+header .title-link:hover,
+header .title-link:focus {
+	opacity: 0.8;
+}
 header .title .location {
     display: block;
     font-family: 'Nunito', Avenir, sans-serif;
