@@ -16,6 +16,9 @@ class TidePrediction(models.Model):
     def __str__(self):
         return "{} at {}".format(self.mllw_feet, self.dt)
 
+    class Meta:
+        unique_together = ("station_id", "dt")
+
     @classmethod
     def populate_for_station(cls, station_id):
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
