@@ -14,13 +14,19 @@ import pytz
 @login_required
 def shift(request, shift_id):
     shift = get_object_or_404(Shift, pk=shift_id)
+    user_is_on_shift = shift.stewards.filter(id=request.user.id).exists()
+    stewards = list(shift.stewards.all())
+    # Ensure current user is at the bottom, if they are a steward
+    if user_is_on_shift:
+        stewards = [s for s in stewards if s != request.user] + [request.user]
+
     return render(
         request,
         "shift.html",
         {
             "shift": shift,
-            "user_is_on_shift": shift.stewards.filter(id=request.user.id).exists(),
-            "stewards": list(shift.stewards.all()),
+            "user_is_on_shift": user_is_on_shift,
+            "stewards": stewards,
             "contact_details": Fragment.objects.get(slug="contact_details").fragment,
             "forecast": Forecast.for_date(shift.shift_start.date()),
         },
