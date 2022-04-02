@@ -1149,6 +1149,12 @@ footer li {
 	background-color: #c8d6e2;
 }
 
+.alert {
+	background-color: #F7941D;
+	padding: 1rem;
+	margin-bottom: 1rem;
+}
+
 /* Overrides */
 @media (max-width: 55rem) {
 	.title-wrapper {
