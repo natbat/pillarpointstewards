@@ -36,7 +36,7 @@
                     <span class="day">{{ shift.shift_start|date:"jS" }}</span> <span class="month">{{ shift.shift_start|date:"F" }}</span>
                   </h3>
                   
-                  <p class="shifttimes">On shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</p>
+                  <p class="shifttimes">On shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }} {{ shift.shift_start|date:"D" }}&nbsp;{{ shift.shift_start|date:"jS" }} {{ shift.shift_start|date:"F" }}&nbsp;{{ shift.shift_start|date:"Y" }}</p>
                   {% if shift.mllw_feet %}
                     <p class="lowtide"><strong>Low tide:</strong> {{ shift.mllw_feet }}ft at {{ shift.lowest_tide|date:"g:iA"|lower }}</p>
                   {% endif %}
