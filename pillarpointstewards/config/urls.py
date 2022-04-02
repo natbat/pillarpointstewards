@@ -36,6 +36,7 @@ urlpatterns = [
     path("assign-shift/<int:shift_id>/", shifts.assign_shift),
     path("shifts/", shifts.shifts),
     path("shifts-<str:key>.ics", shifts.shifts_ics),
+    path("signup/<int:id>-<str:key>/", auth0_login.secret_signup),
     path("patterns/", homepage.patterns),
     path("admin/import-shifts/", shifts.import_shifts),
     path("admin/timeline/", shifts.timeline),
