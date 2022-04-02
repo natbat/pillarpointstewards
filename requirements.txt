@@ -11,3 +11,4 @@ bs4
 httpx
 sentry-sdk
 pytest-httpx
+ics

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Shifts{% endblock %}
+
+{% block content %}
+<section class="content">
+  <div class="primary">
+<ol class="shifts">
+  {% for shift in shifts %}
+    <li class="shift">
+        <h3 class="date" title="{{ shift.shift_start.date }}"><span class="day">{{ shift.shift_start|date:"jS" }}</span> <span class="month">{{ shift.shift_start|date:"F" }}</span></h3>
+        <p class="shifttimes"><a href="/shifts/{{ shift.pk }}/">Shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</a></p>
+        {% if shift.mllw_feet %}
+          <p class="lowtide">Tide is at its lowest of {{ shift.mllw_feet }}ft at {{ shift.lowest_tide|date:"g:iA"|lower }}</p>
+        {% endif %}
+        {% if shift.stewards.all %}
+          <p>Stewards: {% for steward in shift.stewards.all %}{{ steward }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+        {% endif %}
+    </li>
+  {% endfor %}
+</ol>
+</div></section>
+{% endblock %}

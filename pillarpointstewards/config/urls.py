@@ -34,6 +34,8 @@ urlpatterns = [
     path("shifts/<int:shift_id>/", shifts.shift),
     path("cancel-shift//", shifts.cancel_shift),
     path("assign-shift/<int:shift_id>/", shifts.assign_shift),
+    path("shifts/", shifts.shifts),
+    path("shifts.ics", shifts.shifts_ics),
     path("patterns/", homepage.patterns),
     path("admin/import-shifts/", shifts.import_shifts),
     path("admin/timeline/", shifts.timeline),

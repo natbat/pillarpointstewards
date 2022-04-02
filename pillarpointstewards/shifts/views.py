@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from .models import Shift, ShiftChange
+from .ics_utils import calendar
 from homepage.models import Fragment
 from homepage.views import render_calendar
 import json
@@ -78,3 +79,38 @@ def timeline(request):
             ).order_by("-when")[:200],
         },
     )
+
+
+def shifts(request):
+    return render(request, "shifts.html", {
+        "shifts": Shift.objects.prefetch_related("stewards"),
+    })
+
+
+def shifts_ics(request):
+    def description(shift):
+        stewards = ", ".join(shift.stewards.values_list("username", flat=True))
+        stewards = "Stewards: {}".format(stewards) if stewards else "No stewards signed up yet"
+        lines = [f"Shift from {shift.shift_start.time()} to {shift.shift_end.time()}", stewards]
+        if shift.mllw_feet:
+            lines.append(f"Low tide {shift.mllw_feet}ft at {shift.lowest_tide}")
+        lines.append(f"https://www.pillarpointstewards.com/shifts/{shift.id}/")
+        return "\n\n".join(lines)
+
+    shifts = [
+        {
+            "name": "Steward shift at Pillar Point",
+            "dtstart": shift.shift_start.isoformat().rstrip("Z"),
+            "dtend": shift.shift_end.isoformat().rstrip("Z"),
+            "description": description(shift),
+            "tzid": "America/Los_Angeles",
+            "id": str(shift.id),
+        }
+        for shift in Shift.objects.prefetch_related("stewards")
+    ]
+    s = calendar(shifts, title="Pillar Point Stewards")
+    content_type = "text/calendar; charset=utf-8"
+    if request.GET.get("_plain"):
+        content_type = "text/plain; charset=utf-8"
+
+    return HttpResponse(s, content_type=content_type)
