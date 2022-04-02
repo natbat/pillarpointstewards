@@ -6,15 +6,18 @@ from .models import Shift, ShiftChange
 from homepage.models import Fragment
 from homepage.views import render_calendar
 import json
+import pytz
 
 
 @login_required
 def shift(request, shift_id):
     return render(
-        request, "shift.html", {
+        request,
+        "shift.html",
+        {
             "shift": get_object_or_404(Shift, pk=shift_id),
-            "contact_details": Fragment.objects.get(slug="contact_details").fragment
-        }
+            "contact_details": Fragment.objects.get(slug="contact_details").fragment,
+        },
     )
 
 
@@ -30,6 +33,9 @@ def import_shifts(request):
                 defaults={
                     "dawn": shift["dawn"],
                     "dusk": shift["dusk"],
+                    "mllw_feet": shift["minTideFeet"],
+                    "lowest_tide": shift["minTideTime"],
+                    "target_stewards": shift["people"],
                 },
             )
         return HttpResponseRedirect("/admin/shifts/shift/")

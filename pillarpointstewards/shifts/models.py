@@ -8,7 +8,7 @@ class Shift(models.Model):
     shift_start = models.DateTimeField()
     shift_end = models.DateTimeField()
 
-    mllw_feet = models.IntegerField(blank=True, null=True)
+    mllw_feet = models.FloatField(blank=True, null=True)
     lowest_tide = models.DateTimeField(blank=True, null=True)
     target_stewards = models.IntegerField(blank=True, null=True)
 
