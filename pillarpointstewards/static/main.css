@@ -182,19 +182,25 @@ a.button:link,
 a.button:visited,
 a.button:hover,
 a.button:focus,
-a.button:active {
+a.button:active,
+button.button {
 	display: inline-block;
 	background-color: #3494CC;
 	color: white;
 	text-decoration: none;
 	padding: 0.5em 0.8em;
 	border-radius: 7px;
+	border: none;
+	cursor: pointer;
 }
 a.button:hover,
-a.button:focus {
+a.button:focus,
+button.button:hover,
+button.button:focus {
 	background-color: #0A4B7D;
 }
-a.button:active {
+a.button:active,
+button.button:active {
 	background-color: #000000;
 }
 
