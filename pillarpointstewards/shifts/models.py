@@ -10,6 +10,7 @@ class Shift(models.Model):
 
     mllw_feet = models.IntegerField(blank=True, null=True)
     lowest_tide = models.DateTimeField(blank=True, null=True)
+    target_stewards = models.IntegerField(blank=True, null=True)
 
     stewards = models.ManyToManyField("auth.User", related_name="shifts", blank=True)
 
