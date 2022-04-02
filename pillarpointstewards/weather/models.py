@@ -43,5 +43,5 @@ class Forecast(models.Model):
 
     @classmethod
     def clear_and_create_all_from_json(cls, data):
-        cls.obects.all().delete()
+        cls.objects.all().delete()
         cls.create_all_from_json(data)
