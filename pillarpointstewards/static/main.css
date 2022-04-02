@@ -975,6 +975,7 @@ footer li {
 }
 .month td.noshift {
 	padding: 0.3rem 0 1rem 0;
+	border: 1px solid transparent;
 }
 .month td.notcurrentmonth {
 	color: #B0B0B0;
@@ -1030,7 +1031,7 @@ footer li {
 .month td.yours a:focus,
 .month td.yours a:active {
 	border-color: black;
-	outline: 1px solid #a7a7a7;
+	/* outline: 1px solid #a7a7a7; */
 }
 .calkey {
 	margin: 1rem 0 0 0;
