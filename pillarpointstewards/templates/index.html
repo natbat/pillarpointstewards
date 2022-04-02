@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-  {% if request.user.is_authenticated %}
+  {% if request.user.is_authenticated and not user_is_inactive %}
     <section class="page-title">
       <div class="title-wrapper stretch">
         <h1 class="text"><span>You are logged in as {{ request.user }}</span></h1>
@@ -89,6 +89,9 @@
     </section> <!-- end .page-title -->
     <section class="content">
       <div class="primary">
+        {% if user_is_inactive %}
+          <div style="padding: 1em; border: 2px solid red; margin-bottom: 1em">Your account is not yet active - talk to Natalie</div>
+        {% endif %}
         <p class="intro">The pandemic has brought thousands of new visitors to Pillar Point
         Reef and the increased harvesting is taking its toll on the ecology of the area.</p>
         

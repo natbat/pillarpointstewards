@@ -7,12 +7,13 @@ from django.shortcuts import get_object_or_404, render
 from weather.models import Forecast
 from .models import Shift, ShiftChange
 from .ics_utils import calendar
+from auth0_login.utils import active_user_required
 from homepage.models import Fragment
 import json
 import secrets
 
 
-@login_required
+@active_user_required
 def shift(request, shift_id):
     shift = get_object_or_404(Shift, pk=shift_id)
     user_is_on_shift = shift.stewards.filter(id=request.user.id).exists()
@@ -56,7 +57,7 @@ def import_shifts(request):
     return render(request, "import_shifts.html")
 
 
-@login_required
+@active_user_required
 def cancel_shift(request, shift_id):
     shift = get_object_or_404(Shift, pk=shift_id)
     if shift.stewards.filter(id=request.user.id).exists():
@@ -67,7 +68,7 @@ def cancel_shift(request, shift_id):
         return HttpResponse("You were not on that shift")
 
 
-@login_required
+@active_user_required
 def assign_shift(request, shift_id):
     shift = get_object_or_404(Shift, pk=shift_id)
     if not shift.stewards.filter(id=request.user.id).exists():
@@ -91,6 +92,7 @@ def timeline(request):
     )
 
 
+@active_user_required
 def shifts(request):
     return render(
         request,

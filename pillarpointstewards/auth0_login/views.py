@@ -92,7 +92,7 @@ def callback(request):
                     first_name=profile.get("given_name") or "",
                     last_name=profile.get("family_name") or "",
                     email=profile["email"],
-                    is_active=True,
+                    is_active=False,
                 )
                 break
             except IntegrityError:

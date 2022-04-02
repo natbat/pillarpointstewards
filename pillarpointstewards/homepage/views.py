@@ -13,14 +13,19 @@ def index(request):
     upcoming_shifts = []
     contact_details = ""
     calendars = []
+    user_is_inactive = False
     if request.user.is_authenticated:
-        upcoming_shifts = list(request.user.shifts.order_by("shift_start"))
-        contact_details = Fragment.objects.get(slug="contact_details").fragment
-        calendars = [
-            render_calendar(request, 2022, 4),
-            render_calendar(request, 2022, 5),
-            render_calendar(request, 2022, 6),
-        ]
+        if request.user.is_active:
+            upcoming_shifts = list(request.user.shifts.order_by("shift_start"))
+            contact_details = Fragment.objects.get(slug="contact_details").fragment
+            calendars = [
+                render_calendar(request, 2022, 4),
+                render_calendar(request, 2022, 5),
+                render_calendar(request, 2022, 6),
+            ]
+        else:
+            user_is_inactive = True
+
     return render(
         request,
         "index.html",
@@ -29,6 +34,7 @@ def index(request):
             "upcoming_shifts": upcoming_shifts,
             "contact_details": contact_details,
             "calendars": calendars,
+            "user_is_inactive": user_is_inactive,
         },
     )
 

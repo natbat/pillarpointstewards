@@ -44,7 +44,7 @@ def test_auth0_login(client, settings):
                 "last_name": "",
                 "email": "test@example.com",
                 "is_staff": False,
-                "is_active": True,
+                "is_active": False,
             },
         ),
         (
@@ -60,7 +60,7 @@ def test_auth0_login(client, settings):
                 "last_name": "",
                 "email": "simon+otherstuff@example.com",
                 "is_staff": False,
-                "is_active": True,
+                "is_active": False,
             },
         ),
         (
@@ -76,12 +76,12 @@ def test_auth0_login(client, settings):
                 "last_name": "",
                 "email": "simon+existing@example.com",
                 "is_staff": False,
-                "is_active": True,
+                "is_active": False,
             },
         ),
     ),
 )
-def test_login_creates_account(
+def test_login_creates_inactive_account(
     db, httpx_mock, client, settings, auth0_profile, expected_user_properties
 ):
     _mock_oauth0(httpx_mock, settings, auth0_profile)

@@ -22,6 +22,9 @@ AUTH0_DOMAIN = "pillarpointstewards.us.auth0.com"
 AUTH0_CLIENT_ID = "DLXBMPbtamC2STUyV7R6OFJFDsSTHqEA"
 AUTH0_CLIENT_SECRET = os.environ.get("AUTH0_CLIENT_SECRET")
 
+# Allow inactive users to sign in:
+AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.AllowAllUsersModelBackend"]
+
 SHIFTS_ICS_SECRET = os.environ.get("SHIFTS_ICS_SECRET") or ""
 
 # Quick-start development settings - unsuitable for production
