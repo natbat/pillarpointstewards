@@ -1,5 +1,6 @@
 import base64
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user
 from .models import Auth0User
 import pytest
 import urllib.parse
@@ -50,13 +51,7 @@ def test_auth0_login(client, settings):
 def test_login_creates_account(
     db, httpx_mock, client, settings, auth0_profile, expected_user_properties
 ):
-    httpx_mock.add_response(
-        url=f"https://{settings.AUTH0_DOMAIN}/oauth/token",
-        json={"access_token": "ACCESS_TOKEN"},
-    )
-    httpx_mock.add_response(
-        url=f"https://{settings.AUTH0_DOMAIN}/userinfo", json=auth0_profile
-    )
+    _mock_oauth0(httpx_mock, settings, auth0_profile)
     assert "auth0-state" not in client.cookies
     client.get("/login/")
     assert "auth0-state" in client.cookies
@@ -74,6 +69,7 @@ def test_login_creates_account(
     assert Auth0User.objects.count() == 1
 
     django_user = User.objects.get()
+    assert get_user(client) == django_user
     for key, value in expected_user_properties.items():
         assert getattr(django_user, key) == value
 
@@ -92,3 +88,36 @@ def test_login_creates_account(
     )
     # get should have used the access token
     assert get_request.headers["authorization"] == "Bearer ACCESS_TOKEN"
+
+
+def test_subsequent_login_logs_user_in(admin_user, httpx_mock, client, settings):
+    _mock_oauth0(
+        httpx_mock,
+        settings,
+        {
+            "sub": "user|123",
+            "nickname": "simon",
+            "email": "test@example.com",
+        },
+    )
+    Auth0User.objects.create(sub="user|123", user=admin_user)
+
+    assert not get_user(client).is_authenticated
+
+    client.get("/login/")
+    state = client.cookies["auth0-state"].value
+    response = client.get(f"/auth0-callback/?state={state}&code=x")
+    assert response.status_code == 302
+
+    assert get_user(client).is_authenticated
+    assert get_user(client) == admin_user
+
+
+def _mock_oauth0(httpx_mock, settings, auth0_profile):
+    httpx_mock.add_response(
+        url=f"https://{settings.AUTH0_DOMAIN}/oauth/token",
+        json={"access_token": "ACCESS_TOKEN"},
+    )
+    httpx_mock.add_response(
+        url=f"https://{settings.AUTH0_DOMAIN}/userinfo", json=auth0_profile
+    )
