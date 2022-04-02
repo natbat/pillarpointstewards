@@ -31,18 +31,19 @@
           <ol class="shifts">
             {% for shift in upcoming_shifts %}
               <li class="shift">
-                <a href="/shifts/{{ shift.pk }}/">
+                <a href="/shifts/{{ shift.pk }}/" class="shift-link">
                   <h3 class="date" title="{{ shift.shift_start.date }}">
                     <span class="day">{{ shift.shift_start|date:"jS" }}</span> <span class="month">{{ shift.shift_start|date:"F" }}</span>
                   </h3>
+                  
+                  <p class="shifttimes">On shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</p>
+                  {% if shift.mllw_feet %}
+                    <p class="lowtide"><strong>Low tide:</strong> {{ shift.mllw_feet }}ft at {{ shift.lowest_tide|date:"g:iA"|lower }}</p>
+                  {% endif %}
+                  <p class="stewards"><strong>Stewards <em>({{ shift.stewards.count }}{% if shift.target_stewards %}/{{ shift.target_stewards }}{% endif %})</em>:</strong>
+                    {% for steward in shift.stewards.all %}{{ steward }} {% if not forloop.last %}, {% endif %}{% endfor %}
+                  </p>
                 </a>
-                <p class="shifttimes">On shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</p>
-                {% if shift.mllw_feet %}
-                  <p class="lowtide"><strong>Low tide:</strong> {{ shift.mllw_feet }}ft at {{ shift.lowest_tide|date:"g:iA"|lower }}</p>
-                {% endif %}
-                <p class="stewards"><strong>Stewards <em>({{ shift.stewards.count }}{% if shift.target_stewards %}/{{ shift.target_stewards }}{% endif %})</em>:</strong>
-                  {% for steward in shift.stewards.all %}{{ steward }} {% if not forloop.last %}, {% endif %}{% endfor %}
-                </p>
               </li>
             {% endfor %}
           </ol>

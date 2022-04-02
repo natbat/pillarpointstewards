@@ -809,6 +809,21 @@ footer li {
     overflow: hidden;
     margin-bottom: 1em;
 }
+.shift-link:link,
+.shift-link:visited,
+.shift-link:hover,
+.shift-link:focus,
+.shift-link:active {
+	text-decoration: none;
+	color: inherit;
+	display: block;
+	opacity: 1;
+}
+.shift-link:hover,
+.shift-link:focus,
+.shift-link:active {
+	opacity: 0.8;
+}
 .shift .date {
     background-color: #84a5be;
     width: 5em;
@@ -867,6 +882,11 @@ footer li {
 .shift .shifttimes {
 	font-size: 1.25rem;
 	margin-bottom: 0.5rem;;
+}
+.shift-link:hover .shifttimes,
+.shift-link:focus .shifttimes,
+.shift-link:active .shifttimes {
+	text-decoration: underline;
 }
 .newshift .shifttimes {
 	font-size: 2rem;
