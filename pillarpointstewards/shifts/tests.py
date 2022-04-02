@@ -1,6 +1,7 @@
 from shifts.models import Shift
 import json
 import pytest
+import textwrap
 
 
 def test_import_shifts(admin_client):
@@ -35,3 +36,16 @@ def test_import_shifts(admin_client):
     assert shift.mllw_feet == pytest.approx(-1.055)
     assert shift.lowest_tide.isoformat() == "2022-04-19T07:30:00+00:00"
     assert shift.target_stewards == 2
+
+
+def test_shifts_ics_requires_key(admin_user_has_shift, client):
+    response = client.get("/shifts-blah.ics")
+    assert response.status_code == 400
+    assert response.content == b"Wrong secret"
+
+
+def test_shifts_ics(admin_user_has_shift, client, settings):
+    settings.SHIFTS_ICS_SECRET = "secret"
+    response = client.get("/shifts-secret.ics")
+    assert response.headers["content-type"] == "text/calendar; charset=utf-8"
+    assert response.content.decode("utf-8").startswith("BEGIN:VCALENDAR")

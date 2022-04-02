@@ -22,6 +22,8 @@ AUTH0_DOMAIN = "pillarpointstewards.us.auth0.com"
 AUTH0_CLIENT_ID = "DLXBMPbtamC2STUyV7R6OFJFDsSTHqEA"
 AUTH0_CLIENT_SECRET = os.environ.get("AUTH0_CLIENT_SECRET")
 
+SHIFTS_ICS_SECRET = os.environ.get("SHIFTS_ICS_SECRET") or ""
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 

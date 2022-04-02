@@ -1,14 +1,15 @@
+from curses.ascii import HT
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from weather.models import Forecast
 from .models import Shift, ShiftChange
 from .ics_utils import calendar
 from homepage.models import Fragment
-from homepage.views import render_calendar
 import json
-import pytz
+import secrets
 
 
 @login_required
@@ -100,7 +101,12 @@ def shifts(request):
     )
 
 
-def shifts_ics(request):
+def shifts_ics(request, key):
+    if not settings.SHIFTS_ICS_SECRET or not secrets.compare_digest(
+        key, settings.SHIFTS_ICS_SECRET
+    ):
+        return HttpResponse("Wrong secret", status=400)
+
     def description(shift):
         stewards = ", ".join(shift.stewards.values_list("username", flat=True))
         stewards = (
