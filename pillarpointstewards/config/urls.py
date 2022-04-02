@@ -32,7 +32,7 @@ urlpatterns = [
     path("auth0-callback/", auth0_login.callback),
     path("healthcheck/", homepage.healthcheck),
     path("shifts/<int:shift_id>/", shifts.shift),
-    path("cancel-shift//", shifts.cancel_shift),
+    path("cancel-shift/<int:shift_id>/", shifts.cancel_shift),
     path("assign-shift/<int:shift_id>/", shifts.assign_shift),
     path("shifts/", shifts.shifts),
     path("shifts.ics", shifts.shifts_ics),

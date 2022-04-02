@@ -19,6 +19,8 @@ def shift(request, shift_id):
         "shift.html",
         {
             "shift": shift,
+            "user_is_on_shift": shift.stewards.filter(id=request.user.id).exists(),
+            "stewards": list(shift.stewards.all()),
             "contact_details": Fragment.objects.get(slug="contact_details").fragment,
             "forecast": Forecast.for_date(shift.shift_start.date()),
         },
@@ -53,7 +55,7 @@ def cancel_shift(request, shift_id):
     if shift.stewards.filter(id=request.user.id).exists():
         shift.stewards.remove(request.user)
         shift.shift_changes.create(user=request.user, change="cancelled")
-        return HttpResponse("Cancelled")
+        return HttpResponseRedirect(f"/shifts/{shift.pk}/")
     else:
         return HttpResponse("You were not on that shift")
 
@@ -64,9 +66,7 @@ def assign_shift(request, shift_id):
     if not shift.stewards.filter(id=request.user.id).exists():
         shift.stewards.add(request.user)
         shift.shift_changes.create(user=request.user, change="assigned")
-        return HttpResponse(
-            render_calendar(request, shift.shift_start.year, shift.shift_start.month)
-        )
+        return HttpResponseRedirect(f"/shifts/{shift.pk}/")
     else:
         return HttpResponse("You were already on that shift")
 
