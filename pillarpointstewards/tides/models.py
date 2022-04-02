@@ -47,4 +47,5 @@ class TidePrediction(models.Model):
                 for p in data["predictions"]
             ],
             ignore_conflicts=True,
+            batch_size=1000,
         )
