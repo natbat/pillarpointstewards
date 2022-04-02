@@ -29,7 +29,9 @@ class ActiveUserSignupLink(models.Model):
         help_text="If not active the link will no longer create activated accounts",
     )
     created_users = models.ManyToManyField("auth.User", related_name="+", blank=True)
-    comment = models.TextField(blank=True, null=True, help_text="Private note about where this URL was shared")
+    comment = models.TextField(
+        blank=True, null=True, help_text="Private note about where this URL was shared"
+    )
 
     @property
     def users_created_with_this_link(self):

@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth0_login', '0002_activeusersignuplink'),
+        ("auth0_login", "0002_activeusersignuplink"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='activeusersignuplink',
-            name='comment',
-            field=models.TextField(blank=True, help_text='Private note about where this URL was shared', null=True),
+            model_name="activeusersignuplink",
+            name="comment",
+            field=models.TextField(
+                blank=True,
+                help_text="Private note about where this URL was shared",
+                null=True,
+            ),
         ),
     ]
