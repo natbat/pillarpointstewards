@@ -982,7 +982,6 @@ footer li {
 }
 .month td.shiftday {
 	padding: 0;
-	background-color: red;
 }
 .month td.shiftday a:link,
 .month td.shiftday a:visited,
