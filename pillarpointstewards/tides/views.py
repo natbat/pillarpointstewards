@@ -4,6 +4,7 @@ from django.utils import timezone
 import datetime
 import pytz
 from .models import TidePrediction
+from shifts.models import Shift
 
 
 def time_to_float(s):
@@ -60,15 +61,32 @@ def debug(request, date):
         for key, value in astral_info.items()
     }
 
-    return render(
-        request,
-        "tide-times-debug.html",
-        {
-            "date": day_start.date(),
-            "heights": heights,
-            "predictions": predictions,
-            "svg_points": " ".join("{},{:.2f}".format(i, pct) for i, pct in svg_points),
-            "astral": astral_pcts,
-            "low_tide_time_pct": round(100 * time_to_float("08:00:00"), 2),
-        },
-    )
+    context = {
+        "date": day_start.date(),
+        "heights": heights,
+        "predictions": predictions,
+        "svg_points": " ".join("{},{:.2f}".format(i, pct) for i, pct in svg_points),
+        "astral": astral_pcts,
+    }
+
+    try:
+        shift = Shift.objects.get(shift_start__date=day_start.date())
+        shift_start_pct = round(
+            100 * time_to_float(shift.shift_start.time().isoformat()), 2
+        )
+        context["shift"] = shift
+        context["shift_start_pct"] = shift_start_pct
+        context["shift_width_pct"] = (
+            round(100 * time_to_float(shift.shift_end.time().isoformat()), 2)
+            - shift_start_pct
+        )
+    except Shift.DoesNotExist:
+        shift = None
+
+    if shift and shift.lowest_tide:
+        context["low_tide_time"] = shift.lowest_tide
+        context["low_tide_time_pct"] = round(
+            100 * time_to_float(shift.lowest_tide.time().isoformat()), 2
+        )
+
+    return render(request, "tide-times-debug.html", context)
