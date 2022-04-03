@@ -71,6 +71,40 @@
 
     <p class="intro"><a href="/">&lt; Back to homepage</a></p>
 
+    {% if tide_times_svg %}
+      <h2>Tide on this day</h2>
+      <div class="day-alone">
+        <div class="shift-view">
+          <div class="day-view" style="
+            background: linear-gradient(90deg,
+            #176AB8 0%,
+            #97bcdf {{ tide_times_svg.astral.dawn_pct }}%,
+            #d1e1f1 {{ tide_times_svg.astral.sunrise_pct }}%,
+            #FFFFFF {{ tide_times_svg.astral.noon_pct }}%,
+            #d1e1f1 {{ tide_times_svg.astral.sunset_pct }}%,
+            #97bcdf {{ tide_times_svg.astral.dusk_pct }}%,
+            #176AB8 100%
+            );
+          ">
+            {% if shift %}
+              <div class="shift-window" style="left:{{ tide_times_svg.shift_start_pct }}%; width: {{ tide_times_svg.shift_width_pct }}%;">
+                <span class="start-time">{{ shift.shift_start|date:"g:iA"|lower }}</span>
+                <span class="end-time">{{ shift.shift_end|date:"g:iA"|lower }}</span>
+              </div>
+            {% endif %}
+            <svg style="width: 100%; height: 60px; opacity: 0.5" viewBox="0 -2 240 104" preserveAspectRatio="none">
+              <polyline fill="none" stroke="#176AB8" stroke-width="2" points="{{ tide_times_svg.svg_points }}"></polyline>
+            </svg>
+            {% if low_tide_time %}
+              <span class="minima" style="left: {{ tide_times_svg.low_tide_time_pct }}%">
+                <span class="time">{{ tide_times_svg.low_tide_time|date:"g:iA"|lower }}</span>
+              </span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
     {% if forecast %}
       <h2>Conditions</h2>
 

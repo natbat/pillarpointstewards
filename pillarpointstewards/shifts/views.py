@@ -9,6 +9,7 @@ from .models import Shift, ShiftChange
 from .ics_utils import calendar
 from auth0_login.utils import active_user_required
 from homepage.models import Fragment
+from tides.views import tide_times_svg_context_for_date
 import json
 import secrets
 
@@ -31,6 +32,7 @@ def shift(request, shift_id):
             "stewards": stewards,
             "contact_details": Fragment.objects.get(slug="contact_details").fragment,
             "forecast": Forecast.for_date(shift.shift_start.date()),
+            "tide_times_svg": tide_times_svg_context_for_date(shift.shift_start.date()),
         },
     )
 

@@ -17,15 +17,15 @@ def time_to_float(s):
     return hh / 24 + ((mm / 60) * (1 / 24)) + ((ss / 60) * (1 / 24 / 60))
 
 
-def debug(request, date):
-    yyyy, mm, dd = date.split("-")
-    day_start = datetime.datetime(int(yyyy), int(mm), int(dd), tzinfo=timezone.utc)
-
+def tide_times_svg_context_for_date(date):
     predictions = list(
         TidePrediction.objects.filter(
-            dt__gte=day_start, dt__lt=day_start + datetime.timedelta(hours=24)
+            dt__gte=date, dt__lt=date + datetime.timedelta(days=1)
         ).values()
     )
+
+    if not predictions:
+        return None
 
     heights = [
         {
@@ -49,7 +49,7 @@ def debug(request, date):
     location_info = LocationInfo(
         latitude=37.495182, longitude=-122.5003437, timezone="America/Los_Angeles"
     )
-    astral_info = sun.sun(location_info.observer, date=day_start.date())
+    astral_info = sun.sun(location_info.observer, date=date)
     tz = pytz.timezone("America/Los_Angeles")
 
     astral_pcts = {
@@ -62,7 +62,7 @@ def debug(request, date):
     }
 
     context = {
-        "date": day_start.date(),
+        "date": date,
         "heights": heights,
         "predictions": predictions,
         "svg_points": " ".join("{},{:.2f}".format(i, pct) for i, pct in svg_points),
@@ -70,7 +70,7 @@ def debug(request, date):
     }
 
     try:
-        shift = Shift.objects.get(shift_start__date=day_start.date())
+        shift = Shift.objects.get(shift_start__date=date)
         shift_start_pct = round(
             100 * time_to_float(shift.shift_start.time().isoformat()), 2
         )
@@ -89,4 +89,14 @@ def debug(request, date):
             100 * time_to_float(shift.lowest_tide.time().isoformat()), 2
         )
 
-    return render(request, "tide-times-debug.html", context)
+    return context
+
+
+def debug(request, date):
+    yyyy, mm, dd = date.split("-")
+    day_start = datetime.datetime(int(yyyy), int(mm), int(dd), tzinfo=timezone.utc)
+    return render(
+        request,
+        "tide-times-debug.html",
+        tide_times_svg_context_for_date(day_start.date()),
+    )
