@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Tide Times Graphic: {{ date }}</title>
+
+<style>
+  .day-view {
+	/* colours are added with inline styles for daylight etc */
+	position: relative;
+	height: 60px;
+	margin: 1rem 0 1rem 0;
+	grid-column: 4 / span 1;
+}
+.day-view.wider {
+	grid-column: 2 / span 3;
+}
+.day-view:before,
+.day-view:after {
+	content:" ";
+	display: block;
+	position: absolute;
+	top: 17px;
+	height: 26px;
+	width: 26px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	opacity: 0.4;
+}
+.day-view:before {
+	left: 15px;
+	background-image: url('{% static "stars-left.png" %}');
+}
+.day-view:after {
+	right: 15px;
+	background-image: url('{% static "stars-right.png" %}');
+}
+.day-view .minima {
+	padding-left: 3px;
+	border-left: 2px solid black;
+	display: block;
+	height: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	font-size: 0.75rem;
+	line-height: 1;
+	text-align: center;
+}
+.day-view .best-minima {
+		border-left-color: red;
+}
+.day-view .minima span {
+	display: block;
+	width: 1px;
+	overflow: visible;
+	padding: 0;
+	margin-left: -1.25rem;
+}
+.day-view .minima .time {
+	margin-top: -1rem;
+	color: rgba(23,106,184,0.9);
+
+}
+.day-view .minima .depth {
+	padding-top: 50px;
+	margin-top: 1.3rem;
+	color: rgba(23,106,184,0.9);
+}
+</style>
+
+</head>
+<body>
+
+  <svg style="width: 100%; height: 60px; opacity: 0.5" viewBox="0 -2 240 104" preserveAspectRatio="none">
+    <polyline fill="none" stroke="#176AB8" stroke-width="2"
+      points="{{ svg_points }}"
+    />
+  </svg>
+
+<hr>
+
+<div class="day-view wider" style="
+background: linear-gradient(90deg,
+  #176AB8 0%,
+  #97bcdf {{ astral.dawn_pct }}%,
+  #d1e1f1 {{ astral.sunrise_pct }}%,
+  #FFFFFF {{ astral.noon_pct }}%,
+  #d1e1f1 {{ astral.sunset_pct }}%,
+  #97bcdf {{ astral.dusk_pct }}%,
+  #176AB8 100%
+);
+">
+<svg style="width: 100%; height: 60px; opacity: 0.5" viewBox="0 -2 240 104" preserveAspectRatio="none">
+  <polyline fill="none" stroke="#176AB8" stroke-width="2"
+    points="{{ svg_points }}"
+  />
+</svg>
+<span class="minima" style="left: {{ low_tide_time_pct }}%">
+  <span class="time">xx</span>
+  <span class="depth">yyft</span>
+</span>
+</div>
+
+  <pre>{{ svg_points|pprint }}</pre>
+  <hr>
+  <pre>{{ heights|pprint }}</pre>
+  <hr>
+  <pre>{{ predictions|pprint }}</pre>
+  <hr>
+</body>
+</html>
