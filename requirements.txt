@@ -12,3 +12,4 @@ httpx
 sentry-sdk
 pytest-httpx
 ics
+astral

@@ -19,6 +19,7 @@ from django.urls import path
 from homepage import views as homepage
 from shifts import views as shifts
 from auth0_login import views as auth0_login
+from tides import views as tides
 
 
 def trigger_error(request):
@@ -42,4 +43,5 @@ urlpatterns = [
     path("admin/timeline/", shifts.timeline),
     path("admin/", admin.site.urls),
     path("sentry-debug/", trigger_error),
+    path("debug/tide-times/<str:date>/", tides.debug),
 ]
