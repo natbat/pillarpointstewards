@@ -45,4 +45,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("sentry-debug/", trigger_error),
     path("debug/tide-times/<str:date>/", tides.debug),
+    path("debug/tide-times-just-svg/<str:date>/", tides.debug_just_svg),
 ]
