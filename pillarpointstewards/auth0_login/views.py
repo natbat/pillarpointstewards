@@ -136,4 +136,11 @@ def callback(request):
 
 def logout(request):
     django_logout(request)
-    return HttpResponseRedirect("/")
+    redirect_uri = request.build_absolute_uri("/")
+    url = "https://{}/v2/logout?".format(settings.AUTH0_DOMAIN) + urlencode(
+        {
+            "client_id": settings.AUTH0_CLIENT_ID,
+            "returnTo": redirect_uri,
+        }
+    )
+    return HttpResponseRedirect(url)

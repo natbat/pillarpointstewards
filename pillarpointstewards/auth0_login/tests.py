@@ -1,6 +1,8 @@
 import base64
+from urllib.parse import urlencode
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user
+
 from .models import Auth0User, ActiveUserSignupLink
 from .utils import suggest_username
 import pytest
@@ -26,6 +28,21 @@ def test_auth0_login(client, settings):
     )
     # state should be a random string
     assert len(qs["state"]) == 32
+
+
+def test_auth0_logout(admin_client, settings):
+    assert admin_client.cookies["sessionid"].value
+    response = admin_client.get("/logout/")
+    assert not admin_client.cookies["sessionid"].value
+    assert response.status_code == 302
+    assert response.headers[
+        "location"
+    ] == "https://pillarpointstewards.us.auth0.com/v2/logout?" + urlencode(
+        {
+            "client_id": settings.AUTH0_CLIENT_ID,
+            "returnTo": "http://testserver/",
+        }
+    )
 
 
 @pytest.mark.parametrize(
