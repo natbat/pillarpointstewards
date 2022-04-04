@@ -113,7 +113,8 @@ def test_login_creates_account(
     link = None
     if use_secret_activation_link:
         link = ActiveUserSignupLink.objects.create()
-        client.get(link.path)
+        secret_link_response = client.get(link.path)
+        assert secret_link_response.headers["location"] == "/signup/"
         assert "active-user-signup-link" in client.cookies
 
     assert "auth0-state" not in client.cookies

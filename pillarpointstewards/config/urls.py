@@ -29,6 +29,7 @@ def trigger_error(request):
 urlpatterns = [
     path("", homepage.index),
     path("login/", auth0_login.login),
+    path("signup/", auth0_login.signup),
     path("logout/", auth0_login.logout),
     path("auth0-callback/", auth0_login.callback),
     path("healthcheck/", homepage.healthcheck),

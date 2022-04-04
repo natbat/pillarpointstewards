@@ -13,18 +13,23 @@ import secrets
 import httpx
 
 
-def login(request):
+def signup(request):
+    return login(request, signup=True)
+
+
+def login(request, signup=False):
     redirect_uri = request.build_absolute_uri("/auth0-callback/")
     state = secrets.token_hex(16)
-    url = "https://{}/authorize?".format(settings.AUTH0_DOMAIN) + urlencode(
-        {
-            "response_type": "code",
-            "client_id": settings.AUTH0_CLIENT_ID,
-            "redirect_uri": redirect_uri,
-            "scope": "openid profile email",
-            "state": state,
-        }
-    )
+    kwargs = {
+        "response_type": "code",
+        "client_id": settings.AUTH0_CLIENT_ID,
+        "redirect_uri": redirect_uri,
+        "scope": "openid profile email",
+        "state": state,
+    }
+    if signup:
+        kwargs["screen_hint"] = "signup"
+    url = "https://{}/authorize?".format(settings.AUTH0_DOMAIN) + urlencode(kwargs)
     response = HttpResponseRedirect(url)
     response.set_cookie("auth0-state", state, max_age=3600)
     return response
@@ -32,7 +37,7 @@ def login(request):
 
 def secret_signup(request, id, key):
     link = get_object_or_404(ActiveUserSignupLink, pk=id)
-    response = HttpResponseRedirect("/login/")
+    response = HttpResponseRedirect("/signup/")
     if secrets.compare_digest(link.secret, key):
         # Set a cookie to activate their account on completion
         response.set_signed_cookie("active-user-signup-link", str(link.id))
