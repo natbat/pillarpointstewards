@@ -143,7 +143,9 @@ def backup(request):
     return JsonResponse(
         {
             "auth0_users": list(
-                Auth0User.objects.values("id", "sub", "created", "user_id")
+                Auth0User.objects.values("id", "sub", "created", "user_id").order_by(
+                    "id"
+                )
             ),
             "users": list(
                 User.objects.values(
@@ -157,14 +159,15 @@ def backup(request):
                     "is_staff",
                     "is_superuser",
                     "date_joined",
-                )
+                ).order_by("id")
             ),
             "shifts": list(
                 Shift.objects.annotate(
                     steward_usernames=ArrayAgg(
                         "stewards__username", filter=Q(stewards__username__isnull=False)
                     )
-                ).values(
+                )
+                .values(
                     "id",
                     "dawn",
                     "dusk",
@@ -175,6 +178,7 @@ def backup(request):
                     "target_stewards",
                     "steward_usernames",
                 )
+                .order_by("id")
             ),
             "fragments": list(Fragment.objects.values("slug", "fragment")),
         }
