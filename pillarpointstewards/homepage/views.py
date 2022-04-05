@@ -1,10 +1,16 @@
 import calendar
 import datetime
 import pytz
+import secrets
+from django.conf import settings
 from django.db import connection
+from django.db.models import Q
+from django.contrib.postgres.aggregates import ArrayAgg
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.template.loader import get_template
+from django.contrib.auth.models import User
+from auth0_login.models import Auth0User
 from .models import Fragment
 from shifts.models import Shift
 
@@ -123,5 +129,53 @@ def healthcheck(request):
     return JsonResponse(
         {
             "tables": tables,
+        }
+    )
+
+
+def backup(request):
+    secret = settings.BACKUP_SECRET
+    from_header = (request.headers.get("Authorization") or "").split("Bearer ")[-1]
+    if not secret or not secrets.compare_digest(secret, from_header):
+        return JsonResponse(
+            {"error": "Access denied - bad 'Authorization: Bearer' header"}, status=400
+        )
+    return JsonResponse(
+        {
+            "auth0_users": list(
+                Auth0User.objects.values("id", "sub", "created", "user_id")
+            ),
+            "users": list(
+                User.objects.values(
+                    "id",
+                    "last_login",
+                    "username",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "date_joined",
+                )
+            ),
+            "shifts": list(
+                Shift.objects.annotate(
+                    steward_usernames=ArrayAgg(
+                        "stewards__username", filter=Q(stewards__username__isnull=False)
+                    )
+                ).values(
+                    "id",
+                    "dawn",
+                    "dusk",
+                    "shift_start",
+                    "shift_end",
+                    "mllw_feet",
+                    "lowest_tide",
+                    "target_stewards",
+                    "steward_usernames",
+                )
+            ),
+            "fragments": list(Fragment.objects.values("slug", "fragment")),
         }
     )

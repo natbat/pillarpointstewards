@@ -120,3 +120,57 @@ def make_datetime(yyyy, mm, dd, h, m=0, s=0):
 @pytest.mark.parametrize("path", ("/", "/patterns/"))
 def test_pages_200(admin_client, path):
     assert admin_client.get(path).status_code == 200
+
+
+class _Wildcard:
+    def __eq__(self, other):
+        return True
+
+
+wildcard = _Wildcard()
+
+
+def test_backup(admin_user_has_shift, client, settings):
+    settings.BACKUP_SECRET = "backup-secret"
+    # Test that it 400 errors without that secret
+    assert client.get("/backup.json").status_code == 400
+    assert (
+        client.get("/backup.json", HTTP_AUTHORIZATION="Bearer bad-secret").status_code
+        == 400
+    )
+    # With the correct secret it should work
+    response = client.get("/backup.json", HTTP_AUTHORIZATION="Bearer backup-secret")
+    assert response.status_code == 200
+    assert response.json() == {
+        "auth0_users": [],
+        "users": [
+            {
+                "id": wildcard,
+                "last_login": None,
+                "username": "admin",
+                "first_name": "",
+                "last_name": "",
+                "email": "admin@example.com",
+                "is_active": True,
+                "is_staff": True,
+                "is_superuser": True,
+                "date_joined": wildcard,
+            }
+        ],
+        "shifts": [
+            {
+                "id": wildcard,
+                "dawn": wildcard,
+                "dusk": wildcard,
+                "shift_start": wildcard,
+                "shift_end": wildcard,
+                "mllw_feet": None,
+                "lowest_tide": None,
+                "target_stewards": None,
+                "steward_usernames": ["admin"],
+            }
+        ],
+        "fragments": [
+            {"slug": "contact_details", "fragment": "Contact details go here"}
+        ],
+    }

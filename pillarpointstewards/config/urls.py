@@ -33,6 +33,7 @@ urlpatterns = [
     path("logout/", auth0_login.logout),
     path("auth0-callback/", auth0_login.callback),
     path("healthcheck/", homepage.healthcheck),
+    path("backup.json", homepage.backup),
     path("shifts/<int:shift_id>/", shifts.shift),
     path("cancel-shift/<int:shift_id>/", shifts.cancel_shift),
     path("assign-shift/<int:shift_id>/", shifts.assign_shift),

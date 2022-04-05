@@ -33,6 +33,8 @@ SHIFTS_ICS_SECRET = os.environ.get("SHIFTS_ICS_SECRET") or ""
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-iy$k84$=%68trrc_idv@@(n3gs00_!%jf%ymi52yzv91#ejs5^"
 
+BACKUP_SECRET = os.environ.get("BACKUP_SECRET")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DJANGO_DEBUG"))
 
