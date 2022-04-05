@@ -13,3 +13,4 @@ sentry-sdk
 pytest-httpx
 ics
 astral
+django-sql-dashboard

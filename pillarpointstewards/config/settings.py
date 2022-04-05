@@ -51,6 +51,8 @@ ALLOWED_HOSTS = [
 ]
 CSRF_TRUSTED_ORIGINS = ["https://www.pillarpointstewards.com"]
 
+LOGIN_URL = "/login/"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -61,6 +63,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_sql_dashboard",
     "django_extensions",
     "django_htmx",
     "homepage",
@@ -120,6 +123,13 @@ if SENTRY_DSN:
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 DATABASES = {}
 DATABASES["default"] = dj_database_url.config()
+DATABASES["dashboard"] = dj_database_url.config()
+# https://django-sql-dashboard.datasette.io/en/stable/setup.html#danger-mode-configuration-without-a-read-only-database-user
+DATABASES["dashboard"]["OPTIONS"] = {
+    "options": "-c default_transaction_read_only=on -c statement_timeout=3000"
+}
+DASHBOARD_ENABLE_FULL_EXPORT = True
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
