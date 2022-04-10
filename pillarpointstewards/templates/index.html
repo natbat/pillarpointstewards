@@ -54,6 +54,9 @@
               </li>
             {% endfor %}
           </ol>
+          <form action="/shifts/calendar-instructions/" method="POST">{% csrf_token %}
+            <p><button style="font-size: 0.7em" class="button">Subscribe to your shifts in your calendar</button></p>
+          </form>
         {% endif %}
         <!-- <h2>Your past shifts</h2> -->
 
