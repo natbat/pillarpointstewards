@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Subscribe to your shifts in your calendar{% endblock %}
+
+{% block content %}
+<section class="page-title">
+  <div class="title-wrapper stretch">
+    <h1 class="text"><span>Subscribe to your shifts in your calendar</span></h1>
+  </div>
+</section> <!-- end .page-title -->
+<section class="content">
+  <div class="primary">
+    {% if not secret_calendar %}
+      <form action="{{ request.path }}" method="POST">{% csrf_token %}
+        <p><button class="button">Activate your subscribable calendar</button></p>
+      </form>
+    {% else %}
+      <p>You can subscribe to a calendar of your shifts using Google Calendar, Apple Calendar or other calendar software.</p>
+
+      <h2>Google Calendar</h2>
+
+      <p>Follow this link to subscribe to your shifts in Google Calendar:</p>
+
+      <p><a href="https://www.google.com/calendar/render?cid=webcal://www.pillarpointstewards.com{{ secret_calendar.path }}" class="button">Subscribe in Google Calendar</a></p>
+
+      <h2>Apple Calendar</h2>
+
+      <p>To subscribe in your calendar on your Mac or iPhone, use this link:</p>
+
+      <p><a href="webcal://www.pillarpointstewards.com{{ secret_calendar.path }}" class="button">Subscribe in your calendar</a></p>
+
+      <h2>Other calendar software</h2>
+
+      <p>Copy and paste this URL into the "Subscribe to calendar" option in your calendar software:</p>
+
+      <p><pre style="font-family: courier; font-size: 0.8em">{{ secret_calendar.calendar_url }}</pre></p>
+    {% endif %}
+  </div>
+</section>
+   {% endblock %}

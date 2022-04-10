@@ -1,4 +1,9 @@
 from django.db import models
+import secrets
+
+
+def random_token():
+    return secrets.token_hex(16)
 
 
 class Shift(models.Model):
@@ -42,3 +47,25 @@ class ShiftChange(models.Model):
         return "{} did {} to {} on {}".format(
             self.user, self.change, self.shift, self.when
         )
+
+
+class SecretCalendar(models.Model):
+    user = models.OneToOneField(
+        "auth.User", related_name="secret_calendar", on_delete=models.CASCADE
+    )
+    secret = models.CharField(max_length=32, default=random_token)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "Secret calendar URL for {}".format(self.user)
+
+    @property
+    def path(self):
+        return "/shifts-personal-{}-{}.ics".format(self.pk, self.secret)
+
+    @property
+    def calendar_url(self):
+        if self.pk:
+            return "https://www.pillarpointstewards.com{}".format(self.path)
+        else:
+            return ""

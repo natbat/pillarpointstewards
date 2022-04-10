@@ -25,6 +25,8 @@ urlpatterns = [
     path("cancel-shift/<int:shift_id>/", shifts.cancel_shift),
     path("assign-shift/<int:shift_id>/", shifts.assign_shift),
     path("shifts/", shifts.shifts),
+    path("shifts/calendar-instructions/", shifts.calendar_instructions),
+    path("shifts-personal-<int:id>-<str:key>.ics", shifts.shifts_ics_personal),
     path("shifts-<str:key>.ics", shifts.shifts_ics),
     path("signup/<int:id>-<str:key>/", auth0_login.secret_signup),
     path("patterns/", homepage.patterns),

@@ -5,7 +5,7 @@ from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from weather.models import Forecast
-from .models import Shift, ShiftChange
+from .models import Shift, ShiftChange, SecretCalendar
 from .ics_utils import calendar
 from auth0_login.utils import active_user_required
 from homepage.models import Fragment
@@ -112,7 +112,14 @@ def shifts_ics(request, key):
         key, settings.SHIFTS_ICS_SECRET
     ):
         return HttpResponse("Wrong secret", status=400)
+    return render_calendar(
+        request,
+        Shift.objects.prefetch_related("stewards"),
+        title="Pillar Point Stewards, all shifts",
+    )
 
+
+def render_calendar(request, shifts, title):
     def description(shift):
         stewards = ", ".join(shift.stewards.values_list("username", flat=True))
         stewards = (
@@ -136,11 +143,46 @@ def shifts_ics(request, key):
             "tzid": "America/Los_Angeles",
             "id": str(shift.id),
         }
-        for shift in Shift.objects.prefetch_related("stewards")
+        for shift in shifts
     ]
-    s = calendar(shifts, title="Pillar Point Stewards")
+    s = calendar(shifts, title=title)
     content_type = "text/calendar; charset=utf-8"
     if request.GET.get("_plain"):
         content_type = "text/plain; charset=utf-8"
 
     return HttpResponse(s, content_type=content_type)
+
+
+def shifts_ics_personal(request, id, key):
+    secret_calendar = get_object_or_404(SecretCalendar, pk=id)
+    if not secrets.compare_digest(key, secret_calendar.secret):
+        return HttpResponse("Wrong secret", status=400)
+
+    return render_calendar(
+        request,
+        Shift.objects.filter(stewards=secret_calendar.user).prefetch_related(
+            "stewards"
+        ),
+        title="{} shifts for Pillar Point Stewards".format(
+            secret_calendar.user.get_full_name() or secret_calendar.user.username
+        ),
+    )
+
+
+@active_user_required
+def calendar_instructions(request):
+    secret_calendar = None
+    try:
+        secret_calendar = request.user.secret_calendar
+    except SecretCalendar.DoesNotExist:
+        pass
+    if request.method == "POST":
+        # Create secret calendar link if it does not exist and redirect
+        if not secret_calendar:
+            SecretCalendar.objects.create(user=request.user)
+        return HttpResponseRedirect(request.path)
+    return render(
+        request,
+        "calendar_instructions.html",
+        {"secret_calendar": secret_calendar},
+    )

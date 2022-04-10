@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Shift, ShiftChange
+from .models import Shift, ShiftChange, SecretCalendar
 
 
 class ShiftAdmin(admin.ModelAdmin):
@@ -13,3 +13,4 @@ class ShiftAdmin(admin.ModelAdmin):
 
 admin.site.register(Shift, ShiftAdmin)
 admin.site.register(ShiftChange)
+admin.site.register(SecretCalendar, readonly_fields=("secret", "calendar_url"))

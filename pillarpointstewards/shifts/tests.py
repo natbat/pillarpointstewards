@@ -1,7 +1,7 @@
+from shifts.models import SecretCalendar
 from shifts.models import Shift
 import json
 import pytest
-import textwrap
 
 
 def test_import_shifts(admin_client):
@@ -49,3 +49,17 @@ def test_shifts_ics(admin_user_has_shift, client, settings):
     response = client.get("/shifts-secret.ics")
     assert response.headers["content-type"] == "text/calendar; charset=utf-8"
     assert response.content.decode("utf-8").startswith("BEGIN:VCALENDAR")
+
+
+def test_personal_shifts_ics(admin_user_has_shift, admin_client):
+    assert SecretCalendar.objects.count() == 0
+    assert admin_client.get("/shifts-personal-1-1234.ics").status_code == 404
+    # Create the secret calendar link
+    assert admin_client.post("/shifts/calendar-instructions/").status_code == 302
+    assert SecretCalendar.objects.count() == 1
+    secret_calendar = SecretCalendar.objects.get()
+    # Secret link should now return calendar
+    response = admin_client.get(secret_calendar.path)
+    assert response.headers["content-type"] == "text/calendar; charset=utf-8"
+    assert response.content.decode("utf-8").startswith("BEGIN:VCALENDAR")
+    assert b"DESCRIPTION:Shift from" in response.content
