@@ -13,7 +13,9 @@ import dj_database_url
 from pathlib import Path
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.logging import ignore_logger
 import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -118,6 +120,7 @@ if SENTRY_DSN:
         # django.contrib.auth) you may enable sending PII data.
         send_default_pii=True,
     )
+    ignore_logger("django.security.DisallowedHost")
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
