@@ -7,6 +7,7 @@ from homepage import views as homepage
 from shifts import views as shifts
 from auth0_login import views as auth0_login
 from tides import views as tides
+from weather import views as weather
 
 
 def trigger_error(request):
@@ -29,6 +30,7 @@ urlpatterns = [
     path("shifts-personal-<int:id>-<str:key>.ics", shifts.shifts_ics_personal),
     path("shifts-<str:key>.ics", shifts.shifts_ics),
     path("signup/<int:id>-<str:key>/", auth0_login.secret_signup),
+    path("fetch-weather/", weather.fetch_weather),
     path("patterns/", homepage.patterns),
     path("admin/import-shifts/", shifts.import_shifts),
     path("admin/timeline/", shifts.timeline),
