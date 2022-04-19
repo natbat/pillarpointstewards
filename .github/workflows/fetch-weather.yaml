@@ -1,0 +1,17 @@
+name: Fetch weather
+
+on:
+  workflow_dispatch:
+  schedule:
+  # run daily at 1am San Francisco time
+  - cron: '0 8 * * *'
+
+jobs:
+  scheduled:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Trigger weather fetch
+      env:
+        API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
+      run: |-
+        curl -X POST -d "api_key=$API_KEY" 'https://www.pillarpointstewards.com/fetch-weather/'
