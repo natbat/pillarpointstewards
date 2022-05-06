@@ -20,7 +20,9 @@ def test_homepage_logged_in(admin_client):
     assert response.context["upcoming_shifts"] == []
 
 
-def test_homepage_shows_assigned_shifts(admin_client, admin_user_has_shift):
+def test_homepage_shows_assigned_shifts(
+    admin_client, admin_user_has_shift, admin_user_has_past_shift
+):
     response = admin_client.get("/")
     assert len(response.context["upcoming_shifts"]) == 1
 

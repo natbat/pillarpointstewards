@@ -31,6 +31,19 @@ def admin_user_has_shift(admin_user):
     )
 
 
+@pytest.fixture
+def admin_user_has_past_shift(admin_user):
+    dt = datetime.datetime.utcnow().replace(
+        tzinfo=pytz.timezone("America/Los_Angeles")
+    ) - datetime.timedelta(hours=96)
+    admin_user.shifts.create(
+        shift_start=dt,
+        shift_end=dt + datetime.timedelta(hours=2),
+        dawn=dt - datetime.timedelta(hours=1),
+        dusk=dt + datetime.timedelta(hours=5),
+    )
+
+
 @pytest.fixture(autouse=True)
 def use_dummy_auth0_client_secret(settings):
     settings.AUTH0_CLIENT_SECRET = "auth0-test-client-secret"

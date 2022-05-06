@@ -22,13 +22,26 @@ def index(request):
     user_is_inactive = False
     if request.user.is_authenticated:
         if request.user.is_active:
-            upcoming_shifts = list(request.user.shifts.order_by("shift_start"))
+            _24_hours_ago = datetime.datetime.utcnow().replace(
+                tzinfo=pytz.timezone("America/Los_Angeles")
+            ) - datetime.timedelta(days=1)
+            upcoming_shifts = list(
+                request.user.shifts.filter(shift_start__gt=_24_hours_ago).order_by(
+                    "shift_start"
+                )
+            )
             contact_details = Fragment.objects.get(slug="contact_details").fragment
-            calendars = [
-                render_calendar(request, 2022, 4),
-                render_calendar(request, 2022, 5),
-                render_calendar(request, 2022, 6),
-            ]
+            # Show calendar for next three months
+            month_now = datetime.datetime.utcnow().date().replace(day=1)
+            calendars = []
+            for i in range(3):
+                month = month_now.month + i
+                year = month_now.year
+                if month > 12:
+                    year += 1
+                    month = 1
+                calendars.append(render_calendar(request, year, month))
+
         else:
             user_is_inactive = True
 
