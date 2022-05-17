@@ -51,7 +51,12 @@ The `./manage.sh` script sets the correct environment variables for development 
 
     ./manage.sh createsuperuser
 
-Follow the prompts. You can leave email blank.
+Even better, sign in with Auth0 and run the following to upgrade your account to a super user:
+
+```
+./manage.sh shell_plus
+>>> User.objects.update(is_active=True, is_staff=True, is_superuser=True)
+```
 
 ## Where the code is
 
