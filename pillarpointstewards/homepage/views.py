@@ -13,6 +13,8 @@ from django.contrib.auth.models import User
 from auth0_login.models import Auth0User
 from .models import Fragment
 from shifts.models import Shift
+from auth0_login.utils import active_user_required
+
 
 
 def index(request):
@@ -196,3 +198,10 @@ def backup(request):
             "fragments": list(Fragment.objects.values("slug", "fragment")),
         }
     )
+
+
+@active_user_required
+def materials(request):
+    return render(request, "materials.html", {
+        "materials": Fragment.objects.get(slug="materials").fragment
+    })
