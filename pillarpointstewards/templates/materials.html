@@ -5,7 +5,7 @@
   {% if request.user.is_authenticated and not user_is_inactive %}
     <section class="page-title">
       <div class="title-wrapper stretch">
-        <h1 class="text"><span>You are logged in as {{ request.user }}</span></h1>
+        <h1 class="text"><span>Volunteer Materials</span></h1>
         <div class="page-controls">
           {% if request.user.is_authenticated %}
             <a class="loginout" href="/logout/">
@@ -38,19 +38,20 @@
 
 	<section class="content">
 	<div class="primary">
+
+		<p class="intro">
+			Thid page contains some useful links and resources that you might find handy as a 
+			volunteer in the Pillar Point Tidepool Stewards program. If you have any suggestions
+			please <a href="mailto:natbat@gmail.com">email Natalie</a>.
+		</p>
+
+
+
 		{{ materials|safe }}
 	</div>
 
 	<div class="secondary pull-out">
 		<h2>More information</h2>
-
-		<h3>Apply to volunteer</h3>
-		<ul class="bullets">
-			<li><a href="http://signup.pillarpointstewards.com/">Fill in the volunteer application form</a></li>
-		</ul>
-
-		<p><a href="http://www.pillarpointstewards.com/login/" class="button">Volunteer login</a></p>
-
 
 		<h3>Fishing License information</h3>
 		<ul class="bullets">
