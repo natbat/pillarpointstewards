@@ -42,9 +42,27 @@ def shift(request, shift_id):
 @staff_member_required
 def import_shifts(request):
     data = request.POST.get("data")
+    update = bool(request.POST.get("update"))
     if data:
         shifts = json.loads(data)
         for shift in shifts:
+            if update:
+                # Is there an existing shift on this day?
+                try:
+                    existing_shift = Shift.objects.get(
+                        shift_start__date=shift["start"].split("T")[0]
+                    )
+                    existing_shift.shift_start = shift["start"]
+                    existing_shift.shift_end = shift["end"]
+                    existing_shift.dawn = shift["dawn"]
+                    existing_shift.dusk = shift["dusk"]
+                    existing_shift.mllw_feet = shift["minTideFeet"]
+                    existing_shift.lowest_tide = shift["minTideTime"]
+                    existing_shift.target_stewards = shift["people"]
+                    existing_shift.save()
+                    continue
+                except Shift.DoesNotExist:
+                    pass
             Shift.objects.get_or_create(
                 shift_start=shift["start"],
                 shift_end=shift["end"],

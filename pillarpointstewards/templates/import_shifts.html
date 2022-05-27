@@ -11,6 +11,7 @@
   <form action="." method="POST">
     {% csrf_token %}
     <p><textarea name="data" style="width: 80%; height: 10em"></textarea></p>
+    <p><label>Update times on shifts on the same day <input type="checkbox" name="update"></label></p>
     <p><input type="submit" value="Import shifts"></p>
   </form>
 </body>
