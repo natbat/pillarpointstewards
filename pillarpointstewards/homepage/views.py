@@ -16,7 +16,6 @@ from shifts.models import Shift
 from auth0_login.utils import active_user_required
 
 
-
 def index(request):
     upcoming_shifts = []
     contact_details = ""
@@ -202,6 +201,8 @@ def backup(request):
 
 @active_user_required
 def materials(request):
-    return render(request, "materials.html", {
-        "materials": Fragment.objects.get(slug="materials").fragment
-    })
+    return render(
+        request,
+        "materials.html",
+        {"materials": Fragment.objects.get(slug="materials").fragment},
+    )
