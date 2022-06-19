@@ -19,4 +19,4 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8080
 
-CMD bash -c "/app/manage.py migrate && gunicorn --bind :8000 --workers 2 config.wsgi"
+CMD unicorn --bind :8000 --workers 2 config.wsgi
