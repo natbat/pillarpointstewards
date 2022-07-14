@@ -1,0 +1,16 @@
+Django~=4.0
+gunicorn
+whitenoise
+psycopg2-binary
+dj-database-url
+pytest-django
+django-extensions
+django-htmx
+pytz
+bs4
+httpx
+sentry-sdk
+pytest-httpx
+ics==0.7
+astral
+django-sql-dashboard>=1.1
