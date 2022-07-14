@@ -11,6 +11,6 @@ bs4
 httpx
 sentry-sdk
 pytest-httpx
-ics
+ics==0.7.0
 astral
 django-sql-dashboard>=1.1
