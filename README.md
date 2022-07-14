@@ -58,6 +58,21 @@ Even better, sign in with Auth0 and run the following to upgrade your account to
 >>> User.objects.update(is_active=True, is_staff=True, is_superuser=True)
 ```
 
+### Handling requirements
+
+Requirements are listed in the `requirements.in` file. These are then pinned in `requirements.txt`. To update `requirements.txt` from `requirements.in` run the following in the project's virtual environment:
+
+    pip install pip-tools
+    pip-compile --upgrade --generate-hashes requirements.in
+
+The `--upgrade` flag causes it to check PyPI for any upgraded versions of packages that still match the line in `requirements.in`. `--generate-hashes` adds hashes.
+
+This command will over-write `requirements.txt` with the new pinned versions.
+
+To upgrade your local virtual environment to the exact versions of the packages recorded in `requirements.txt` run the other command that was installed by `pip-tools`:
+
+    pip-sync
+
 ## Where the code is
 
 - CSS: [pillarpointstewards/static/main.css](pillarpointstewards/static/main.css)
