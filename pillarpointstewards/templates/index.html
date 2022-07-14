@@ -68,13 +68,13 @@
         <h2>Calendar of upcoming shifts</h2>
         {% for calendar in calendars %}
           {{ calendar }}
+          {% if forloop.first %}
+            <h3>Key</h3>
+            <ul class="calkey">
+              <li class="yours">Your shift</li> <li class="available">volunteers needed</li> <li class="partfull">partly full shift</li> <li class="full">fully staffed shift</li>
+            </ul>
+          {% endif %}
         {% endfor %}
-
-        <h3>Key</h3>
-        <ul class="calkey">
-          <li class="yours">Your shift</li> <li class="available">volunteers needed</li> <li class="partfull">partly full shift</li> <li class="full">fully staffed shift</li>
-        </ul>
-
         <br>
 
         <p class="intro"><a href="/shifts/">Agenda view of shifts</a></p>
