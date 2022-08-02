@@ -35,7 +35,7 @@ def index(request):
             # Show calendar for next three months
             month_now = datetime.datetime.utcnow().date().replace(day=1)
             calendars = []
-            for i in range(3):
+            for i in range(4):
                 month = month_now.month + i
                 year = month_now.year
                 if month > 12:
