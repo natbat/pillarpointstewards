@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Manage shifts for PROGRAM{% endblock %}
+
+{% block content %}
+<section class="page-title">
+  <div class="title-wrapper stretch">
+    <h1 class="text"><span>Manage shifts for PROGRAM</span></h1>
+  </div>
+</section> <!-- end .page-title -->
+<section class="content">
+  <div class="primary">
+    ...
+
+  </div>
+  <div class="secondary">
+    <form>
+      <div>
+        <label for="weekday-low-tide">Weekday low tide (ft)</label>
+        <input type="number" value="-1" min="-2" max="8" step="0.05" name="weekday-low-tide">
+        <input type="range" min="-2" max="8" step="0.05" name="range_weekday-low-tide">
+      </div>
+      <!-- weekend low tide -->
+      <div>
+        <label for="weekend-low-tide">Weekend low tide (ft)</label>
+        <input type="number" value="0" min="-2" max="8" step="0.05" name="weekend-low-tide">
+        <input type="range" min="-2" max="8" step="0.05" name="range_weekend-low-tide">
+      </div>
+      <!-- Super low tide (ft) must be lower than both above -->
+      <div>
+        <label for="super-low-tide">Super low tide (ft)</label>
+        <input type="number" value="-1.5" min="-2" max="8" step="0.05" name="super-low-tide">
+        <input type="range" min="-2" max="8" step="0.05" name="range_super-low-tide">
+      </div>
+      <!-- Shift buffer before tide threshold (in hours) -->
+      <div>
+        <label for="shift-buffer-before">Shift buffer before tide threshold (in hours)</label>
+        <input type="number" value="0.75" min="0" max="3" step="0.25" name="shift-buffer-before">
+        <input type="range" min="0" max="3" step="0.25" name="range_shift-buffer-before">
+      </div>
+      <!-- Shift buffer after tide threshold (in hours) -->
+      <div>
+        <label for="shift-buffer-after">Shift buffer after tide threshold (in hours)</label>
+        <input type="number" value="1.5" min="0" max="3" step="0.25" name="shift-buffer-after">
+        <input type="range" min="0" max="3" step="0.25" name="range_shift-buffer-after">
+      </div>
+      <!-- People per regular shift -->
+      <div>
+        <label for="people-per-regular-shift">People per regular shift</label>
+        <input type="number" value="2" min="1" max="15" step="1" name="people-per-regular-shift">
+        <input type="range" min="1" max="15" step="1" name="range_people-per-regular-shift">
+      </div>
+      <!-- People per super-low shift -->
+      <div>
+        <label for="people-per-super-low-shift">People per super-low shift</label>
+        <input type="number" value="3" min="1" max="15" step="1" name="people-per-super-low-shift">
+        <input type="range" min="1" max="15" step="1" name="range_people-per-super-low-shift">
+      </div>
+      <!-- Shifts per person per year -->
+      <div>
+        <label for="shifts-per-person-per-year">Shifts per person per year</label>
+        <input type="number" value="3" min="1" max="15" step="1" name="shifts-per-person-per-year">
+        <input type="range" min="1" max="15" step="1" name="range_shifts-per-person-per-year">
+      </div>
+      <!-- Earliest shift time buffer (choose a duration in hours after civil dawn) -->
+      <div>
+        <label for="earliest-shift-time-buffer">Earliest shift time buffer (choose a duration in hours after civil dawn)</label>
+        <input type="number" value="1" min="0" max="3" step="0.5" name="earliest-shift-time-buffer">
+        <input type="range" min="0" max="3" step="0.5" name="range_earliest-shift-time-buffer">
+      </div>
+      <!-- Don't schedule shifts shorter than this duration (mins) -->
+      <div>
+        <label for="shortest-shift-duration">Don't schedule shifts shorter than this duration (mins)</label>
+        <input type="number" value="90" min="0" max="120" step="1" name="shortest-shift-duration">
+        <input type="range" min="0" max="120" step="1" name="range_shortest-shift-duration">
+      </div>
+      <p><input type="submit" value="Update suggested shifts"></p>
+    </form>
+  </div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Listen to input events on all input and range elements
+    document.querySelectorAll('input[type="number"], input[type="range"]').forEach(function(input) {
+        input.addEventListener('input', function() {
+            let matchedInput;
+
+            if (input.type === "number") {
+                // If this is a number input, find the corresponding range input by prefixing the name with "range_"
+                matchedInput = document.querySelector(`input[name="range_${input.name}"]`);
+            } else if (input.type === "range") {
+                // If this is a range input, find the corresponding number input by removing the "range_" prefix from the name
+                const numberName = input.name.replace("range_", "");
+                matchedInput = document.querySelector(`input[name="${numberName}"]`);
+            }
+
+            if (matchedInput) {
+                matchedInput.value = input.value;
+            }
+        });
+    });
+});
+</script>
+   {% endblock %}

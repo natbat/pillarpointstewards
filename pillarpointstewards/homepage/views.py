@@ -7,7 +7,7 @@ from django.db import connection
 from django.db.models import Q
 from django.contrib.postgres.aggregates import ArrayAgg
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.template.loader import get_template
 from django.contrib.auth.models import User
 from auth0_login.models import Auth0User
@@ -206,3 +206,7 @@ def materials(request):
         "materials.html",
         {"materials": Fragment.objects.get(slug="materials").fragment},
     )
+
+
+def program_index(request, program_slug):
+    return HttpResponse("TODO: build this page")

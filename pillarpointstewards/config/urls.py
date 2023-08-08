@@ -40,4 +40,8 @@ urlpatterns = [
     path("sentry-debug/", trigger_error),
     path("debug/tide-times/<str:date>/", tides.debug),
     path("debug/tide-times-just-svg/<str:date>/", tides.debug_just_svg),
+
+    # /programs/ pages to support multiple programs
+    path("programs/<str:program_slug>/", homepage.program_index),
+    path("programs/<str:program_slug>/manage-shifts/", shifts.manage_shifts),
 ]
