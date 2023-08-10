@@ -49,7 +49,6 @@ SECURE_SSL_REDIRECT = bool(os.environ.get("SECURE_SSL_REDIRECT"))
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 ALLOWED_HOSTS = [
-    "*",  # TODO: only on GitHub Codespaces
     "pillarpointstewards.fly.dev",
     "0.0.0.0",
     "127.0.0.1",
@@ -57,6 +56,9 @@ ALLOWED_HOSTS = [
     "www.pillarpointstewards.com",
     "pillarpointstewards.com",
 ]
+if os.environ.get("ALLOWED_HOSTS_STAR"):
+    ALLOWED_HOSTS.append("*")
+
 CSRF_TRUSTED_ORIGINS = ["https://www.pillarpointstewards.com"]
 
 LOGIN_URL = "/login/"
