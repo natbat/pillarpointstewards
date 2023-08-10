@@ -7,7 +7,6 @@ import shifts.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ("shifts", "0007_alter_shift_mllw_feet"),

@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ("shifts", "0002_alter_shift_lowest_tide_alter_shift_mllw_feet_and_more"),

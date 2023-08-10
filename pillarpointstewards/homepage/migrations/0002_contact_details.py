@@ -9,7 +9,6 @@ def insert_contact_details(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("homepage", "0001_initial"),
     ]

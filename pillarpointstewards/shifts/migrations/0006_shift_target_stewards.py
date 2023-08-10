@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("shifts", "0005_remove_shift_sunrise_remove_shift_sunset"),
     ]
