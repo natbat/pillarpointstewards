@@ -93,11 +93,15 @@ def callback(request):
         )
 
     # Exchange the code for an access token
+
+    forward_url = getattr(settings, "AUTH0_FORWARD_URL", None)
+    redirect_uri = forward_url or request.build_absolute_uri("/auth0-callback/")
+
     response = httpx.post(
         "https://{}/oauth/token".format(settings.AUTH0_DOMAIN),
         data={
             "grant_type": "authorization_code",
-            "redirect_uri": request.build_absolute_uri("/auth0-callback/"),
+            "redirect_uri": redirect_uri,
             "code": code,
         },
         auth=(settings.AUTH0_CLIENT_ID, settings.AUTH0_CLIENT_SECRET),
