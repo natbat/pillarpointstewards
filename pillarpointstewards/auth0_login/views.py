@@ -61,6 +61,21 @@ def secret_signup(request, id, key):
 
 
 def callback(request):
+    forward = request.GET.get("forward")
+    if forward:
+        # If signature check passes, redirect to this instead
+        secret = settings.AUTH0_FORWARD_SECRET
+        signer = signing.Signer(key=secret)
+        try:
+            redirect_uri = signer.unsign(base64.urlsafe_b64decode(forward.encode()).decode())
+            # Glue on query string arguments except for forward=
+            new_qs = {
+                key: value for key, value in request.GET.items() if key != "forward"
+            }
+            return HttpResponseRedirect(redirect_uri + "?" + urlencode(new_qs))
+        except signing.BadSignature:
+            return HttpResponse("Invalid signature", status=400)
+
     code = request.GET.get("code") or ""
     state = request.GET.get("state") or ""
     # Compare state to their cookie
