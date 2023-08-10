@@ -29,10 +29,14 @@ def login(request, signup=False):
     redirect_uri = request.build_absolute_uri("/auth0-callback/")
 
     forward_url = getattr(settings, "AUTH0_FORWARD_URL", None)
+    print("forward_url", forward_url)
     if forward_url:
-        redirect_uri = forward_url + '?forward=' + signed_base64(
-            redirect_uri, settings.AUTH0_FORWARD_SECRET
+        redirect_uri = (
+            forward_url
+            + "?forward="
+            + signed_base64(redirect_uri, settings.AUTH0_FORWARD_SECRET)
         )
+        print("redirect_uri", redirect_uri)
 
     state = secrets.token_hex(16)
     kwargs = {
@@ -67,7 +71,9 @@ def callback(request):
         secret = settings.AUTH0_FORWARD_SECRET
         signer = signing.Signer(key=secret)
         try:
-            redirect_uri = signer.unsign(base64.urlsafe_b64decode(forward.encode()).decode())
+            redirect_uri = signer.unsign(
+                base64.urlsafe_b64decode(forward.encode()).decode()
+            )
             # Glue on query string arguments except for forward=
             new_qs = {
                 key: value for key, value in request.GET.items() if key != "forward"

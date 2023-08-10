@@ -59,7 +59,9 @@ def test_auth0_login_with_forward_url(client, settings):
     assert unsigned == "http://testserver/auth0-callback/"
 
     # Now check the forward URL actually works
-    callback_response = client.get("/auth0-callback/?state=123&code=456&forward=" + base64bit)
+    callback_response = client.get(
+        "/auth0-callback/?state=123&code=456&forward=" + base64bit
+    )
     assert callback_response.status_code == 302
     final_location = callback_response.headers["location"]
     assert final_location == "http://testserver/auth0-callback/?state=123&code=456"
