@@ -1,7 +1,8 @@
 import base64
-from urllib.parse import urlencode
+from urllib.parse import urlencode, parse_qs
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user
+from django.core import signing
 
 from .models import Auth0User, ActiveUserSignupLink
 from .utils import suggest_username
@@ -28,6 +29,39 @@ def test_auth0_login(client, settings):
     )
     # state should be a random string
     assert len(qs["state"]) == 32
+
+
+def test_auth0_login_with_forward_url(client, settings):
+    forward_url = "https://www.pillarpointstewards.com/auth0-callback/"
+    settings.AUTH0_FORWARD_URL = forward_url
+    settings.AUTH0_FORWARD_SECRET = "my-secret"
+
+    response = client.get("/login/")
+    assert response.status_code == 302
+    location = response.headers["location"]
+    # Should redirect to auth0 with ?redirect_uri=AUTH0_FORWARD_URL with a base64 extension
+    assert location.startswith(f"https://{settings.AUTH0_DOMAIN}/authorize?")
+    # Use parse_qs to extract the redirect_uri
+    qs = parse_qs(urllib.parse.urlparse(location).query)
+    redirect_uri = qs["redirect_uri"][0]
+
+    # redirect_uri should be something like:
+    # http://testserver/auth0-callback/aHR0cH...=
+    assert redirect_uri.startswith(forward_url)
+
+    base64bit = redirect_uri.split("/")[-1]
+    # Decode that as URL safe base64
+    decoded = base64.urlsafe_b64decode(base64bit.encode()).decode()
+
+    # That should be a signed message - unsign it with the secret
+    signer = signing.Signer(key="my-secret")
+    unsigned = signer.unsign(decoded)
+
+    # And that should contain our original redirect URL
+    assert unsigned == "http://testserver/auth0-callback/"
+
+    del settings.AUTH0_FORWARD_URL
+    del settings.AUTH0_FORWARD_SECRET
 
 
 def test_auth0_logout(admin_client, settings):

@@ -1,8 +1,11 @@
+import base64
+
 from django.conf import settings
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
 from django.db import IntegrityError, transaction
 from django.contrib.auth.models import User
+from django.core import signing
 from django.http import HttpResponse, HttpResponseRedirect
 from urllib.parse import urlencode
 
@@ -17,8 +20,20 @@ def signup(request):
     return login(request, signup=True)
 
 
+def signed_base64(value, key):
+    signed = signing.Signer(key=key).sign(value)
+    return base64.urlsafe_b64encode(signed.encode()).decode()
+
+
 def login(request, signup=False):
     redirect_uri = request.build_absolute_uri("/auth0-callback/")
+
+    forward_url = getattr(settings, "AUTH0_FORWARD_URL", None)
+    if forward_url:
+        redirect_uri = forward_url + signed_base64(
+            redirect_uri, settings.AUTH0_FORWARD_SECRET
+        )
+
     state = secrets.token_hex(16)
     kwargs = {
         "response_type": "code",
@@ -29,6 +44,7 @@ def login(request, signup=False):
     }
     if signup:
         kwargs["screen_hint"] = "signup"
+
     url = "https://{}/authorize?".format(settings.AUTH0_DOMAIN) + urlencode(kwargs)
     response = HttpResponseRedirect(url)
     response.set_cookie("auth0-state", state, max_age=3600)
