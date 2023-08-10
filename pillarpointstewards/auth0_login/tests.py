@@ -45,11 +45,9 @@ def test_auth0_login_with_forward_url(client, settings):
     qs = parse_qs(urllib.parse.urlparse(location).query)
     redirect_uri = qs["redirect_uri"][0]
 
-    # redirect_uri should be something like:
-    # http://testserver/auth0-callback/aHR0cH...=
     assert redirect_uri.startswith(forward_url)
 
-    base64bit = redirect_uri.split("/")[-1]
+    base64bit = redirect_uri.split("?forward=")[-1]
     # Decode that as URL safe base64
     decoded = base64.urlsafe_b64decode(base64bit.encode()).decode()
 

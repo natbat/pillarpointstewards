@@ -24,6 +24,10 @@ AUTH0_DOMAIN = "pillarpointstewards.us.auth0.com"
 AUTH0_CLIENT_ID = "DLXBMPbtamC2STUyV7R6OFJFDsSTHqEA"
 AUTH0_CLIENT_SECRET = os.environ.get("AUTH0_CLIENT_SECRET")
 
+# For AUTH0 forwarding in development environments
+AUTH0_FORWARD_URL = os.environ.get("AUTH0_FORWARD_URL", None)
+AUTH0_FORWARD_SECRET = os.environ.get("AUTH0_FORWARD_SECRET", None)
+
 # Allow inactive users to sign in:
 AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.AllowAllUsersModelBackend"]
 

@@ -30,7 +30,7 @@ def login(request, signup=False):
 
     forward_url = getattr(settings, "AUTH0_FORWARD_URL", None)
     if forward_url:
-        redirect_uri = forward_url + signed_base64(
+        redirect_uri = forward_url + '?forward=' + signed_base64(
             redirect_uri, settings.AUTH0_FORWARD_SECRET
         )
 
