@@ -45,7 +45,7 @@ SECURE_SSL_REDIRECT = bool(os.environ.get("SECURE_SSL_REDIRECT"))
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 ALLOWED_HOSTS = [
-    "*", # TODO: only on GitHub Codespaces
+    "*",  # TODO: only on GitHub Codespaces
     "pillarpointstewards.fly.dev",
     "0.0.0.0",
     "127.0.0.1",
