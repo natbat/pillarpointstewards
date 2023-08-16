@@ -52,3 +52,40 @@ class TidePrediction(models.Model):
             ignore_conflicts=True,
             batch_size=1000,
         )
+
+
+class Location(models.Model):
+    name = models.CharField(max_length=255)
+    station_id = models.IntegerField(null=True, blank=True)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    time_zone = models.CharField(max_length=50)
+
+    def populate_sunrise_sunsets(self):
+        # Ensure we have sunrise/sunset data for the next 365 days
+        today = datetime.date.today()
+        end_date = today + datetime.timedelta(days=365)
+        num_in_range = (
+            self.sunrise_sunsets().filter(day__range=(today, end_date)).count()
+        )
+
+    def __str__(self):
+        return self.name
+
+
+class SunriseSunset(models.Model):
+    location = models.ForeignKey(
+        Location, on_delete=models.CASCADE, related_name="sunrise_sunsets"
+    )
+    day = models.DateField()
+    dawn = models.TimeField()
+    sunrise = models.TimeField()
+    noon = models.TimeField()
+    sunset = models.TimeField()
+    dusk = models.TimeField()
+
+    class Meta:
+        unique_together = ("location", "day")
+
+    def __str__(self):
+        return f"{self.location.name} - {self.day}"
