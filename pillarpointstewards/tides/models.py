@@ -1,9 +1,11 @@
+from astral import LocationInfo, sun
 from django.db import models
 from django.utils.dateparse import parse_datetime
 from django.utils import timezone
 from urllib.parse import urlencode
 import datetime
 import httpx
+import pytz
 
 
 class TidePrediction(models.Model):
@@ -62,12 +64,32 @@ class Location(models.Model):
     time_zone = models.CharField(max_length=50)
 
     def populate_sunrise_sunsets(self):
-        # Ensure we have sunrise/sunset data for the next 365 days
         today = datetime.date.today()
         end_date = today + datetime.timedelta(days=365)
-        num_in_range = (
-            self.sunrise_sunsets().filter(day__range=(today, end_date)).count()
+
+        # First, check the days for which we already have sunrise and sunset data
+        existing_days = set(self.sunrise_sunsets.values_list("day", flat=True))
+
+        # Then determine the days for which we need the data
+        missing_days = [
+            today + datetime.timedelta(days=i)
+            for i in range((end_date - today).days)
+            if today + datetime.timedelta(days=i) not in existing_days
+        ]
+
+        location_info = LocationInfo(
+            self.name, "", self.time_zone, self.latitude, self.longitude
         )
+        tz = pytz.timezone(self.time_zone)
+
+        for day in missing_days:
+            info = sun.sun(location_info.observer, date=day)
+
+            # Create and save SunriseSunset instance
+            sunrise_sunset = SunriseSunset(location=self, day=day)
+            for key, value in info.items():
+                setattr(sunrise_sunset, key, value.astimezone(tz).time())
+            sunrise_sunset.save()
 
     def __str__(self):
         return self.name

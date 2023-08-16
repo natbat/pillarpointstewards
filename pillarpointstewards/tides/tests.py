@@ -1,6 +1,6 @@
 from pytest_django.asserts import assertHTMLEqual
 from django.utils import timezone
-from .models import TidePrediction
+from .models import TidePrediction, Location, SunriseSunset
 from shifts.models import Shift
 import datetime
 import pytest
@@ -360,3 +360,12 @@ HEIGHTS = [
     4.339,
     4.393,
 ]
+
+
+@pytest.mark.django_db
+def test_location_populate_sunrise_sunsets():
+    # Should have one location from fixtures
+    location = Location.objects.get(name="Pillar Point")
+    assert location.sunrise_sunsets.count() == 0
+    location.populate_sunrise_sunsets()
+    assert location.sunrise_sunsets.count() == 365

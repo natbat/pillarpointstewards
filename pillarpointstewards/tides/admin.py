@@ -8,4 +8,7 @@ admin.site.register(
 )
 
 admin.site.register(Location)
-admin.site.register(SunriseSunset)
+admin.site.register(
+    SunriseSunset,
+    list_display=("location", "day", "dawn", "sunrise", "noon", "sunset", "dusk"),
+)

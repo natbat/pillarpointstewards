@@ -11,6 +11,7 @@ from .ics_utils import calendar
 from auth0_login.utils import active_user_required
 from homepage.models import Fragment
 from tides.views import tide_times_svg_context_for_date
+from tides.models import Location
 import json
 import secrets
 
@@ -209,6 +210,10 @@ def calendar_instructions(request):
 
 @active_user_required
 def manage_shifts(request, program_slug):
+    # Ensure sunrise/sunset times for all locations - should really do it just for this one
+    # once we have a mapping of program_slug to location
+    for location in Location.objects.all():
+        location.populate_sunrise_sunset()
     return render(
         request,
         "manage_shifts.html",
