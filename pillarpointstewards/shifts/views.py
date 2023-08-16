@@ -213,7 +213,7 @@ def manage_shifts(request, program_slug):
     # Ensure sunrise/sunset times for all locations - should really do it just for this one
     # once we have a mapping of program_slug to location
     for location in Location.objects.all():
-        location.populate_sunrise_sunset()
+        location.populate_sunrise_sunsets()
     return render(
         request,
         "manage_shifts.html",
