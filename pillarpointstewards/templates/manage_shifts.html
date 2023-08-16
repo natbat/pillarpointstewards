@@ -11,11 +11,10 @@
 </section> <!-- end .page-title -->
 <section class="content">
   <div class="primary">
-    ...
-
+    <pre id="calculator-results"></pre>
   </div>
   <div class="secondary">
-    <form>
+    <form id="calculator-form">
       <div>
         <label for="weekday-low-tide">Weekday low tide (ft)</label>
         <input type="number" value="-1" min="-2" max="8" step="0.05" name="weekday-low-tide">
@@ -100,6 +99,41 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    // Start monitoring the form
+    setInterval(() => monitorForm(document.querySelector('#calculator-form')), 1000);
 });
+
+function serializeNumbers(formElement) {
+    let data = {};
+    // Iterate over all the number input fields
+    formElement.querySelectorAll('input[type="number"]').forEach(input => {
+        data[input.name] = parseFloat(input.value);
+    });
+    return JSON.stringify(data);
+}
+let previousSerialization = "";
+
+function monitorForm(formElement) {
+    const currentSerialization = serializeNumbers(formElement);
+    // Check if the serialization has changed since the last check
+    if (currentSerialization !== previousSerialization) {
+        fetch('/programs/{{ program_slug }}/manage-shifts/calculator/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: currentSerialization
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('#calculator-results').innerText = JSON.stringify(data, null, 2);
+        })
+        .catch(error => {
+            console.error('Error fetching:', error);
+        });
+        previousSerialization = currentSerialization;
+    }
+}
+
 </script>
    {% endblock %}

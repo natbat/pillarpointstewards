@@ -43,4 +43,5 @@ urlpatterns = [
     # /programs/ pages to support multiple programs
     path("programs/<str:program_slug>/", homepage.program_index),
     path("programs/<str:program_slug>/manage-shifts/", shifts.manage_shifts),
+    path("programs/<str:program_slug>/manage-shifts/calculator/", shifts.manage_shifts_calculator),
 ]

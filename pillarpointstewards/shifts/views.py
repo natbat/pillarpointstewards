@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
+from django.views.decorators.csrf import csrf_exempt
 from weather.models import Forecast
 from .models import Shift, ShiftChange, SecretCalendar
 from .ics_utils import calendar
@@ -208,4 +209,14 @@ def calendar_instructions(request):
 
 @active_user_required
 def manage_shifts(request, program_slug):
-    return render(request, "manage_shifts.html")
+    return render(request, "manage_shifts.html", {
+        "program_slug": program_slug,
+    })
+
+
+@csrf_exempt
+@active_user_required
+def manage_shifts_calculator(request, program_slug):
+    # Get JSON from incoming request
+    data = json.loads(request.body)
+    return HttpResponse(json.dumps(data), content_type="application/json")
