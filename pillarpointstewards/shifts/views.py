@@ -209,9 +209,13 @@ def calendar_instructions(request):
 
 @active_user_required
 def manage_shifts(request, program_slug):
-    return render(request, "manage_shifts.html", {
-        "program_slug": program_slug,
-    })
+    return render(
+        request,
+        "manage_shifts.html",
+        {
+            "program_slug": program_slug,
+        },
+    )
 
 
 @csrf_exempt
