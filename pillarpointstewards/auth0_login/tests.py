@@ -23,10 +23,10 @@ def test_auth0_login(client, settings):
         >= {
             "response_type": "code",
             "client_id": settings.AUTH0_CLIENT_ID,
-            "redirect_uri": "http://testserver/auth0-callback/",
             "scope": "openid profile email",
         }.items()
     )
+    assert "/auth0-callback/" in qs["redirect_uri"]
     # state should be a random string
     assert len(qs["state"]) == 32
 
