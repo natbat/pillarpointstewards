@@ -2,6 +2,7 @@ from curses.ascii import HT
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.db import connection
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
@@ -223,9 +224,115 @@ def manage_shifts(request, program_slug):
     )
 
 
+CALCULATOR_SQL = """
+-- for each tide we need to know the previous/next tide to find low ones
+with tides_with_previous_and_next as (
+  select
+    tide_predictions.dt as datetime,
+    date_trunc('day', tide_predictions.dt) as day,
+    tide_predictions.mllw_feet,
+    lag(tide_predictions.mllw_feet) over win as previous_mllw_feet,
+    lead(tide_predictions.mllw_feet) over win as next_mllw_feet
+  from
+    tides_tideprediction tide_predictions
+  window win as (
+      order by
+        tide_predictions.dt
+    )
+),
+-- "low tides" are tides where the previous/next measurement are higher
+low_tides as (
+  select
+    day,
+    datetime,
+    mllw_feet
+  from
+    tides_with_previous_and_next
+  where
+    previous_mllw_feet is not null
+    and next_mllw_feet is not null
+    and mllw_feet <= previous_mllw_feet
+    and mllw_feet <= next_mllw_feet
+),
+-- but we only want to know about low tides during daylight hours
+low_tides_during_daylight as (
+  select
+    low_tides.day,
+    low_tides.datetime,
+    low_tides.mllw_feet,
+    tides_sunrisesunset.dawn,
+    tides_sunrisesunset.sunrise,
+    tides_sunrisesunset.sunset,
+    tides_sunrisesunset.dusk
+  from
+    low_tides
+    join tides_sunrisesunset on tides_sunrisesunset.day = low_tides.day
+    and tides_sunrisesunset.location_id = 1
+  where
+    low_tides.datetime :: time > tides_sunrisesunset.dawn
+    and low_tides.datetime :: time < tides_sunrisesunset.dusk
+),
+-- now we want just the first from each day
+earliest_daylight_low_tides as (
+  select
+    lt1.day,
+    lt1.datetime,
+    lt1.mllw_feet,
+    lt1.dawn,
+    lt1.sunrise,
+    lt1.sunset,
+    lt1.dusk
+  from
+    low_tides_during_daylight lt1
+    left join low_tides_during_daylight lt2 on lt1.day = lt2.day
+    and lt1.datetime > lt2.datetime
+  where
+    -- this will be null if the day has no later tide
+    lt2.datetime is null
+)
+-- and finally, filter based on tide_weekday and tide_weekend inputs
+select
+  *
+from
+  earliest_daylight_low_tides
+where
+  case
+    when extract(
+      dow
+      from
+        day
+    ) in (0, 6) then mllw_feet < %(tide_weekend)s
+    else mllw_feet < %(tide_weekday)s
+  end
+"""
+
+
 @csrf_exempt
 @active_user_required
 def manage_shifts_calculator(request, program_slug):
     # Get JSON from incoming request
     data = json.loads(request.body)
-    return HttpResponse(json.dumps(data), content_type="application/json")
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            CALCULATOR_SQL,
+            {
+                "tide_weekday": data["weekday-low-tide"],
+                "tide_weekend": data["weekend-low-tide"],
+            },
+        )
+        column_names = [col[0] for col in cursor.description]
+
+        # Convert the results into a list of dictionaries
+        results = [dict(zip(column_names, row)) for row in cursor.fetchall()]
+
+    return HttpResponse(
+        json.dumps(
+            {
+                "input": data,
+                "results": results,
+            },
+            default=str,
+        ),
+        content_type="application/json",
+    )

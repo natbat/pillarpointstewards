@@ -129,6 +129,7 @@ function monitorForm(formElement) {
             document.querySelector('#calculator-results').innerText = JSON.stringify(data, null, 2);
         })
         .catch(error => {
+            document.querySelector('#calculator-results').innerText = JSON.stringify(error, null, 2);
             console.error('Error fetching:', error);
         });
         previousSerialization = currentSerialization;
