@@ -4,59 +4,38 @@ https://www.pillarpointstewards.com/
 
 Login via Auth0: https://www.pillarpointstewards.com/login/
 
-## Local development environment
+### Development environment is GitHub Codespaces
 
-You'll need Python 3 and PostgreSQL - I recommend using [Postgres.app](https://postgresapp.com/).
+Before launching Codespaces you'll need to configure these Codespaces secrets using the interface at https://github.com/settings/codespaces
 
-Create a local database called `pillarpointstewards`.
+- `AUTH0_CLIENT_SECRET` - get [from Auth0](https://manage.auth0.com/dashboard/us/pillarpointstewards/applications/DLXBMPbtamC2STUyV7R6OFJFDsSTHqEA/settings)
+- `AUTH0_FORWARD_URL`: `https://www.pillarpointstewards.com/auth0-callback/`
+- `AUTH0_FORWARD_SECRET`: get from Simon's 1Password
+- `ALLOWED_HOSTS_STAR`: `1`
 
-Open `Postgres.app`, double click on the `postgres` database, then type the following at the prompt:
+Having set those secrets for the `natbat/pillarpointstewards` repo you can launch a Codespaces environment against that repo.
 
-    create database pillarpointstewards;
+After a few minutes of automated setup this should start a development server. You can access that from the ports menu by clicking the little Globe icon that shows up when you hover over the port 8000 (Application) entry:
 
-It should look like this:
+![CleanShot 2023-08-17 at 11 44 49@2x](https://github.com/natbat/pillarpointstewards/assets/9599/e34582d9-9939-4658-a27a-8e448c843849)
+
+Start a new terminal window running and run this command:
+
+```bash
+./manage.sh shell_plus
 ```
-postgres=# create database pillarpointstewards;
-CREATE DATABASE
+Then in the Python console run these:
+```python
+User.objects.update(is_active=True, is_staff=True, is_superuser=True)
+# And to get the shift calculator working:
+TidePrediction.populate_for_station(9414131)
 ```
-
-In the local checkout of the repo, create a new Python virtual environmet like this:
-
-    python3 -m venv venv
-
-Activate the virtual environment:
-
-    source venv/bin/activate
-
-Install (or upgrade) the dependencies from `requirements.txt`:
-
-    python -m pip install -r requirements.txt
-
-Start the development server, which will also run any database migrations:
-
-    ./runserver.sh
 
 ### Running the tests
 
+Run this in a terminal window:
+
     pytest pillarpointstewards
-
-### Running management commands
-
-The `./manage.sh` script sets the correct environment variables for development and runs management commands, for example:
-
-    ./manage.sh shell_plus
-    ./manage.py makemigrations
-
-### Creating a superuser for the Django admin
-
-    ./manage.sh createsuperuser
-
-Even better, sign in with Auth0 and run the following to upgrade your account to a super user:
-
-```
-./manage.sh shell_plus
->>> User.objects.update(is_active=True, is_staff=True, is_superuser=True)
-```
 
 ### Handling requirements
 
@@ -80,7 +59,7 @@ To upgrade your local virtual environment to the exact versions of the packages 
 
 ## Useful URLs
 
-- Pattern portfolio: https://www.pillarpointstewards.com/patterns/ - http://127.0.0.1:8000/patterns/
+- Pattern portfolio: https://www.pillarpointstewards.com/patterns/
 - Admin timeline showing various actions around the site: https://www.pillarpointstewards.com/admin/timeline/ - http://127.0.0.1:8000/admin/timeline/
 - Sentry errors for production: https://sentry.io/organizations/pillar-point-stewards/issues/?project=6304204
 
