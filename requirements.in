@@ -1,4 +1,4 @@
-Django~=4.0
+Django~=4.2
 gunicorn
 whitenoise
 psycopg2-binary
@@ -11,6 +11,6 @@ bs4
 httpx
 sentry-sdk
 pytest-httpx
-ics==0.7
+ics==0.7.2
 astral
 django-sql-dashboard>=1.1
