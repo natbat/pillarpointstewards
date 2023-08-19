@@ -64,4 +64,4 @@ def calendar(rows, title=None):
         e.timezone = row["tzid"]
         c.events.add(e)
 
-    return str(c)
+    return c.serialize()
