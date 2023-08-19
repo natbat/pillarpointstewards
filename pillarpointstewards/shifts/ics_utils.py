@@ -1,4 +1,4 @@
-from ics import Calendar, parse
+from ics import Calendar
 from ics.grammar.parse import ContentLine
 from ics.parsers.event_parser import EventParser
 from ics.serializers.event_serializer import EventSerializer
@@ -52,7 +52,7 @@ class EventWithTimezone(Event):
 def calendar(rows, title=None):
     c = Calendar(creator="-//www.pillarpointstewards.com//ics//EN")
     if title:
-        c.extra.append(parse.ContentLine(name="X-WR-CALNAME", params={}, value=title))
+        c.extra.append(ContentLine(name="X-WR-CALNAME", params={}, value=title))
 
     for row in reversed(rows):
         e = EventWithTimezone()
