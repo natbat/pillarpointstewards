@@ -92,13 +92,12 @@ def tide_times_svg_context_for_date(date):
     return context
 
 
-def debug(request, date, just_svg=False):
+def debug(request, date):
     yyyy, mm, dd = date.split("-")
     day_start = datetime.datetime(int(yyyy), int(mm), int(dd), tzinfo=timezone.utc)
-    template = "_tide_svg.html" if just_svg else "tide-times-debug.html"
     return render(
         request,
-        template,
+        "tide-times-debug.html",
         {
             "tide_times_svg": tide_times_svg_context_for_date(
                 day_start.replace(hour=0, minute=0, second=0)
@@ -108,4 +107,14 @@ def debug(request, date, just_svg=False):
 
 
 def debug_just_svg(request, date):
-    return debug(request, date, just_svg=True)
+    yyyy, mm, dd = date.split("-")
+    day_start = datetime.datetime(int(yyyy), int(mm), int(dd), tzinfo=timezone.utc)
+    return render(
+        request,
+        "_tide_svg.html",
+        {
+            "tide_times_svg": tide_times_svg_context_for_date(
+                day_start.replace(hour=0, minute=0, second=0)
+            )
+        },
+    )
