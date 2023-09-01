@@ -66,7 +66,6 @@ LOGIN_URL = "/login/"
 # Application definition
 
 INSTALLED_APPS = [
-    "whitenoise.runserver_nostatic",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -82,10 +81,12 @@ INSTALLED_APPS = [
     "weather",
     "tides",
 ]
+if not DEBUG:
+    INSTALLED_APPS.insert(0, "whitenoise.runserver_nostatic")
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+] + (["whitenoise.middleware.WhiteNoiseMiddleware"] if not DEBUG else []) + [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -178,8 +179,12 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / "static-root"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+if DEBUG:
+    pass    
+else:
+    STATIC_ROOT = BASE_DIR / "static-root"
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Don't let non-existent static references, including in commented-out CSS blocks,
 # cause Django to throw errors:
