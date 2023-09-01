@@ -2,7 +2,7 @@ dev  "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "waitFor": "onCreateCommand",
   "updateContentCommand": "",
-  "postCreateCommand": "pip install --user -r requirements.txt && python pillarpointstewards/manage.py collectstatic && python pillarpointstewards/manage.py migrate",
+  "postCreateCommand": "pip install --user -r requirements.txt && python pillarpointstewards/manage.py migrate",
   "postAttachCommand": {
     "server": "python pillarpointstewards/manage.py runserver"
   },
