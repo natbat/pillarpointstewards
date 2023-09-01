@@ -11,7 +11,7 @@
 </section> <!-- end .page-title -->
 <section class="content">
   <div class="primary">
-    <pre id="calculator-results"></pre>
+    <div id="calculator-results"></div>
   </div>
   <div class="secondary">
     <form id="calculator-form">
@@ -126,7 +126,9 @@ function monitorForm(formElement) {
         })
         .then(response => response.json())
         .then(data => {
-            document.querySelector('#calculator-results').innerText = JSON.stringify(data, null, 2);
+            let html = data.results.map(result => result.html).join('\n');
+            html = `<span>${JSON.stringify(data.input)}</span>${html}`;
+            document.querySelector('#calculator-results').innerHTML = html;
         })
         .catch(error => {
             document.querySelector('#calculator-results').innerText = JSON.stringify(error, null, 2);

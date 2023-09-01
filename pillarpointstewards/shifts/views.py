@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import connection
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
+from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from weather.models import Forecast
 from .models import Shift, ShiftChange, SecretCalendar
@@ -326,6 +327,12 @@ def manage_shifts_calculator(request, program_slug):
         # Convert the results into a list of dictionaries
         results = [dict(zip(column_names, row)) for row in cursor.fetchall()]
 
+    # Add rendered HTML fragment to each one
+    for result in results:
+        result["html"] = render_to_string("_calculator_shift.html", {
+            "shift": result,
+        })
+
     return HttpResponse(
         json.dumps(
             {
@@ -336,3 +343,13 @@ def manage_shifts_calculator(request, program_slug):
         ),
         content_type="application/json",
     )
+
+
+def round_to_fifteen_minutes(dt):
+    seconds_in_15_mins = 15 * 60
+    # Convert the datetime object to the number of seconds since the Unix epoch
+    epoch_time = int((dt - datetime(1970, 1, 1)).total_seconds())
+    # Round to the nearest 15 minutes
+    rounded_time = round(epoch_time / seconds_in_15_mins) * seconds_in_15_mins
+    # Convert back to a datetime object
+    return datetime(1970, 1, 1) + timedelta(seconds=rounded_time)
