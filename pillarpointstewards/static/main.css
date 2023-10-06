@@ -224,33 +224,38 @@ ul.bullets li {
 
 /* form styles ------------------------------------------------------------*/
 
-a.button:link,
-a.button:visited,
-a.button:hover,
-a.button:focus,
-a.button:active,
-button.button,
-form input[type="submit"],
-form button {
-	display: inline-block;
-	background-color: #3494CC;
-	color: white;
-	text-decoration: none;
-	padding: 0.5em 0.8em;
-	border-radius: 7px;
-	border: none;
+form .input-container {
+	margin-bottom: 0.8em;
+}
+form label,
+p.label {
+	font-weight: bold;
+	color: rgba(0,0,0,0.8);
+	margin: 0 0 0.3em 0;
+}
+form label {
 	cursor: pointer;
-	font-size: 1rem;
 }
-a.button:hover,
-a.button:focus,
-button.button:hover,
-button.button:focus {
-	background-color: #0A4B7D;
+form label:hover,
+form label:focus {
+	color: rgba(0,0,0,1);
 }
-a.button:active,
-button.button:active {
-	background-color: #000000;
+
+form .input-container label {
+	display: inline-block; 
+	width: 8em 
+}
+form .radio-container label, 
+form .checkbox-container label {
+	width: auto;
+}
+
+p.radio {
+	margin: 0 0 0.3em 0;
+}
+input[type="radio"],
+input[type="checkbox"] {
+	margin: 0 0.5em 0 0;
 }
 
 form input,
@@ -258,8 +263,8 @@ form input:focus,
 form input:hover,
 form input:active {
 	border: 1px solid #000000;
-	padding: 0.2em 0.5em;
-	font-size: 1rem; /* 16px */
+	padding: 0.2rem 0.5rem;
+	font-size: 1rem; /* 16px or bigger to avoid autozoom on ios mobile */
 }
 form input:focus,
 form input:hover {
@@ -277,6 +282,69 @@ form.inline-form button {
 	padding-top: 0.3em;
 	padding-bottom: 0.2em;
 }
+
+select {
+	padding: 0.2rem 0.5rem;
+	font-size: 1rem;
+}
+
+
+a.button:link,
+a.button:visited,
+a.button:hover,
+a.button:focus,
+a.button:active,
+button.button,
+form button,
+form input[type="submit"],
+form input[type="submit"]:focus,
+form input[type="submit"]:hover,
+form input[type="submit"]:active,
+form input[type="reset"],
+form input[type="reset"]:focus,
+form input[type="reset"]:hover,
+form input[type="reset"]:active {
+	display: inline-block;
+	background-color: #3494CC;
+	color: white;
+	text-decoration: none;
+	padding: 0.5em 0.8em;
+	margin-right: 0.4em;
+	border-radius: 7px;
+	border: none;
+	cursor: pointer;
+	font-size: 1rem;
+}
+
+form input[type="reset"] {
+	background-color: rgba(0,0,0,0.2);
+}
+
+a.button:hover,
+a.button:focus,
+button.button:hover,
+button.button:focus
+form button:focus,
+form button:hover,
+form input[type="submit"]:focus,
+form input[type="submit"]:hover  {
+	background-color: #0A4B7D;
+}
+
+form input[type="reset"]:focus,
+form input[type="reset"]:hover,
+form input[type="reset"]:active {
+	background-color: rgba(0,0,0,0.5);
+}
+
+a.button:active,
+button.button:active,
+form button:focus,
+form input[type="submit"]:active,
+form input[type="reset"]:active {
+	background-color: #000000;
+}
+
 
 
 

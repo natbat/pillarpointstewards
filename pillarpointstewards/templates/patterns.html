@@ -52,6 +52,100 @@
         <h6>heading 6</h6>
         <p>This is a regular paragraph. This is a regular paragraph. This is a regular paragraph. This is a regular paragraph. This is a regular paragraph. This is a regular paragraph. This is a regular paragraph. This is a regular paragraph. This is a regular paragraph. </p>
 
+        <form action="#" method="POST">
+          <div class="input-container">
+            <label for="inputIDhere">This is a label</label>
+            <input type="text" id="inputIDhere" name="inputIDhere">
+          </div>
+
+          <div class="input-container">
+            <label for="secondinputIDhere">This is a label</label>
+            <input type="text" id="secondinputIDhere" name="secondinputIDhere">
+          </div>
+
+          <div class="input-container">
+            <label for="thirdinputIDhere">This is a label</label>
+            <input type="text" id="thirdinputIDhere" name="thirdinputIDhere">
+          </div>
+
+          <div class="input-container">
+            <label for="eventDateTime">Date and time</label>
+            <input type="datetime-local" name="eventDateTime" id="eventDateTime">
+          </div>
+          
+          <div class="input-container">
+            <label for="color">Color</label>
+            <input type="color" name="color" id="color">
+          </div>
+
+          <div class="input-container">
+            <label for="website">Website</label>
+            <input type="url" name="website" id="website" placeholder="Website link">
+          </div>
+
+          <div class="input-container">
+            <label for="search_form">Search</label>
+            <input type="search" name="search_form" id="search_form" placeholder="Search">
+          </div>
+
+          <div class="input-container">
+            <label for="appointmentTime">Time</label>
+            <input type="time" name="appointmentTime" id="appointmentTime">
+          </div>
+
+          <div class="input-container">
+            <label for="birthdate">Date</label>
+            <input type="date" name="birthdate" id="birthdate">
+          </div>
+
+          <div class="input-container">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="Email">
+          </div>
+
+          <div class="input-container">
+            <label for="quantity">Quantity</label>
+            <input type="number" name="quantity" min="1" max="100">
+          </div>
+
+          <div class="input-container">
+            <label for="upload">Upload</label>
+            <input type="file" name="upload" id="upload">
+          </div>
+
+          <div class="input-container radio-container">
+            <p class="label">Animal</p>
+            <p class="radio"><input type="radio" name="animal" value="bunny" id="bunny"><label for="bunny">Bunny</label></p>
+            <p class="radio"><input type="radio" name="animal" value="chicken" id="chicken"><label for="chicken">Chicken</label></p>
+            <p class="radio"><input type="radio" name="animal" value="dog" id="dog"><label for="dog">Bunny</label></p>
+          </div>
+
+          <div class="input-container">
+            <label for="password">Password</label>
+            <input type="password" name="password" id-="password" placeholder="Password">
+          </div>
+          
+          <div class="input-container checkbox-container">
+            <p><input type="checkbox" id="subscribe" name="subscribe" value="yes"><label for="subscribe">Subscribe</label></p>
+            <p><input type="checkbox" id="like" name="like" value="yes"><label for="like">Like</label></p>
+          </div>
+        
+          <div class="input-container">
+            <label for="country">Select a Country</label>
+            <select id="country" name="country">
+              <option value="usa">United States</option>
+              <option value="canada">Canada</option>
+              <option value="uk">United Kingdom</option>
+              <option value="australia">Australia</option>
+              <option value="germany">Germany</option>
+            </select>
+          </div>
+          <div class="input-container">
+            <input type="submit" name="Submit Input">
+            <button>Button Submit</button>
+            <input type="reset" value="Reset">
+          </div>
+        </form>
 
         <h2>Your upcoming shifts</h2>
           <ol class="shifts">
