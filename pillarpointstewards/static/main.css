@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Amaranth:700|Nunito:400,400i,700&subset=latin-ext');
 
-/* Reset and Page Setup */
+/* Reset and Page Setup ---------------------------------------------------*/
 
 /* Reset from http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
@@ -69,7 +69,7 @@ body {
 
 
 
-/* Helper styles */
+/* Helper styles ----------------------------------------------------------*/
 
 html {
 	scroll-behavior: smooth;
@@ -178,31 +178,7 @@ a img {
 	vertical-align: bottom;
 }
 
-a.button:link,
-a.button:visited,
-a.button:hover,
-a.button:focus,
-a.button:active,
-button.button {
-	display: inline-block;
-	background-color: #3494CC;
-	color: white;
-	text-decoration: none;
-	padding: 0.5em 0.8em;
-	border-radius: 7px;
-	border: none;
-	cursor: pointer;
-}
-a.button:hover,
-a.button:focus,
-button.button:hover,
-button.button:focus {
-	background-color: #0A4B7D;
-}
-a.button:active,
-button.button:active {
-	background-color: #000000;
-}
+
 
 ul.bullets,
 ul.spaced,
@@ -245,7 +221,49 @@ ul.bullets li {
 	padding: 0;
 	line-height: 0;
 }
-/* Page Furniture */
+
+/* form styles ------------------------------------------------------------*/
+
+a.button:link,
+a.button:visited,
+a.button:hover,
+a.button:focus,
+a.button:active,
+button.button,
+form input[type="submit"],
+form button {
+	display: inline-block;
+	background-color: #3494CC;
+	color: white;
+	text-decoration: none;
+	padding: 0.5em 0.8em;
+	border-radius: 7px;
+	border: none;
+	cursor: pointer;
+}
+a.button:hover,
+a.button:focus,
+button.button:hover,
+button.button:focus {
+	background-color: #0A4B7D;
+}
+a.button:active,
+button.button:active {
+	background-color: #000000;
+}
+form.inline-form,
+form.inline-form * {
+	display: inline;
+}
+form.inline-form input {
+	margin-right: 0.8em;
+	margin-left: 1em;
+}
+form button {}
+
+
+
+/* Page Furniture ---------------------------------------------------------*/
 
 .page {
 	background-color: white;
@@ -446,10 +464,10 @@ footer li {
 }
 
 
-/* General */
+/* General ----------------------------------------------------------------*/
 
 
-/* Components */
+/* Components -------------------------------------------------------------*/
 
 .subnav {
 	border-bottom: 1px solid #3494CC;
@@ -1080,7 +1098,7 @@ footer li {
 }
 
 
-/* button */
+/* people list */
 .shift-assign {
 	font-size: 2rem;
 	margin-top: 1rem;
@@ -1154,7 +1172,7 @@ footer li {
 	margin-bottom: 1rem;
 }
 
-/* Overrides */
+/* Overrides --------------------------------------------------------------*/
 @media (max-width: 55rem) {
 	.title-wrapper {
 		margin-top: 30vw;
