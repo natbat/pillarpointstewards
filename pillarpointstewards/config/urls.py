@@ -18,6 +18,7 @@ def trigger_error(request):
 
 urlpatterns = [
     path("", homepage.index),
+    path("join-program/", homepage.join_program),
     path("login/", auth0_login.login),
     path("signup/", auth0_login.signup),
     path("logout/", auth0_login.logout),

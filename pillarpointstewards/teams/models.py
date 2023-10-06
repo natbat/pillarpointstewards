@@ -1,4 +1,5 @@
 from django.db import models
+import random
 
 
 class Team(models.Model):
@@ -14,6 +15,21 @@ class Team(models.Model):
 
     def get_absolute_url(self):
         return "/programs/{}/".format(self.slug)
+
+
+def generate_code():
+    # Avoid easily confused letters and vowels to avoid accidental swear words
+    return "".join(random.choice("BCDFGHJKMNPQRSTVWXYZ") for i in range(6))
+
+
+class TeamInviteCode(models.Model):
+    "A code that can be used to join a team"
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="codes")
+    code = models.CharField(max_length=6, unique=True, default=generate_code)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return "{} for {}".format(self.code, self.team)
 
 
 class Membership(models.Model):

@@ -9,11 +9,12 @@ from django.contrib.postgres.aggregates import ArrayAgg
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from auth0_login.models import Auth0User
 from .models import Fragment
 from shifts.models import Shift
-from teams.models import Team
+from teams.models import Team, TeamInviteCode
 from auth0_login.utils import active_user_required
 
 
@@ -21,13 +22,33 @@ def index(request):
     if not request.user.is_authenticated:
         return render(request, "index.html")
 
-    # If user is in only one team, redirect them there
     teams = list(Team.objects.filter(members=request.user))
+
+    # if they have no teams, prompt them to enter a code
+    if not teams or "join" in request.GET:
+        return render(request, "join_team.html")
+
+    # If user is in only one team, redirect them there
     if len(teams) == 1:
         return HttpResponseRedirect(teams[0].get_absolute_url())
 
     # Otherwise, show them the team picker
     return render(request, "pick_team.html", {"teams": teams})
+
+
+@login_required
+def join_program(request):
+    if request.method == "POST":
+        try:
+            code = TeamInviteCode.objects.get(
+                code=(request.POST.get("code") or "").strip().upper()
+            )
+        except TeamInviteCode.DoesNotExist:
+            return render(request, "join_team.html", {"error": "Invalid code"})
+        team = code.team
+        team.memberships.get_or_create(user=request.user)
+        return HttpResponseRedirect(team.get_absolute_url())
+    return render(request, "join_team.html")
 
 
 def patterns(request):

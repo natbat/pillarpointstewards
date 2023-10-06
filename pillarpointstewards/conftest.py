@@ -13,11 +13,21 @@ def configure_whitenoise(settings):
 
 
 @pytest.fixture
-def admin_user_has_shift(admin_user):
+def admin_user_in_team(admin_user):
+    from teams.models import Team
+
+    team = Team.objects.get_or_create(name="Pillar Point", slug="pillar-point")[0]
+    team.memberships.get_or_create(user=admin_user)
+    return team
+
+
+@pytest.fixture
+def admin_user_has_shift(admin_user, admin_user_in_team):
     dt = datetime.datetime.utcnow().replace(
         tzinfo=pytz.timezone("America/Los_Angeles")
     ) + datetime.timedelta(hours=96)
     admin_user.shifts.create(
+        team=admin_user_in_team,
         shift_start=dt,
         shift_end=dt + datetime.timedelta(hours=2),
         dawn=dt - datetime.timedelta(hours=1),
@@ -26,13 +36,14 @@ def admin_user_has_shift(admin_user):
 
 
 @pytest.fixture
-def admin_user_has_past_shift(admin_user):
+def admin_user_has_past_shift(admin_user, admin_user_in_team):
     dt = datetime.datetime.utcnow().replace(
         tzinfo=pytz.timezone("America/Los_Angeles")
     ) - datetime.timedelta(hours=96)
     admin_user.shifts.create(
         shift_start=dt,
         shift_end=dt + datetime.timedelta(hours=2),
+        team=admin_user_in_team,
         dawn=dt - datetime.timedelta(hours=1),
         dusk=dt + datetime.timedelta(hours=5),
     )

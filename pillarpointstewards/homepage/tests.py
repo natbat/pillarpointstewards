@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup as Soup
 from shifts.models import Shift
 from django.contrib.auth.models import User
 from .views import render_calendar
+from teams.models import Team, TeamInviteCode
 import datetime
 import pytest
 import pytz
@@ -14,17 +15,51 @@ def test_homepage(client):
     assert not response.context["request"].user.is_authenticated
 
 
-def test_homepage_logged_in(admin_client):
-    response = admin_client.get("/")
-    assert response.context["request"].user.is_authenticated
-    assert response.context["upcoming_shifts"] == []
+@pytest.mark.parametrize("scenario", ("no-teams", "one-team", "two-teams"))
+def test_homepage_logged_in(django_user_model, client, scenario):
+    user = django_user_model(username="testuser")
+    user.is_active = True
+    user.save()
+    if scenario != "no-teams":
+        user.teams.create(name="Team 1", slug="team-1")
+    if scenario == "two-teams":
+        user.teams.create(name="Team 2", slug="team-2")
+    client.force_login(user)
+    response = client.get("/")
+    if scenario == "one-team":
+        assert response.status_code == 302
+        assert response.url == "/programs/team-1/"
+    elif scenario == "two-teams":
+        # They should get to pick
+        assert response.status_code == 200
+        html = response.content.decode("utf-8")
+        assert "/team-1/" in html
+        assert "/team-2/" in html
+    else:
+        # Should get a page prompting them to join a team
+        assert response.status_code == 200
+        assert "enter the code" in response.content.decode("utf-8")
 
 
-def test_homepage_shows_assigned_shifts(
+def test_program_homepage_shows_assigned_shifts(
     admin_client, admin_user_has_shift, admin_user_has_past_shift
 ):
-    response = admin_client.get("/")
+    response = admin_client.get("/programs/pillar-point/")
     assert len(response.context["upcoming_shifts"]) == 1
+
+
+def test_code_to_join_program(admin_client):
+    # Try with bad code
+    response = admin_client.post("/join-program/", {"code": "bad-code"})
+    assert response.status_code == 200
+    assert "Invalid code" in response.content.decode("utf-8")
+    team = Team.objects.get(slug="pillar-point")
+    assert team.members.count() == 0
+    code = TeamInviteCode.objects.create(team=team)
+    response = admin_client.post("/join-program/", {"code": code.code})
+    assert response.status_code == 302
+    assert response.url == "/programs/pillar-point/"
+    assert team.members.count() == 1
 
 
 def test_render_calendar(admin_client, admin_user, rf):
