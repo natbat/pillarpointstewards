@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     "auth0_login",
     "weather",
     "tides",
+    "teams",
 ]
 if not DEBUG:
     INSTALLED_APPS.insert(0, "whitenoise.runserver_nostatic")
