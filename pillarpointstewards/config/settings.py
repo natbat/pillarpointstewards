@@ -84,17 +84,21 @@ INSTALLED_APPS = [
 if not DEBUG:
     INSTALLED_APPS.insert(0, "whitenoise.runserver_nostatic")
 
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-] + (["whitenoise.middleware.WhiteNoiseMiddleware"] if not DEBUG else []) + [
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django_htmx.middleware.HtmxMiddleware",
-]
+MIDDLEWARE = (
+    [
+        "django.middleware.security.SecurityMiddleware",
+    ]
+    + (["whitenoise.middleware.WhiteNoiseMiddleware"] if not DEBUG else [])
+    + [
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.middleware.common.CommonMiddleware",
+        "django.middleware.csrf.CsrfViewMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+        "django.contrib.messages.middleware.MessageMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
+        "django_htmx.middleware.HtmxMiddleware",
+    ]
+)
 
 ROOT_URLCONF = "config.urls"
 
@@ -181,7 +185,7 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 if DEBUG:
-    pass    
+    pass
 else:
     STATIC_ROOT = BASE_DIR / "static-root"
     STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

@@ -329,9 +329,12 @@ def manage_shifts_calculator(request, program_slug):
 
     # Add rendered HTML fragment to each one
     for result in results:
-        result["html"] = render_to_string("_calculator_shift.html", {
-            "shift": result,
-        })
+        result["html"] = render_to_string(
+            "_calculator_shift.html",
+            {
+                "shift": result,
+            },
+        )
 
     return HttpResponse(
         json.dumps(
