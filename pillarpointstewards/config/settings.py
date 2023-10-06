@@ -190,7 +190,9 @@ if DEBUG:
 else:
     STATIC_ROOT = BASE_DIR / "static-root"
     STORAGES = {
-        "staticfiles": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        }
     }
 
 # Don't let non-existent static references, including in commented-out CSS blocks,

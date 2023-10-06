@@ -11,10 +11,6 @@ def configure_whitenoise(settings):
     """
     settings.WHITENOISE_AUTOREFRESH = True
 
-    # To avoid ValueError: Missing staticfiles manifest entry
-    # https://github.com/natbat/pillarpointstewards/issues/16#issuecomment-1071440848
-    STORAGES = {"staticfiles": "django.contrib.staticfiles.storage.StaticFilesStorage"}
-
 
 @pytest.fixture
 def admin_user_has_shift(admin_user):
