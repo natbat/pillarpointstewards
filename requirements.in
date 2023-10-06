@@ -14,3 +14,4 @@ pytest-httpx
 ics==0.7.2
 astral
 django-sql-dashboard>=1.1
+exceptiongroup
