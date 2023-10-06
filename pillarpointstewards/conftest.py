@@ -13,9 +13,7 @@ def configure_whitenoise(settings):
 
     # To avoid ValueError: Missing staticfiles manifest entry
     # https://github.com/natbat/pillarpointstewards/issues/16#issuecomment-1071440848
-    settings.STATICFILES_STORAGE = (
-        "django.contrib.staticfiles.storage.StaticFilesStorage"
-    )
+    STORAGES = {"staticfiles": "django.contrib.staticfiles.storage.StaticFilesStorage"}
 
 
 @pytest.fixture

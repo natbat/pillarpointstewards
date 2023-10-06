@@ -189,7 +189,9 @@ if DEBUG:
     pass
 else:
     STATIC_ROOT = BASE_DIR / "static-root"
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    STORAGES = {
+        "staticfiles": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    }
 
 # Don't let non-existent static references, including in commented-out CSS blocks,
 # cause Django to throw errors:

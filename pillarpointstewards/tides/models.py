@@ -1,7 +1,7 @@
 from astral import LocationInfo, sun
 from django.db import models
 from django.utils.dateparse import parse_datetime
-from django.utils import timezone
+from datetime import timezone
 from urllib.parse import urlencode
 import datetime
 import httpx

@@ -1,6 +1,6 @@
 from astral import LocationInfo, sun
 from django.shortcuts import render
-from django.utils import timezone
+from datetime import timezone
 import datetime
 import pytz
 from .models import TidePrediction

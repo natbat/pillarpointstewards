@@ -1,5 +1,5 @@
 from pytest_django.asserts import assertHTMLEqual
-from django.utils import timezone
+from datetime import timezone
 from .models import TidePrediction, Location, SunriseSunset
 from shifts.models import Shift
 import datetime
