@@ -224,6 +224,9 @@ ul.bullets li {
 
 /* form styles ------------------------------------------------------------*/
 
+form {
+	font-size: 1rem;
+}
 form .input-container {
 	margin-bottom: 0.8em;
 }
@@ -245,9 +248,32 @@ form .input-container label {
 	display: inline-block; 
 	width: 8em 
 }
+
 form .radio-container label, 
-form .checkbox-container label {
+form .checkbox-container label,
+form .slider-combo-container label {
 	width: auto;
+}
+form .block-container label {
+	display: block; 
+	width: 100%;
+	box-sizing: border-box;
+}
+form .slider-combo-container label {
+	margin-right: 0.3rem;
+}
+.slider-combo-container input[type="range"] {
+	display: block;
+	margin-bottom: 1rem;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+input[type="range"] {
+	padding: 0.2rem 0.5rem;
+	font-size: 1rem;
+	position: relative;
+	top: 0.3rem;
 }
 
 p.radio {
@@ -345,7 +371,11 @@ form input[type="reset"]:active {
 	background-color: #000000;
 }
 
-
+form .block-container input {
+	width: 100%;
+	display: block;
+	box-sizing: border-box;
+}
 
 
 /* Page Furniture ---------------------------------------------------------*/
