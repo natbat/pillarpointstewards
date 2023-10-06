@@ -4,8 +4,9 @@ from .models import Shift, ShiftChange, SecretCalendar
 
 class ShiftAdmin(admin.ModelAdmin):
     model = Shift
-    list_display = ("shift_start", "shift_end", "dawn", "dusk", "assigned")
+    list_display = ("shift_start", "shift_end", "team", "dawn", "dusk", "assigned")
     ordering = ("shift_start",)
+    list_filter = ("team",)
 
     def assigned(self, obj):
         return ", ".join(obj.stewards.values_list("username", flat=True))

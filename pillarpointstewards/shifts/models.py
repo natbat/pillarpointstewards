@@ -7,6 +7,14 @@ def random_token():
 
 
 class Shift(models.Model):
+    team = models.ForeignKey(
+        "teams.Team",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="shifts",
+    )
+
     dawn = models.DateTimeField()
     dusk = models.DateTimeField()
 
