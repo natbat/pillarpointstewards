@@ -59,7 +59,7 @@ ALLOWED_HOSTS = [
 if os.environ.get("ALLOWED_HOSTS_STAR"):
     ALLOWED_HOSTS.append("*")
 
-CSRF_TRUSTED_ORIGINS = ["https://www.pillarpointstewards.com", "https://*.app.github.dev"]
+CSRF_TRUSTED_ORIGINS = ["https://www.pillarpointstewards.com", "http://localhost:8000"]
 
 LOGIN_URL = "/login/"
 
