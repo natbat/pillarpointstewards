@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <section class="page-title">
+      <div class="title-wrapper stretch">
+        <h1 class="text"><span>You are logged in as {{ request.user }}</span></h1>
+        <div class="page-controls">
+            <a class="loginout" href="/logout/">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg> Logout</a>
+            {% if request.user.is_staff or request.user.is_superuser %}
+              &nbsp; &nbsp; <a class="loginout" href="/admin/">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg> Admin</a>
+              &nbsp; &nbsp; <a class="loginout" href="/dashboard/">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg> Dashboard</a>
+            {% endif %}
+        </div>
+      </div>
+    </section> <!-- end .page-title -->
+
+    <section class="content">
+      <div class="primary">
+        {% if upcoming_shifts %}
+          <h2>Your upcoming shifts</h2>
+          <ol class="shifts">
+            {% for shift in upcoming_shifts %}
+              <li class="shift">
+                <a href="/shifts/{{ shift.pk }}/" class="shift-link">
+                  <h3 class="date" title="{{ shift.shift_start.date }}">
+                    <span class="day">{{ shift.shift_start|date:"jS" }}</span> <span class="month">{{ shift.shift_start|date:"F" }}</span>
+                  </h3>
+                  
+                  <p class="shifttimes">On shift from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }} {{ shift.shift_start|date:"D" }}&nbsp;{{ shift.shift_start|date:"jS" }} {{ shift.shift_start|date:"F" }}&nbsp;{{ shift.shift_start|date:"Y" }}</p>
+                  {% if shift.mllw_feet %}
+                    <p class="lowtide"><strong>Low tide:</strong> {{ shift.mllw_feet }}ft at {{ shift.lowest_tide|date:"g:iA"|lower }}</p>
+                  {% endif %}
+                  <p class="stewards"><strong>Stewards <em>({{ shift.stewards.count }}{% if shift.target_stewards %}/{{ shift.target_stewards }}{% endif %})</em>:</strong>
+                    {% for steward in shift.stewards.all %}{{ steward }} {% if not forloop.last %}, {% endif %}{% endfor %}
+                  </p>
+                </a>
+              </li>
+            {% endfor %}
+          </ol>
+          <form action="/shifts/calendar-instructions/" method="POST">{% csrf_token %}
+            <p><button style="font-size: 0.7em" class="button">Subscribe to your shifts in your calendar</button></p>
+          </form>
+        {% endif %}
+        <!-- <h2>Your past shifts</h2> -->
+
+        <h2>Calendar of upcoming shifts</h2>
+        {% for calendar in calendars %}
+          {{ calendar }}
+          {% if forloop.first %}
+            <h3>Key</h3>
+            <ul class="calkey">
+              <li class="yours">Your shift</li> <li class="available">volunteers needed</li> <li class="partfull">partly full shift</li> <li class="full">fully staffed shift</li>
+            </ul>
+          {% endif %}
+        {% endfor %}
+        <br>
+
+        <p class="intro">
+          <a href="/shifts/">Agenda view of shifts</a> &middot;
+          <a href="/materials/">Volunteer training materials</a>
+        </p>
+      </div>
+      <div class="secondary pull-out">
+          {{ contact_details|safe }}
+      </div> <!-- end .secondary -->
+      </section>
+{% endblock %}

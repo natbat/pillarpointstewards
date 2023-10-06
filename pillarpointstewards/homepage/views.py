@@ -6,57 +6,28 @@ from django.conf import settings
 from django.db import connection
 from django.db.models import Q
 from django.contrib.postgres.aggregates import ArrayAgg
-from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.contrib.auth.models import User
 from auth0_login.models import Auth0User
 from .models import Fragment
 from shifts.models import Shift
+from teams.models import Team
 from auth0_login.utils import active_user_required
 
 
 def index(request):
-    upcoming_shifts = []
-    contact_details = ""
-    calendars = []
-    user_is_inactive = False
-    if request.user.is_authenticated:
-        if request.user.is_active:
-            _24_hours_ago = datetime.datetime.utcnow().replace(
-                tzinfo=pytz.timezone("America/Los_Angeles")
-            ) - datetime.timedelta(days=1)
-            upcoming_shifts = list(
-                request.user.shifts.filter(shift_start__gt=_24_hours_ago).order_by(
-                    "shift_start"
-                )
-            )
-            contact_details = Fragment.objects.get(slug="contact_details").fragment
-            # Show calendar for next three months
-            month_now = datetime.datetime.utcnow().date().replace(day=1)
-            calendars = []
-            for i in range(4):
-                month = month_now.month + i
-                year = month_now.year
-                if month > 12:
-                    year += 1
-                    month = 1
-                calendars.append(render_calendar(request, year, month))
+    if not request.user.is_authenticated:
+        return render(request, "index.html")
 
-        else:
-            user_is_inactive = True
+    # If user is in only one team, redirect them there
+    teams = list(Team.objects.filter(members=request.user))
+    if len(teams) == 1:
+        return HttpResponseRedirect(teams[0].get_absolute_url())
 
-    return render(
-        request,
-        "index.html",
-        {
-            # TODO: upcoming only, taking timezone into account
-            "upcoming_shifts": upcoming_shifts,
-            "contact_details": contact_details,
-            "calendars": calendars,
-            "user_is_inactive": user_is_inactive,
-        },
-    )
+    # Otherwise, show them the team picker
+    return render(request, "pick_team.html", {"teams": teams})
 
 
 def patterns(request):
@@ -70,7 +41,7 @@ def next_month(month):
         return month.replace(month=month.month + 1)
 
 
-def render_calendar(request, year, month):
+def render_calendar(request, team, year, month):
     cal = calendar.Calendar()
     month_start = datetime.datetime(
         year, month, 1, tzinfo=pytz.timezone("America/Los_Angeles")
@@ -79,6 +50,7 @@ def render_calendar(request, year, month):
     shifts_by_date = {
         shift.shift_start.date(): shift
         for shift in Shift.objects.filter(
+            team=team,
             shift_start__gte=month_start,
             shift_start__lt=next_month_start,
         )
@@ -209,4 +181,44 @@ def materials(request):
 
 
 def program_index(request, program_slug):
-    return HttpResponse("TODO: build this page")
+    team = get_object_or_404(Team, slug=program_slug)
+    if not request.user.is_authenticated:
+        return HttpResponse("You need to sign in to view this page", status=401)
+    if not request.user.is_active:
+        return HttpResponse("Your account is inactive", status=403)
+    # They need to be a member of this team
+    if not team.members.filter(id=request.user.id).exists():
+        return HttpResponse("You are not a member of this team", status=403)
+
+    upcoming_shifts = []
+    contact_details = ""
+    calendars = []
+    _24_hours_ago = datetime.datetime.utcnow().replace(
+        tzinfo=pytz.timezone("America/Los_Angeles")
+    ) - datetime.timedelta(days=1)
+    upcoming_shifts = list(
+        request.user.shifts.filter(team=team, shift_start__gt=_24_hours_ago).order_by(
+            "shift_start"
+        )
+    )
+    contact_details = Fragment.objects.get(slug="contact_details").fragment
+    # Show calendar for next three months
+    month_now = datetime.datetime.utcnow().date().replace(day=1)
+    calendars = []
+    for i in range(4):
+        month = month_now.month + i
+        year = month_now.year
+        if month > 12:
+            year += 1
+            month = 1
+        calendars.append(render_calendar(request, team, year, month))
+    return render(
+        request,
+        "program_index.html",
+        {
+            "upcoming_shifts": upcoming_shifts,
+            "contact_details": contact_details,
+            "calendars": calendars,
+            "team": team,
+        },
+    )

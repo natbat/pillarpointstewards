@@ -1,7 +1,7 @@
 {% load static %}<!DOCTYPE html>
 <html lang="en">
 <head>
-<title>{% block title %}Pillar Point Tidepool Stewards{% endblock %}</title>
+<title>{% block title %}{{ team.name }} Tidepool Stewards{% endblock %}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="apple-touch-icon" sizes="180x180" href="{% static "apple-touch-icon.png" %}">
 <link rel="icon" type="image/png" sizes="32x32" href="{% static "favicon-32x32.png" %}">
@@ -16,7 +16,7 @@
 
 <header class="section">
   <div class="stretch">
-    <a href="/" class="title-link"><h1 class="title"><span class="location">Pillar Point</span> <em>Tidepool Stewards</em></h1></a>
+    <a href="/" class="title-link"><h1 class="title"><span class="location">{{ team.name }}</span> <em>Tidepool Stewards</em></h1></a>
     
   </div>
 </header> <!-- end header -->
