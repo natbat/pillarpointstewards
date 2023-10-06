@@ -63,7 +63,7 @@ body {
 	padding: 0;
 	font-family: 'Nunito', Avenir, sans-serif;
     font-weight: 400;
-	font-size: 16px;
+	font-size: 16px; /* if this is ever lower than 16: update form inputs to be 16 to avoid auto zoom on mobile */
 	line-height: 1.25;
 }
 
@@ -240,6 +240,7 @@ form button {
 	border-radius: 7px;
 	border: none;
 	cursor: pointer;
+	font-size: 1rem;
 }
 a.button:hover,
 a.button:focus,
@@ -251,15 +252,31 @@ a.button:active,
 button.button:active {
 	background-color: #000000;
 }
+
+form input,
+form input:focus,
+form input:hover,
+form input:active {
+	border: 1px solid #000000;
+	padding: 0.2em 0.5em;
+	font-size: 1rem; /* 16px */
+}
+form input:focus,
+form input:hover {
+	border-style: dotted;
+}
 form.inline-form,
 form.inline-form * {
 	display: inline;
 }
 form.inline-form input {
-	margin-right: 0.8em;
+	margin-right: 0.5em;
 	margin-left: 1em;
 }
-form button {}
+form.inline-form button {
+	padding-top: 0.3em;
+	padding-bottom: 0.2em;
+}
 
 
 
