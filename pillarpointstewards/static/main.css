@@ -226,6 +226,10 @@ ul.bullets li {
 
 form {
 	font-size: 1rem;
+	margin-bottom: 2em;
+}
+form .meta {
+	margin-top: 0.4em;
 }
 form .input-container {
 	margin-bottom: 0.8em;
