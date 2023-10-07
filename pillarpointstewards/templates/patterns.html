@@ -68,6 +68,9 @@
 
         <form action="#" method="POST">
           <div class="input-container">
+            <button onclick="Array.from(document.querySelectorAll('.input-container')).forEach(el => el.classList.toggle('block-container')); return false;">Toggle .block-container on all .input-container elements</button></p>
+          </div>
+          <div class="input-container">
             <label for="inputIDhere">This is a label</label>
             <input type="text" id="inputIDhere" name="inputIDhere">
           </div>
