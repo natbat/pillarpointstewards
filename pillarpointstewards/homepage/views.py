@@ -241,5 +241,8 @@ def program_index(request, program_slug):
             "contact_details": contact_details,
             "calendars": calendars,
             "team": team,
+            "is_team_admin": team.memberships.filter(
+                user=request.user, is_admin=True
+            ).exists(),
         },
     )

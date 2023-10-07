@@ -14,6 +14,7 @@ from auth0_login.utils import active_user_required
 from homepage.models import Fragment
 from tides.views import tide_times_svg_context_for_date
 from tides.models import Location
+from teams.models import Team
 import json
 import secrets
 
@@ -212,6 +213,7 @@ def calendar_instructions(request):
 
 @active_user_required
 def manage_shifts(request, program_slug):
+    team = get_object_or_404(Team, slug=program_slug)
     # Ensure sunrise/sunset times for all locations - should really do it just for this one
     # once we have a mapping of program_slug to location
     for location in Location.objects.all():
@@ -221,6 +223,7 @@ def manage_shifts(request, program_slug):
         "manage_shifts.html",
         {
             "program_slug": program_slug,
+            "team": team,
         },
     )
 
@@ -314,6 +317,8 @@ def manage_shifts_calculator(request, program_slug):
     # Get JSON from incoming request
     data = json.loads(request.body)
 
+    team = get_object_or_404(Team, slug=program_slug)
+
     with connection.cursor() as cursor:
         cursor.execute(
             CALCULATOR_SQL,
@@ -336,11 +341,25 @@ def manage_shifts_calculator(request, program_slug):
             },
         )
 
+    # Can't calculate this yet, because we are missing the logic that figures out
+    # the actual start and end time of each shift
+    average_shift_length = None
+
     return HttpResponse(
         json.dumps(
             {
                 "input": data,
                 "results": results,
+                "top_block": render_to_string(
+                    "_calculator_top_block.html",
+                    {
+                        # TODO: Should this be future only?
+                        "num_confirmed_shifts": team.shifts.count(),
+                        "num_suggested_shifts": len(results),
+                        "num_combined_shifts": team.shifts.count() + len(results),
+                        "average_shift_length": average_shift_length,
+                    },
+                ),
             },
             default=str,
         ),
