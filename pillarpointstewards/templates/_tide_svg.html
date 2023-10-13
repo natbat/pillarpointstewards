@@ -11,10 +11,10 @@
       #176AB8 100%
       );
     ">
-      {% if tide_times_svg.shift %}
+      {% if tide_times_svg.shift_start_pct %}
         <div class="shift-window" style="left:{{ tide_times_svg.shift_start_pct }}%; width: {{ tide_times_svg.shift_width_pct }}%;">
-          <span class="start-time">{{ tide_times_svg.shift.shift_start|date:"g:iA"|lower }}</span>
-          <span class="end-time">{{ tide_times_svg.shift.shift_end|date:"g:iA"|lower }}</span>
+          <span class="start-time">{{ tide_times_svg.shift_start|date:"g:iA"|lower }}</span>
+          <span class="end-time">{{ tide_times_svg.shift_end|date:"g:iA"|lower }}</span>
         </div>
       {% endif %}
       <svg style="width: 100%; height: 60px; opacity: 0.5" viewBox="0 -2 240 104" preserveAspectRatio="none">

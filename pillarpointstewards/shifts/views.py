@@ -1,4 +1,4 @@
-from curses.ascii import HT
+import datetime
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -12,7 +12,7 @@ from .models import Shift, ShiftChange, SecretCalendar
 from .ics_utils import calendar
 from auth0_login.utils import active_user_required
 from homepage.models import Fragment
-from tides.views import tide_times_svg_context_for_shift
+from tides.views import tide_times_svg_context_for_shift, tide_times_svg_context
 from tides.models import Location
 from teams.models import Team
 import json
@@ -309,6 +309,18 @@ where
 """
 
 
+def duration_in_minutes(start: datetime.time, end: datetime.time) -> float:
+    start_dt = datetime.datetime.combine(datetime.date.today(), start)
+    end_dt = datetime.datetime.combine(datetime.date.today(), end)
+
+    # Handle cases where end time is on the next day
+    if end < start:
+        end_dt += datetime.timedelta(days=1)
+
+    delta = end_dt - start_dt
+    return delta.total_seconds() / 60
+
+
 @csrf_exempt
 @active_user_required
 def manage_shifts_calculator(request, program_slug):
@@ -316,6 +328,11 @@ def manage_shifts_calculator(request, program_slug):
     data = json.loads(request.body)
 
     team = get_object_or_404(Team, slug=program_slug)
+
+    shift_buffer_before = data["shift-buffer-before"]
+    shift_buffer_after = data["shift-buffer-after"]
+    earliest_shift_time_buffer = data["earliest-shift-time-buffer"]
+    shortest_shift_duration = data["shortest-shift-duration"]
 
     with connection.cursor() as cursor:
         cursor.execute(
@@ -331,6 +348,47 @@ def manage_shifts_calculator(request, program_slug):
         # Convert the results into a list of dictionaries
         results = [dict(zip(column_names, row)) for row in cursor.fetchall()]
 
+    # Add a "start" and "end" field to each result
+    for tide in results:
+        low_tide_dt = tide["low_tide_datetime"]
+        new_start = low_tide_dt - datetime.timedelta(hours=shift_buffer_before)
+        new_end = low_tide_dt + datetime.timedelta(hours=shift_buffer_after)
+        dawn = datetime.datetime.combine(tide["day"], tide["dawn"], datetime.UTC)
+        dusk = datetime.datetime.combine(tide["day"], tide["dusk"], datetime.UTC)
+        pretend_dawn = dawn + datetime.timedelta(hours=earliest_shift_time_buffer)
+
+        if pretend_dawn > new_start:
+            new_start = pretend_dawn
+        if dusk < new_end:
+            new_end = dusk
+
+        tide["start_not_rounded"] = new_start.time()
+        tide["start"] = round_to_fifteen_minutes(new_start).time()
+        tide["end_not_rounded"] = new_end.time()
+        tide["end"] = round_to_fifteen_minutes(new_end).time()
+
+        tide["tide_times_svg"] = tide_times_svg_context(
+            date=tide["day"],
+            shift_start=datetime.datetime.combine(tide["day"], tide["start"]),
+            shift_end=datetime.datetime.combine(tide["day"], tide["end"]),
+            latitude=team.location.latitude,
+            longitude=team.location.longitude,
+            time_zone=team.location.time_zone,
+            station_id=team.location.station_id,
+            low_tide_time=tide["low_tide_datetime"],
+        )
+
+    # Filter out the shifts that are too short
+    results_filtered = []
+    for result in results:
+        if (
+            duration_in_minutes(result["start"], result["end"])
+            >= shortest_shift_duration
+        ):
+            results_filtered.append(result)
+
+    results = results_filtered
+
     # Add rendered HTML fragment to each one
     for result in results:
         result["html"] = render_to_string(
@@ -339,7 +397,6 @@ def manage_shifts_calculator(request, program_slug):
                 "shift": result,
             },
         )
-
     # Can't calculate this yet, because we are missing the logic that figures out
     # the actual start and end time of each shift
     average_shift_length = None
@@ -367,10 +424,11 @@ def manage_shifts_calculator(request, program_slug):
 
 
 def round_to_fifteen_minutes(dt):
-    seconds_in_15_mins = 15 * 60
-    # Convert the datetime object to the number of seconds since the Unix epoch
-    epoch_time = int((dt - datetime(1970, 1, 1)).total_seconds())
-    # Round to the nearest 15 minutes
-    rounded_time = round(epoch_time / seconds_in_15_mins) * seconds_in_15_mins
-    # Convert back to a datetime object
-    return datetime(1970, 1, 1) + timedelta(seconds=rounded_time)
+    fifteen_minutes = datetime.timedelta(minutes=15)
+    dt_min = datetime.datetime.min.replace(tzinfo=datetime.UTC)
+    total_seconds = (dt - dt_min).total_seconds()
+    rounded_seconds = (
+        round(total_seconds / fifteen_minutes.total_seconds())
+        * fifteen_minutes.total_seconds()
+    )
+    return dt_min + datetime.timedelta(seconds=rounded_seconds)

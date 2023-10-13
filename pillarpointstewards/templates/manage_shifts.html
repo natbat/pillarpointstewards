@@ -127,7 +127,6 @@ function monitorForm(formElement) {
         .then(response => response.json())
         .then(data => {
             let html = data.results.map(result => result.html).join('\n');
-            html = `<span>${JSON.stringify(data.input)}</span>${html}`;
             document.querySelector('#calculator-results').innerHTML = data.top_block + html;
 
         })

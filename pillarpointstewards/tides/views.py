@@ -19,9 +19,39 @@ def time_to_float(s):
 
 def tide_times_svg_context_for_shift(shift):
     date = shift.shift_start.replace(hour=0, minute=0, second=0)
+    shift_start = shift.shift_start
+    shift_end = shift.shift_end
+    latitude = shift.team.location.latitude
+    longitude = shift.team.location.longitude
+    time_zone = shift.team.location.time_zone
+    station_id = shift.team.location.station_id
+    low_tide_time = shift.lowest_tide
+    return tide_times_svg_context(
+        date,
+        shift_start,
+        shift_end,
+        latitude,
+        longitude,
+        time_zone,
+        station_id,
+        low_tide_time,
+    )
+
+
+def tide_times_svg_context(
+    date,
+    shift_start,
+    shift_end,
+    latitude,
+    longitude,
+    time_zone,
+    station_id,
+    low_tide_time,
+):
+    date = date.replace(hour=0, minute=0, second=0)
     predictions = list(
         TidePrediction.objects.filter(
-            station_id=shift.team.location.station_id,
+            station_id=station_id,
             dt__gte=date,
             dt__lt=date + datetime.timedelta(days=1),
         ).values()
@@ -50,12 +80,12 @@ def tide_times_svg_context_for_shift(shift):
         svg_points.append((i, line_height_pct))
 
     location_info = LocationInfo(
-        latitude=shift.team.location.latitude,
-        longitude=shift.team.location.longitude,
-        timezone=shift.team.location.time_zone,
+        latitude=latitude,
+        longitude=longitude,
+        timezone=time_zone,
     )
     astral_info = sun.sun(location_info.observer, date=date)
-    tz = pytz.timezone(shift.team.location.time_zone)
+    tz = pytz.timezone(time_zone)
 
     astral_pcts = {
         "{}_pct".format(key): round(
@@ -74,20 +104,18 @@ def tide_times_svg_context_for_shift(shift):
         "astral": astral_pcts,
     }
 
-    shift_start_pct = round(
-        100 * time_to_float(shift.shift_start.time().isoformat()), 2
-    )
-    context["shift"] = shift
+    shift_start_pct = round(100 * time_to_float(shift_start.time().isoformat()), 2)
+    context["shift_start"] = shift_start
     context["shift_start_pct"] = shift_start_pct
+    context["shift_end"] = shift_end
     context["shift_width_pct"] = (
-        round(100 * time_to_float(shift.shift_end.time().isoformat()), 2)
-        - shift_start_pct
+        round(100 * time_to_float(shift_end.time().isoformat()), 2) - shift_start_pct
     )
 
-    if shift.lowest_tide:
-        context["low_tide_time"] = shift.lowest_tide
+    if low_tide_time:
+        context["low_tide_time"] = low_tide_time
         context["low_tide_time_pct"] = round(
-            100 * time_to_float(shift.lowest_tide.time().isoformat()), 2
+            100 * time_to_float(low_tide_time.time().isoformat()), 2
         )
 
     return context
