@@ -1373,13 +1373,30 @@ a.person-mini:active {
 .shift-mini {
 	position: relative;
 	padding-top: 1.26em;
+	margin-bottom: 1em;
 }
 .shift-mini .shift-content {
 	border: 1px solid black;
 	padding-right: 3em;
 	position: relative;
 	padding: 0.8em;
+	background-color: white;
 }
+.shift-confirmed .shift-content {
+	background-color: rgba(154, 205, 49, 0.3);
+	border-color: #9ACD31;
+}
+.shift-confirmed a:link,
+.shift-confirmed a:visited {
+	color: rgba(0, 0, 0, 0.7);
+}
+.shift-confirmed a:hover,
+.shift-confirmed a:focus,
+.shift-confirmed a:active,
+.shift-confirmed .day-view .minima .time {
+	color: rgba(0, 0, 0, 0.5);
+}
+
 .shift-mini .shift-title {
 	text-decoration: none;
 	font-style: normal;
@@ -1424,6 +1441,10 @@ ul.shift-actions .shift-status {
 	color: white;
 	text-transform: uppercase;
 	padding: 0.1429em 0.3em
+}
+.shift-confirmed ul.shift-actions .shift-status {
+	background-color: #9ACD31;
+	border-color: #9ACD31;
 }
 .shift-mini .shift-type {
 	position: absolute;
