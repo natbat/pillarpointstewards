@@ -81,10 +81,9 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Listen to input events on all input and range elements
-    document.querySelectorAll('input[type="number"], input[type="range"]').forEach(function(input) {
+    document.querySelectorAll('input[type="number"],input[type="range"]').forEach(function(input) {
         input.addEventListener('input', function() {
             let matchedInput;
-
             if (input.type === "number") {
                 // If this is a number input, find the corresponding range input by prefixing the name with "range_"
                 matchedInput = document.querySelector(`input[name="range_${input.name}"]`);
@@ -93,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const numberName = input.name.replace("range_", "");
                 matchedInput = document.querySelector(`input[name="${numberName}"]`);
             }
-
             if (matchedInput) {
                 matchedInput.value = input.value;
             }
@@ -128,7 +126,6 @@ function monitorForm(formElement) {
         .then(data => {
             let html = data.results.map(result => result.html).join('\n');
             document.querySelector('#calculator-results').innerHTML = data.top_block + html;
-
         })
         .catch(error => {
             document.querySelector('#calculator-results').innerText = JSON.stringify(error, null, 2);

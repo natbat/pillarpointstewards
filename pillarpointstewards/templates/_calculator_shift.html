@@ -1,4 +1,4 @@
-<div class="shift-mini">
+<div class="shift-mini shift-suggested">
   <div class="shift-content">
     <!-- Style wise it doesnt matter which heading level we use, use what ever is right for accessibility -->
     <h2 class="shift-title"><a href="#">{{ shift.day|date:"D, F jS Y" }}</a></h2>
@@ -9,12 +9,15 @@
         {% include "_tide_svg.html" %}
       {% endwith %}
     </div>
-    <p><span class="context-text">Currently scheduled: </span><a href="#linktoperson" class="person-mini"><img alt="" src="#">Simon Willison</a><span class="context-text"> and </span><a href="#linktoperson" class="person-mini"><img alt="" src="#">Natalie Downe</a></p>
+    <!--
+      <p><span class="context-text">Currently scheduled: </span><a href="#linktoperson" class="person-mini"><img alt="" src="#">Simon Willison</a><span class="context-text"> and </span><a href="#linktoperson" class="person-mini"><img alt="" src="#">Natalie Downe</a></p>
+    -->
   </div> <!-- .shift-content -->
   <!-- This is below the shift content for accessibity -->
   <ul class="shift-actions">
-    <li class="shift-status"><p><em class="context-text">Shift status: </em><span>Confirmed</span></p></li>
-    <li><a href="#">edit</a></li>
-    <li><a href="#">cancel</a></li>
+    <li class="shift-status"><p><em class="context-text">Shift status: </em><span>Suggested</span></p></li>
+    <li><a href="#" class="button">confirm</a></li>
+    <!-- <li><a href="#">edit</a></li> 
+    <li><a href="#">cancel</a></li> -->
   </ul>
 </div> <!-- .shift-mini -->
