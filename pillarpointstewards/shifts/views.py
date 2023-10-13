@@ -12,7 +12,7 @@ from .models import Shift, ShiftChange, SecretCalendar
 from .ics_utils import calendar
 from auth0_login.utils import active_user_required
 from homepage.models import Fragment
-from tides.views import tide_times_svg_context_for_date
+from tides.views import tide_times_svg_context_for_shift
 from tides.models import Location
 from teams.models import Team
 import json
@@ -37,9 +37,7 @@ def shift(request, shift_id):
             "stewards": stewards,
             "contact_details": Fragment.objects.get(slug="contact_details").fragment,
             "forecast": Forecast.for_date(shift.shift_start.date()),
-            "tide_times_svg": tide_times_svg_context_for_date(
-                shift.shift_start.replace(hour=0, minute=0, second=0)
-            ),
+            "tide_times_svg": tide_times_svg_context_for_shift(shift),
         },
     )
 

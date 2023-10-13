@@ -17,10 +17,13 @@ def time_to_float(s):
     return hh / 24 + ((mm / 60) * (1 / 24)) + ((ss / 60) * (1 / 24 / 60))
 
 
-def tide_times_svg_context_for_date(date):
+def tide_times_svg_context_for_shift(shift):
+    date = shift.shift_start.replace(hour=0, minute=0, second=0)
     predictions = list(
         TidePrediction.objects.filter(
-            dt__gte=date, dt__lt=date + datetime.timedelta(days=1)
+            station_id=shift.team.location.station_id,
+            dt__gte=date,
+            dt__lt=date + datetime.timedelta(days=1),
         ).values()
     )
 
@@ -47,10 +50,12 @@ def tide_times_svg_context_for_date(date):
         svg_points.append((i, line_height_pct))
 
     location_info = LocationInfo(
-        latitude=37.495182, longitude=-122.5003437, timezone="America/Los_Angeles"
+        latitude=shift.team.location.latitude,
+        longitude=shift.team.location.longitude,
+        timezone=shift.team.location.time_zone,
     )
     astral_info = sun.sun(location_info.observer, date=date)
-    tz = pytz.timezone("America/Los_Angeles")
+    tz = pytz.timezone(shift.team.location.time_zone)
 
     astral_pcts = {
         "{}_pct".format(key): round(
@@ -69,21 +74,17 @@ def tide_times_svg_context_for_date(date):
         "astral": astral_pcts,
     }
 
-    try:
-        shift = Shift.objects.get(shift_start__date=date)
-        shift_start_pct = round(
-            100 * time_to_float(shift.shift_start.time().isoformat()), 2
-        )
-        context["shift"] = shift
-        context["shift_start_pct"] = shift_start_pct
-        context["shift_width_pct"] = (
-            round(100 * time_to_float(shift.shift_end.time().isoformat()), 2)
-            - shift_start_pct
-        )
-    except Shift.DoesNotExist:
-        shift = None
+    shift_start_pct = round(
+        100 * time_to_float(shift.shift_start.time().isoformat()), 2
+    )
+    context["shift"] = shift
+    context["shift_start_pct"] = shift_start_pct
+    context["shift_width_pct"] = (
+        round(100 * time_to_float(shift.shift_end.time().isoformat()), 2)
+        - shift_start_pct
+    )
 
-    if shift and shift.lowest_tide:
+    if shift.lowest_tide:
         context["low_tide_time"] = shift.lowest_tide
         context["low_tide_time_pct"] = round(
             100 * time_to_float(shift.lowest_tide.time().isoformat()), 2
