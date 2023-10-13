@@ -214,7 +214,7 @@ ul.bullets li {
 .context-text {
 	/* for accessibility and hiden from sight */
 	text-indent: -999em;
-	display: block;
+	display: inline-block;
 	width:0;
 	overflow: hidden;
 	margin: 0;
@@ -1252,7 +1252,8 @@ footer li {
 .people-list .context {
 	color: #84a5be;
 }
-.people-list .pic {
+.people-list .pic,
+.person-mini img {
 	overflow: hidden;
 	border-radius: 50%;
 	background-color: #F7941D;
@@ -1267,6 +1268,34 @@ footer li {
 }
 .people-list .name {
 	font-size: 1.25rem;
+}
+
+a.person-mini:link,
+a.person-mini:visited,
+a.person-mini:hover,
+a.person-mini:focus,
+a.person-mini:active {
+	width: 1em;
+	height: 1em;
+	overflow: hidden;
+	text-indent: -999em;
+	display: inline-block;
+	position: relative;
+	top: 0.15em;
+	margin: 0 0.2em 0 0;
+}
+
+a.person-mini:hover,
+a.person-mini:focus,
+a.person-mini:active {
+	opacity: 0.65;
+}
+
+.person-mini img {
+    height: 1rem;
+    width: 1rem;
+    float: left;
+    margin: 0 0 0 0;
 }
 
 .timeline {
@@ -1344,12 +1373,12 @@ footer li {
 .shift-mini {
 	position: relative;
 	padding-top: 1.26em;
-	border: 1px solid lime;
 }
 .shift-mini .shift-content {
 	border: 1px solid black;
 	padding-right: 3em;
 	position: relative;
+	padding: 0.8em;
 }
 .shift-mini .shift-title {
 	text-decoration: none;
@@ -1357,8 +1386,15 @@ footer li {
 	font-weight: normal;
 	font-family: inherit;
 	font-size: 1.5rem;
-	margin-bottom: 0.75rem;
+	margin-bottom: 0.2rem;
 	margin-top: 0;
+}
+.shift-mini p {
+	margin: 0;
+}
+.shift-mini .day-alone {
+	margin: 0;
+	padding: 0;
 }
 ul.shift-actions {
 	position: absolute;
@@ -1376,6 +1412,10 @@ ul.shift-actions p {
 	padding: 0;
 	list-style-type: none;
 	display: inline
+}
+ul.shift-actions li {
+	margin-right: 0.5em;
+	padding-bottom: 0.3em;
 }
 ul.shift-actions .shift-status {
 	border: 1px solid black;
@@ -1400,6 +1440,7 @@ ul.shift-actions .shift-status {
     font-size: 1.5em;
     width: 8rem;
     text-transform: uppercase;
+	display: none;
 }
 
 /* Overrides --------------------------------------------------------------*/
