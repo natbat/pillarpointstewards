@@ -9,6 +9,9 @@ class Team(models.Model):
     members = models.ManyToManyField(
         "auth.User", through="Membership", related_name="teams"
     )
+    location = models.ForeignKey(
+        "tides.Location", on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     def __str__(self):
         return self.name

@@ -239,10 +239,10 @@ with tides_with_previous_and_next as (
     lead(tide_predictions.mllw_feet) over win as next_mllw_feet
   from
     tides_tideprediction tide_predictions
+  where station_id = %(station_id)s
   window win as (
-      order by
-        tide_predictions.dt
-    )
+    order by tide_predictions.dt
+  )
 ),
 -- "low tides" are tides where the previous/next measurement are higher
 low_tides as (
@@ -271,7 +271,7 @@ low_tides_during_daylight as (
   from
     low_tides
     join tides_sunrisesunset on tides_sunrisesunset.day = low_tides.day
-    and tides_sunrisesunset.location_id = 1
+    and tides_sunrisesunset.location_id = %(location_id)s
   where
     low_tides.datetime :: time > tides_sunrisesunset.dawn
     and low_tides.datetime :: time < tides_sunrisesunset.dusk
@@ -325,10 +325,11 @@ def manage_shifts_calculator(request, program_slug):
             {
                 "tide_weekday": data["weekday-low-tide"],
                 "tide_weekend": data["weekend-low-tide"],
+                "location_id": team.location.id,
+                "station_id": team.location.station_id,
             },
         )
         column_names = [col[0] for col in cursor.description]
-
         # Convert the results into a list of dictionaries
         results = [dict(zip(column_names, row)) for row in cursor.fetchall()]
 
