@@ -230,7 +230,7 @@ CALCULATOR_SQL = """
 -- for each tide we need to know the previous/next tide to find low ones
 with tides_with_previous_and_next as (
   select
-    tide_predictions.dt as datetime,
+    tide_predictions.dt as low_tide_datetime,
     date_trunc('day', tide_predictions.dt) as day,
     tide_predictions.mllw_feet,
     lag(tide_predictions.mllw_feet) over win as previous_mllw_feet,
@@ -246,7 +246,7 @@ with tides_with_previous_and_next as (
 low_tides as (
   select
     day,
-    datetime,
+    low_tide_datetime,
     mllw_feet
   from
     tides_with_previous_and_next
@@ -260,7 +260,7 @@ low_tides as (
 low_tides_during_daylight as (
   select
     low_tides.day,
-    low_tides.datetime,
+    low_tides.low_tide_datetime,
     low_tides.mllw_feet,
     tides_sunrisesunset.dawn,
     tides_sunrisesunset.sunrise,
@@ -271,14 +271,14 @@ low_tides_during_daylight as (
     join tides_sunrisesunset on tides_sunrisesunset.day = low_tides.day
     and tides_sunrisesunset.location_id = %(location_id)s
   where
-    low_tides.datetime :: time > tides_sunrisesunset.dawn
-    and low_tides.datetime :: time < tides_sunrisesunset.dusk
+    low_tides.low_tide_datetime :: time > tides_sunrisesunset.dawn
+    and low_tides.low_tide_datetime :: time < tides_sunrisesunset.dusk
 ),
 -- now we want just the first from each day
 earliest_daylight_low_tides as (
   select
     lt1.day,
-    lt1.datetime,
+    lt1.low_tide_datetime,
     lt1.mllw_feet,
     lt1.dawn,
     lt1.sunrise,
@@ -287,10 +287,10 @@ earliest_daylight_low_tides as (
   from
     low_tides_during_daylight lt1
     left join low_tides_during_daylight lt2 on lt1.day = lt2.day
-    and lt1.datetime > lt2.datetime
+    and lt1.low_tide_datetime > lt2.low_tide_datetime
   where
     -- this will be null if the day has no later tide
-    lt2.datetime is null
+    lt2.low_tide_datetime is null
 )
 -- and finally, filter based on tide_weekday and tide_weekend inputs
 select
