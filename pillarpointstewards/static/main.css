@@ -1341,6 +1341,67 @@ footer li {
 	margin-bottom: 0.8em;
 }
 
+.shift-mini {
+	position: relative;
+	padding-top: 1.26em;
+	border: 1px solid lime;
+}
+.shift-mini .shift-content {
+	border: 1px solid black;
+	padding-right: 3em;
+	position: relative;
+}
+.shift-mini .shift-title {
+	text-decoration: none;
+	font-style: normal;
+	font-weight: normal;
+	font-family: inherit;
+	font-size: 1.5rem;
+	margin-bottom: 0.75rem;
+	margin-top: 0;
+}
+ul.shift-actions {
+	position: absolute;
+	top: 1px;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	font-size: 0.875em;
+	line-height: 1;
+}
+ul.shift-actions li,
+ul.shift-actions p {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	display: inline
+}
+ul.shift-actions .shift-status {
+	border: 1px solid black;
+	display: inline-block;
+	background-color: black;
+	color: white;
+	text-transform: uppercase;
+	padding: 0.1429em 0.3em
+}
+.shift-mini .shift-type {
+	position: absolute;
+    border: 1px solid blue;
+    top: 0;
+    /* right: 3.8rem; */
+	right: 0;
+    /* transform: rotate(90deg);
+    transform-origin: bottom left; */
+    background-color: rgba(0,0,0,0.1);
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: 1.5em;
+    width: 8rem;
+    text-transform: uppercase;
+}
+
 /* Overrides --------------------------------------------------------------*/
 @media (max-width: 55rem) {
 	.title-wrapper {
