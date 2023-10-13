@@ -1372,7 +1372,7 @@ a.person-mini:active {
 
 .shift-mini {
 	position: relative;
-	padding-top: 1.26em;
+	padding-top: 2em;
 	margin-bottom: 1em;
 }
 .shift-mini .shift-content {
@@ -1386,13 +1386,18 @@ a.person-mini:active {
 	background-color: rgba(154, 205, 49, 0.3);
 	border-color: #9ACD31;
 }
-.shift-confirmed a:link,
-.shift-confirmed a:visited {
+.shift-suggested .shift-content {
+	background-color: rgba(0, 0, 0, 0.1);
+	border-color: #CCCCCC;
+	border-style: dotted;
+}
+.shift-confirmed .shift-content  a:link,
+.shift-confirmed .shift-content  a:visited {
 	color: rgba(0, 0, 0, 0.7);
 }
-.shift-confirmed a:hover,
-.shift-confirmed a:focus,
-.shift-confirmed a:active,
+.shift-confirmed .shift-content  a:hover,
+.shift-confirmed .shift-content  a:focus,
+.shift-confirmed .shift-content  a:active,
 .shift-confirmed .day-view .minima .time {
 	color: rgba(0, 0, 0, 0.5);
 }
@@ -1410,7 +1415,7 @@ a.person-mini:active {
 	margin: 0;
 }
 .shift-mini .day-alone {
-	margin: 0;
+	margin: 0 0 1.2em 0;
 	padding: 0;
 }
 ul.shift-actions {
@@ -1440,11 +1445,26 @@ ul.shift-actions .shift-status {
 	background-color: black;
 	color: white;
 	text-transform: uppercase;
-	padding: 0.1429em 0.3em
+	padding: 0.5rem 0.4rem;
 }
 .shift-confirmed ul.shift-actions .shift-status {
 	background-color: #9ACD31;
 	border-color: #9ACD31;
+}
+.shift-suggested ul.shift-actions .shift-status {
+	background-color: #CCCCCC;
+	border-color: #CCCCCC;
+	color: rgba(0,0,0,0.8);
+}
+ul.shift-actions a.button:link,
+ul.shift-actions a.button:visited,
+ul.shift-actions a.button:hover,
+ul.shift-actions a.button:focus,
+ul.shift-actions a.button:active {
+	padding: 0.2em 0.4em;
+	margin: 0;
+	font-size: 1em;
+
 }
 .shift-mini .shift-type {
 	position: absolute;
