@@ -1446,6 +1446,8 @@ ul.shift-actions .shift-status {
 	color: white;
 	text-transform: uppercase;
 	padding: 0.5rem 0.4rem;
+	border-top-left-radius: 0.4em;
+	border-top-right-radius: 0.4em;
 }
 .shift-confirmed ul.shift-actions .shift-status {
 	background-color: #9ACD31;
