@@ -458,6 +458,9 @@ header .title {
     font-size: 3em;
     padding-top: 0.3em;
 }
+header.header-team-duxbury .title {
+    background-image: url('golden-gate-mpa.jpeg')
+}
 header .title-link:link,
 header .title-link:visited,
 header .title-link:hover,

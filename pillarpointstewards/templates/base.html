@@ -14,10 +14,9 @@
 </head>
 <body>
 
-<header class="section">
+<header class="section{% if team.slug %} header-team-{{ team.slug }}{% endif %}">
   <div class="stretch">
     <a href="/" class="title-link"><h1 class="title"><span class="location">{{ team.name }}</span> <em>Tidepool Stewards</em></h1></a>
-    
   </div>
 </header> <!-- end header -->
 
