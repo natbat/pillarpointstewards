@@ -11,6 +11,8 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="{% static "main.css" %}">
 {% block extra_head %}{% endblock %}
+<!-- avoid flash of giant unstyled SVGs on page load: -->
+<style>svg { width: 1px; height: 1px }</style>
 </head>
 <body>
 
