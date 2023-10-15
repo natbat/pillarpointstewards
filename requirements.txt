@@ -59,9 +59,9 @@ django-extensions==3.2.3 \
     --hash=sha256:44d27919d04e23b3f40231c4ab7af4e61ce832ef46d610cc650d53e68328410a \
     --hash=sha256:9600b7562f79a92cbf1fde6403c04fee314608fefbb595502e34383ae8203401
     # via -r requirements.in
-django-htmx==1.16.0 \
-    --hash=sha256:360d11266666e5d92bda57069f671f2c04642eb1fc071e4c4160cf9f504cbfa6 \
-    --hash=sha256:56a65045e079503877ba1354acb481030cf54da1e1f731d33c280e0a14b214cf
+django-htmx==1.17.0 \
+    --hash=sha256:070a37092b88a42cd7af26c1b65f63c4529bae276710fd16137dc934938b44f2 \
+    --hash=sha256:2ef0d19db41c6152881e782673cd2cd1755a7fd6784f8b4f2279fb18dc03d2c2
     # via -r requirements.in
 django-sql-dashboard==1.1 \
     --hash=sha256:33d516dd795bec89b11c88c10ed3dd1da518b59e4caf5292cdc97f1288813337 \
@@ -212,9 +212,9 @@ pytz==2023.3.post1 \
     --hash=sha256:7b4fddbeb94a1eba4b557da24f19fdf9db575192544270a9101d8509f9f43d7b \
     --hash=sha256:ce42d816b81b68506614c11e8937d3aa9e41007ceb50bfdcb0749b921bf646c7
     # via -r requirements.in
-sentry-sdk==1.31.0 \
-    --hash=sha256:64a7141005fb775b9db298a30de93e3b83e0ddd1232dc6f36eb38aebc1553291 \
-    --hash=sha256:6de2e88304873484207fed836388e422aeff000609b104c802749fd89d56ba5b
+sentry-sdk==1.32.0 \
+    --hash=sha256:935e8fbd7787a3702457393b74b13d89a5afb67185bc0af85c00cb27cbd42e7c \
+    --hash=sha256:eeb0b3550536f3bbc05bb1c7e0feb3a78d74acb43b607159a606ed2ec0a33a4d
     # via -r requirements.in
 six==1.16.0 \
     --hash=sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926 \
@@ -258,7 +258,7 @@ webencodings==0.5.1 \
     --hash=sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78 \
     --hash=sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923
     # via bleach
-whitenoise==6.5.0 \
-    --hash=sha256:15fe60546ac975b58e357ccaeb165a4ca2d0ab697e48450b8f0307ca368195a8 \
-    --hash=sha256:16468e9ad2189f09f4a8c635a9031cc9bb2cdbc8e5e53365407acf99f7ade9ec
+whitenoise==6.6.0 \
+    --hash=sha256:8998f7370973447fac1e8ef6e8ded2c5209a7b1f67c1012866dbcd09681c3251 \
+    --hash=sha256:b1f9db9bf67dc183484d760b99f4080185633136a273a03f6436034a41064146
     # via -r requirements.in
