@@ -1,9 +1,9 @@
-<div class="shift-mini shift-suggested">
+<div class="shift-mini{% if shift.is_suggested %} shift-suggested{% else %} shift-confirmed{% endif %}">
   <div class="shift-content">
     <!-- Style wise it doesnt matter which heading level we use, use what ever is right for accessibility -->
     <h2 class="shift-title"><a href="#">{{ shift.day|date:"D, F jS Y" }}</a></h2>
     <p class="shift-type">Weekend low tide</p>
-    <p>{{ shift.start|date:"g:iA"|lower }} &mdash; {{ shift.end|date:"g:iA"|lower }}, Lowest tide of {{ shift.mllw_feet }}ft at {{ shift.low_tide_datetime.time|date:"g:iA"|lower }}</p>
+    <p>{{ shift.shift_start|date:"g:iA"|lower }} &mdash; {{ shift.shift_end|date:"g:iA"|lower }}, Lowest tide of {{ shift.mllw_feet }}ft at {{ shift.low_tide_datetime|date:"g:iA"|lower }}</p>
     <div class="day-alone">
       {% with shift.tide_times_svg as tide_times_svg %}
         {% include "_tide_svg.html" %}
@@ -15,13 +15,14 @@
   </div> <!-- .shift-content -->
   <!-- This is below the shift content for accessibity -->
   <ul class="shift-actions">
-    <li class="shift-status"><p><em class="context-text">Shift status: </em><span>Suggested</span></p></li>
-    <li><a href="#"
+    <li class="shift-status"><p><em class="context-text">Shift status: </em><span>{% if shift.is_suggested %}Suggested{% else %}Confirmed{% endif %}</span></p></li>
+    {% if shift.is_suggested %}<li><a href="#"
       hx-post="/programs/{{ team.slug }}/add-shift/"
       hx-vals="{{ post_vars|to_json }}"
       hx-target="closest .shift-mini"
+      hx-swap="outerHTML"
       class="button"
-    >confirm</a></li>
+    >confirm</a></li>{% endif %}
     <!-- <li><a href="#">edit</a></li> 
     <li><a href="#">cancel</a></li> -->
   </ul>

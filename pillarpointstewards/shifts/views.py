@@ -413,10 +413,6 @@ def manage_shifts_calculator(request, program_slug):
         )
         # Filter out the shifts that are too short
         if duration_in_minutes(tide["start"], tide["end"]) <= shortest_shift_duration:
-            print(
-                "duration_in_minutes", duration_in_minutes(tide["start"], tide["end"])
-            )
-            print("shortest_shift_duration", shortest_shift_duration)
             continue
         calculator_shifts.append(
             CalculatorShift(
@@ -460,8 +456,6 @@ def manage_shifts_calculator(request, program_slug):
     # the actual start and end time of each shift
     average_shift_length = None
 
-    print(results)
-
     return HttpResponse(
         json.dumps(
             {
@@ -498,7 +492,19 @@ def add_shift(request, program_slug):
             render_to_string(
                 "_calculator_shift.html",
                 {
-                    "shift": shift,
+                    "shift": CalculatorShift(
+                        day=shift.shift_start.date(),
+                        shift_start=shift.shift_start.time(),
+                        shift_end=shift.shift_end.time(),
+                        is_suggested=False,
+                        shift_model=shift,
+                        dawn=shift.dawn,
+                        dusk=shift.dusk,
+                        lowest_tide=shift.lowest_tide,
+                        mllw_feet=shift.mllw_feet,
+                        tide_times_svg="",
+                        html="",
+                    ),
                     "team": team,
                 },
             )
