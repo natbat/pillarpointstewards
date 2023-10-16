@@ -126,6 +126,7 @@ function monitorForm(formElement) {
         .then(data => {
             let html = data.results.map(result => result.html).join('\n');
             document.querySelector('#calculator-results').innerHTML = data.top_block + html;
+            htmx.process(document.querySelector('#calculator-results'));
         })
         .catch(error => {
             document.querySelector('#calculator-results').innerText = JSON.stringify(error, null, 2);

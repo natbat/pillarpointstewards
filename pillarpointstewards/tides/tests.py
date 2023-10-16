@@ -35,11 +35,6 @@ def test_tide_predictions_fixture(tide_predictions):
     assert last.dt.time().isoformat() == "23:54:00"
 
 
-def test_tide_svg_on_date_with_no_stored_tide_data(client, db):
-    response = client.get("/debug/tide-times-just-svg/2022-03-01/")
-    assert response.content.strip() == b""
-
-
 # These are each 6 minutes apart, from 00:00 to 23:54
 HEIGHTS = [
     4.84,

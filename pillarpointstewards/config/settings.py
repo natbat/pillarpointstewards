@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     "weather",
     "tides",
     "teams",
+    "common",
 ]
 if not DEBUG:
     INSTALLED_APPS.insert(0, "whitenoise.runserver_nostatic")
@@ -109,6 +110,9 @@ TEMPLATES = [
         "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
+            "builtins": [
+                "common.tags",
+            ],
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",

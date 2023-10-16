@@ -11,7 +11,7 @@ import pytz
 def test_homepage(client):
     response = client.get("/")
     html = response.content.decode("utf-8")
-    assert "<title>Pillar Point Tidepool Stewards</title>" in html
+    assert "Tidepool Stewards</title>" in html
     assert not response.context["request"].user.is_authenticated
 
 
@@ -62,21 +62,22 @@ def test_code_to_join_program(admin_client):
     assert team.members.count() == 1
 
 
-def test_render_calendar(admin_client, admin_user, rf):
+def test_render_calendar(admin_client, admin_user, admin_user_in_team, rf):
     # Test for just one month
     assert Shift.objects.count() == 0
+    team = admin_user_in_team
     # Two other volunteers
     user1 = User.objects.create(username="one")
     user2 = User.objects.create(username="two")
     # Three shifts this month
-    empty_shift = Shift.objects.create(
+    empty_shift = team.shifts.create(
         dawn=make_datetime(2022, 4, 3, 6),
         dusk=make_datetime(2022, 4, 3, 20),
         shift_start=make_datetime(2022, 4, 3, 8, 30),
         shift_end=make_datetime(2022, 4, 3, 8, 30),
     )
     # Current user is on this one
-    user_is_on_shift = Shift.objects.create(
+    user_is_on_shift = team.shifts.create(
         dawn=make_datetime(2022, 4, 7, 6),
         dusk=make_datetime(2022, 4, 7, 20),
         shift_start=make_datetime(2022, 4, 7, 8, 30),
@@ -84,7 +85,7 @@ def test_render_calendar(admin_client, admin_user, rf):
     )
     user_is_on_shift.stewards.add(admin_user)
     # This one is full:
-    full_shift = Shift.objects.create(
+    full_shift = team.shifts.create(
         dawn=make_datetime(2022, 4, 21, 6),
         dusk=make_datetime(2022, 4, 21, 20),
         shift_start=make_datetime(2022, 4, 21, 8, 30),
@@ -94,7 +95,7 @@ def test_render_calendar(admin_client, admin_user, rf):
     full_shift.stewards.add(user2)
     request = rf.get("/")
     request.user = admin_user
-    rendered = render_calendar(request, 2022, 4)
+    rendered = render_calendar(request, admin_user_in_team, 2022, 4)
     soup = Soup(rendered, "html.parser")
     # First tr is day headers
     trs = soup.find_all("tr")[1:]

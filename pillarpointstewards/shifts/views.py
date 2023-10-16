@@ -1,11 +1,14 @@
 import datetime
+from dataclasses import dataclass, asdict
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.db import connection
+from django import forms
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
+from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt
 from weather.models import Forecast
 from .models import Shift, ShiftChange, SecretCalendar
@@ -15,8 +18,22 @@ from homepage.models import Fragment
 from tides.views import tide_times_svg_context_for_shift, tide_times_svg_context
 from tides.models import Location
 from teams.models import Team
+from typing import Union
 import json
 import secrets
+
+
+class ShiftForm(forms.ModelForm):
+    class Meta:
+        model = Shift
+        fields = [
+            "dawn",
+            "dusk",
+            "shift_start",
+            "shift_end",
+            "mllw_feet",
+            "lowest_tide",
+        ]
 
 
 @active_user_required
@@ -321,6 +338,21 @@ def duration_in_minutes(start: datetime.time, end: datetime.time) -> float:
     return delta.total_seconds() / 60
 
 
+@dataclass
+class CalculatorShift:
+    day: datetime.date
+    shift_start: datetime.time
+    shift_end: datetime.time
+    is_suggested: bool
+    shift_model: Union[Shift, None]
+    dawn: datetime.time
+    dusk: datetime.time
+    lowest_tide: datetime.datetime
+    mllw_feet: float
+    tide_times_svg: str
+    html: Union[str, None]
+
+
 @csrf_exempt
 @active_user_required
 def manage_shifts_calculator(request, program_slug):
@@ -348,7 +380,9 @@ def manage_shifts_calculator(request, program_slug):
         # Convert the results into a list of dictionaries
         results = [dict(zip(column_names, row)) for row in cursor.fetchall()]
 
-    # Add a "start" and "end" field to each result
+    calculator_shifts = []
+
+    # Add "start" and "end" field to each result and append to calculator_shifts
     for tide in results:
         low_tide_dt = tide["low_tide_datetime"]
         new_start = low_tide_dt - datetime.timedelta(hours=shift_buffer_before)
@@ -377,35 +411,62 @@ def manage_shifts_calculator(request, program_slug):
             station_id=team.location.station_id,
             low_tide_time=tide["low_tide_datetime"],
         )
+        # Filter out the shifts that are too short
+        if duration_in_minutes(tide["start"], tide["end"]) <= shortest_shift_duration:
+            print(
+                "duration_in_minutes", duration_in_minutes(tide["start"], tide["end"])
+            )
+            print("shortest_shift_duration", shortest_shift_duration)
+            continue
+        calculator_shifts.append(
+            CalculatorShift(
+                day=tide["day"],
+                shift_start=tide["start"],
+                shift_end=tide["end"],
+                is_suggested=True,
+                shift_model=None,
+                dawn=tide["dawn"],
+                dusk=tide["dusk"],
+                lowest_tide=tide["low_tide_datetime"],
+                mllw_feet=tide["mllw_feet"],
+                tide_times_svg=tide["tide_times_svg"],
+                html=None,
+            )
+        )
 
-    # Filter out the shifts that are too short
-    results_filtered = []
-    for result in results:
-        if (
-            duration_in_minutes(result["start"], result["end"])
-            >= shortest_shift_duration
-        ):
-            results_filtered.append(result)
+    results = calculator_shifts
 
-    results = results_filtered
+    def as_datetime(day, time):
+        return datetime.datetime.combine(day, time).isoformat()
 
     # Add rendered HTML fragment to each one
     for result in results:
-        result["html"] = render_to_string(
+        result.html = render_to_string(
             "_calculator_shift.html",
             {
                 "shift": result,
+                "team": team,
+                "post_vars": {
+                    "shift_start": as_datetime(result.day, result.shift_start),
+                    "shift_end": as_datetime(result.day, result.shift_end),
+                    "lowest_tide": result.lowest_tide.isoformat(),
+                    "mllw_feet": result.mllw_feet,
+                    "dawn": as_datetime(result.day, result.dawn),
+                    "dusk": as_datetime(result.day, result.dusk),
+                },
             },
         )
     # Can't calculate this yet, because we are missing the logic that figures out
     # the actual start and end time of each shift
     average_shift_length = None
 
+    print(results)
+
     return HttpResponse(
         json.dumps(
             {
                 "input": data,
-                "results": results,
+                "results": [asdict(r) for r in results],
                 "top_block": render_to_string(
                     "_calculator_top_block.html",
                     {
@@ -421,6 +482,28 @@ def manage_shifts_calculator(request, program_slug):
         ),
         content_type="application/json",
     )
+
+
+def add_shift(request, program_slug):
+    team = get_object_or_404(Team, slug=program_slug)
+    if request.method == "POST":
+        form = ShiftForm(request.POST)
+        if not form.is_valid():
+            return HttpResponse("Invalid submission: " + str(form.errors))
+        shift = form.save(commit=False)
+        shift.team = team
+        shift.save()
+        # Render the new shift and return that fragment
+        return HttpResponse(
+            render_to_string(
+                "_calculator_shift.html",
+                {
+                    "shift": shift,
+                    "team": team,
+                },
+            )
+        )
+    return HttpResponse("POST only")
 
 
 def round_to_fifteen_minutes(dt):

@@ -1,4 +1,4 @@
-{% load static %}<!DOCTYPE html>
+{% load static %}{% load django_htmx %}<!DOCTYPE html>
 <html lang="en">
 <head>
 <title>{% block title %}{{ team.name }} Tidepool Stewards{% endblock %}</title>
@@ -13,9 +13,9 @@
 {% block extra_head %}{% endblock %}
 <!-- avoid flash of giant unstyled SVGs on page load: -->
 <style>svg { width: 1px; height: 1px }</style>
+<script src="{% static "htmx.min.js" %}" defer></script>{% django_htmx_script %}
 </head>
-<body>
-
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 <header class="section{% if team.slug %} header-team-{{ team.slug }}{% endif %}">
   <div class="stretch">
     <a href="/" class="title-link"><h1 class="title"><span class="location">{{ team.name }}</span> <em>Tidepool Stewards</em></h1></a>

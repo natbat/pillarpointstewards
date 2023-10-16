@@ -16,7 +16,12 @@
   <!-- This is below the shift content for accessibity -->
   <ul class="shift-actions">
     <li class="shift-status"><p><em class="context-text">Shift status: </em><span>Suggested</span></p></li>
-    <li><a href="#" class="button">confirm</a></li>
+    <li><a href="#"
+      hx-post="/programs/{{ team.slug }}/add-shift/"
+      hx-vals="{{ post_vars|to_json }}"
+      hx-target="closest .shift-mini"
+      class="button"
+    >confirm</a></li>
     <!-- <li><a href="#">edit</a></li> 
     <li><a href="#">cancel</a></li> -->
   </ul>
