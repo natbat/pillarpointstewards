@@ -509,6 +509,7 @@ def add_shift(request, program_slug):
                         html="",
                     ),
                     "team": team,
+                    "shift_id": shift.id,
                 },
             )
         )
