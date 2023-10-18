@@ -28,7 +28,6 @@ urlpatterns = [
     path("shifts/<int:shift_id>/", shifts.shift),
     path("cancel-shift/<int:shift_id>/", shifts.cancel_shift),
     path("assign-shift/<int:shift_id>/", shifts.assign_shift),
-    path("shifts/", shifts.shifts),
     path("materials/", homepage.materials),
     path("shifts/calendar-instructions/", shifts.calendar_instructions),
     path("shifts-personal-<int:id>-<str:key>.ics", shifts.shifts_ics_personal),
@@ -44,6 +43,7 @@ urlpatterns = [
     path("debug/tide-times-just-svg/<str:date>/", tides.debug_just_svg),
     # /programs/ pages to support multiple programs
     path("programs/<str:program_slug>/", homepage.program_index),
+    path("programs/<str:program_slug>/shifts/", shifts.shifts),
     path("programs/<str:program_slug>/manage-shifts/", shifts.manage_shifts),
     path(
         "programs/<str:program_slug>/manage-shifts/calculator/",

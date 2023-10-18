@@ -49,6 +49,7 @@ def shift(request, shift_id):
         request,
         "shift.html",
         {
+            "team": shift.team,
             "shift": shift,
             "user_is_on_shift": user_is_on_shift,
             "stewards": stewards,
@@ -135,12 +136,14 @@ def timeline(request):
 
 
 @active_user_required
-def shifts(request):
+def shifts(request, program_slug):
+    team = get_object_or_404(Team, slug=program_slug)
     return render(
         request,
         "shifts.html",
         {
-            "shifts": Shift.objects.prefetch_related("stewards"),
+            "team": team,
+            "shifts": team.shifts.prefetch_related("stewards"),
         },
     )
 

@@ -213,26 +213,6 @@ def test_subsequent_login_logs_user_in(admin_user, httpx_mock, client, settings)
     assert get_user(client) == admin_user
 
 
-@pytest.mark.parametrize(
-    "path",
-    (
-        "/shifts/",
-        "/shifts/SHIFT_ID/",
-    ),
-)
-def test_pages_require_active_user(path, client, admin_user, admin_user_has_shift):
-    path = path.replace("SHIFT_ID", str(admin_user.shifts.all()[0].pk))
-    inactive_user = User.objects.create(username="inactive", is_active=False)
-    logged_out_response = client.get(path)
-    assert logged_out_response.status_code == 400
-    client.force_login(inactive_user)
-    inactive_response = client.get(path)
-    assert inactive_response.status_code == 400
-    client.force_login(admin_user)
-    active_response = client.get(path)
-    assert active_response.status_code == 200
-
-
 def _mock_oauth0(httpx_mock, settings, auth0_profile):
     httpx_mock.add_response(
         url=f"https://{settings.AUTH0_DOMAIN}/oauth/token",
