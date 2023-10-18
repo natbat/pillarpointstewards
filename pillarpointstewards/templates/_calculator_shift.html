@@ -3,7 +3,7 @@
     <!-- Style wise it doesnt matter which heading level we use, use what ever is right for accessibility -->
     <h2 class="shift-title"><a href="#">{{ shift.day|date:"D, F jS Y" }}</a></h2>
     <p class="shift-type">Weekend low tide</p>
-    <p>{{ shift.shift_start|date:"g:iA"|lower }} &mdash; {{ shift.shift_end|date:"g:iA"|lower }}, Lowest tide of {{ shift.mllw_feet }}ft at {{ shift.low_tide_datetime|date:"g:iA"|lower }}</p>
+    <p>{{ shift.shift_start|date:"g:iA"|lower }} &mdash; {{ shift.shift_end|date:"g:iA"|lower }}, lowest tide of {{ shift.mllw_feet }}ft at {{ shift.lowest_tide|date:"g:iA"|lower }}</p>
     <div class="day-alone">
       {% with shift.tide_times_svg as tide_times_svg %}
         {% include "_tide_svg.html" %}
