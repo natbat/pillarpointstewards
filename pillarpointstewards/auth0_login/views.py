@@ -10,7 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from urllib.parse import urlencode
 
 from django.shortcuts import get_object_or_404
-from .models import Auth0User, ActiveUserSignupLink
+from .models import Auth0User
 from .utils import suggest_username
 import secrets
 import httpx
@@ -52,15 +52,6 @@ def login(request, signup=False):
     url = "https://{}/authorize?".format(settings.AUTH0_DOMAIN) + urlencode(kwargs)
     response = HttpResponseRedirect(url)
     response.set_cookie("auth0-state", state, max_age=3600)
-    return response
-
-
-def secret_signup(request, id, key):
-    link = get_object_or_404(ActiveUserSignupLink, pk=id)
-    response = HttpResponseRedirect("/signup/")
-    if secrets.compare_digest(link.secret, key):
-        # Set a cookie to activate their account on completion
-        response.set_signed_cookie("active-user-signup-link", str(link.id))
     return response
 
 
@@ -133,19 +124,6 @@ def callback(request):
         django_login(request, auth0_user.user)
         return HttpResponseRedirect("/")
 
-    # User will be set to active IF they started at a secret link
-    is_active = False
-    link_to_credit = None
-    signup_link_id = request.get_signed_cookie("active-user-signup-link", default=None)
-    if signup_link_id:
-        try:
-            link = ActiveUserSignupLink.objects.get(pk=signup_link_id)
-            if link.is_active:
-                is_active = True
-                link_to_credit = link
-        except ActiveUserSignupLink.DoesNotExist:
-            pass
-
     # Need to create a new Django user for that auth0_user, with a unique username
     # derived from their nickname but avoiding duplicates
     base_username = suggest_username(profile["nickname"])
@@ -162,7 +140,7 @@ def callback(request):
                     first_name=profile.get("given_name") or "",
                     last_name=profile.get("family_name") or "",
                     email=profile["email"],
-                    is_active=is_active,
+                    is_active=True,
                 )
                 break
             except IntegrityError:
@@ -170,9 +148,6 @@ def callback(request):
                     suffix = 1
                 # Always start at 2
                 suffix += 1
-
-    if link_to_credit:
-        link_to_credit.created_users.add(django_user)
 
     auth0_user.user = django_user
     auth0_user.save()

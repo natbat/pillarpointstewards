@@ -33,7 +33,6 @@ urlpatterns = [
     path("shifts/calendar-instructions/", shifts.calendar_instructions),
     path("shifts-personal-<int:id>-<str:key>.ics", shifts.shifts_ics_personal),
     path("shifts-<str:key>.ics", shifts.shifts_ics),
-    path("signup/<int:id>-<str:key>/", auth0_login.secret_signup),
     path("fetch-weather/", weather.fetch_weather),
     path("patterns/", homepage.patterns),
     path("admin/import-shifts/", shifts.import_shifts),

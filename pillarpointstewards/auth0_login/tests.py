@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import get_user
 from django.core import signing
 
-from .models import Auth0User, ActiveUserSignupLink
+from .models import Auth0User
 from .utils import suggest_username
 import pytest
 import urllib.parse
@@ -135,7 +135,6 @@ def test_auth0_logout(admin_client, settings):
         ),
     ),
 )
-@pytest.mark.parametrize("use_secret_activation_link", (True, False))
 def test_login_creates_account(
     db,
     httpx_mock,
@@ -143,19 +142,11 @@ def test_login_creates_account(
     settings,
     auth0_profile,
     expected_user_properties,
-    use_secret_activation_link,
 ):
     _mock_oauth0(httpx_mock, settings, auth0_profile)
     # Create an existing user to test username conflict avoidance
     existing_user = User.objects.create(username="existing-user")
     Auth0User.objects.create(sub="existing", user=existing_user)
-
-    link = None
-    if use_secret_activation_link:
-        link = ActiveUserSignupLink.objects.create()
-        secret_link_response = client.get(link.path)
-        assert secret_link_response.headers["location"] == "/signup/"
-        assert "active-user-signup-link" in client.cookies
 
     assert "auth0-state" not in client.cookies
     client.get("/login/")
@@ -180,10 +171,7 @@ def test_login_creates_account(
         assert getattr(django_user, key) == value
 
     # User should be active if they used a signup link, inactive otherwise
-    assert django_user.is_active == use_secret_activation_link
-
-    if use_secret_activation_link:
-        assert link.created_users.filter(pk=django_user.id).exists()
+    assert django_user.is_active
 
     # And the Auth0User should exist and be linked to that user
     auth0_user = django_user.auth0_users.get()
