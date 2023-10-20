@@ -121,6 +121,8 @@ def edit_shift(request, shift_id):
         shift.shift_start = datetime.datetime.fromisoformat(request.POST["start"])
     if request.POST.get("end"):
         shift.shift_end = datetime.datetime.fromisoformat(request.POST["end"])
+    if request.POST.get("target_stewards"):
+        shift.target_stewards = int(request.POST["target_stewards"])
     shift.save()
     return HttpResponse(
         render_to_string(
@@ -419,6 +421,12 @@ class CalculatorShift:
 
     def shift_end_plus_15(self):
         return self.shift_end_datetime() + datetime.timedelta(minutes=15)
+
+    def target_stewards_minus_one(self):
+        return self.target_stewards - 1
+
+    def target_stewards_plus_one(self):
+        return self.target_stewards + 1
 
     @classmethod
     def from_shift(cls, shift):

@@ -42,6 +42,19 @@
           hx-target="closest .shift-mini"
           hx-swap="outerHTML">{{ shift.shift_end_plus_15|date:"g:iA"|lower }}</button>
       </p>
+      <p>Number of stewards:
+        {% if shift.target_stewards > 1 %}
+        <button hx-post="/shifts/{{ shift.id }}/edit/"
+          hx-vals='{"target_stewards": "{{ shift.target_stewards_minus_one }}"}'
+          hx-target="closest .shift-mini"
+          hx-swap="outerHTML">-1</button>
+        {% endif %}
+        <strong>{{ shift.target_stewards }}</strong>
+        <button hx-post="/shifts/{{ shift.id }}/edit/"
+          hx-vals='{"target_stewards": "{{ shift.target_stewards_plus_one }}"}'
+          hx-target="closest .shift-mini"
+          hx-swap="outerHTML">+1</button>
+      </p>
     </details>
     {% endif %}
     <!--
