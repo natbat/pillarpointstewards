@@ -343,6 +343,7 @@ def duration_in_minutes(start: datetime.time, end: datetime.time) -> float:
 
 @dataclass
 class CalculatorShift:
+    id: Union[int, None]
     day: datetime.date
     shift_start: datetime.time
     shift_end: datetime.time
@@ -354,6 +355,39 @@ class CalculatorShift:
     mllw_feet: float
     tide_times_svg: str
     html: Union[str, None]
+
+    def shift_start_datetime(self):
+        return datetime.datetime.combine(self.day, self.shift_start)
+
+    def shift_end_datetime(self):
+        return datetime.datetime.combine(self.day, self.shift_end)
+
+    @classmethod
+    def from_shift(cls, shift):
+        team = shift.team
+        return cls(
+            id=shift.id,
+            day=shift.shift_start.date(),
+            shift_start=shift.shift_start.time(),
+            shift_end=shift.shift_end.time(),
+            is_suggested=False,
+            shift_model=shift,
+            dawn=shift.dawn,
+            dusk=shift.dusk,
+            lowest_tide=shift.lowest_tide,
+            mllw_feet=shift.mllw_feet,
+            tide_times_svg=tide_times_svg_context(
+                date=shift.shift_start,
+                shift_start=shift.shift_start,
+                shift_end=shift.shift_end,
+                latitude=team.location.latitude,
+                longitude=team.location.longitude,
+                time_zone=team.location.time_zone,
+                station_id=team.location.station_id,
+                low_tide_time=shift.lowest_tide,
+            ),
+            html="",
+        )
 
 
 @csrf_exempt
@@ -383,7 +417,16 @@ def manage_shifts_calculator(request, program_slug):
         # Convert the results into a list of dictionaries
         results = [dict(zip(column_names, row)) for row in cursor.fetchall()]
 
-    calculator_shifts = []
+    calculator_shifts = [
+        CalculatorShift.from_shift(shift)
+        for shift in team.shifts.filter(shift_start__gte=datetime.datetime.now())
+    ]
+
+    # Avoid suggesting duplicates based on exact start/end
+    existing_shifts = set(
+        (shift.shift_start_datetime(), shift.shift_end_datetime())
+        for shift in calculator_shifts
+    )
 
     # Add "start" and "end" field to each result and append to calculator_shifts
     for tide in results:
@@ -404,10 +447,16 @@ def manage_shifts_calculator(request, program_slug):
         tide["end_not_rounded"] = new_end.time()
         tide["end"] = round_to_fifteen_minutes(new_end).time()
 
+        shift_start = datetime.datetime.combine(tide["day"], tide["start"])
+        shift_end = datetime.datetime.combine(tide["day"], tide["end"])
+
+        if (shift_start, shift_end) in existing_shifts:
+            continue
+
         tide["tide_times_svg"] = tide_times_svg_context(
             date=tide["day"],
-            shift_start=datetime.datetime.combine(tide["day"], tide["start"]),
-            shift_end=datetime.datetime.combine(tide["day"], tide["end"]),
+            shift_start=shift_start,
+            shift_end=shift_end,
             latitude=team.location.latitude,
             longitude=team.location.longitude,
             time_zone=team.location.time_zone,
@@ -419,7 +468,8 @@ def manage_shifts_calculator(request, program_slug):
             continue
         calculator_shifts.append(
             CalculatorShift(
-                day=tide["day"],
+                id=None,
+                day=tide["day"].date(),
                 shift_start=tide["start"],
                 shift_end=tide["end"],
                 is_suggested=True,
@@ -433,9 +483,13 @@ def manage_shifts_calculator(request, program_slug):
             )
         )
 
+    calculator_shifts.sort(key=lambda s: (s.day, s.shift_start))
+
     results = calculator_shifts
 
     def as_datetime(day, time):
+        if isinstance(time, datetime.datetime):
+            return time.isoformat()
         return datetime.datetime.combine(day, time).isoformat()
 
     # Add rendered HTML fragment to each one
@@ -495,30 +549,8 @@ def add_shift(request, program_slug):
             render_to_string(
                 "_calculator_shift.html",
                 {
-                    "shift": CalculatorShift(
-                        day=shift.shift_start.date(),
-                        shift_start=shift.shift_start.time(),
-                        shift_end=shift.shift_end.time(),
-                        is_suggested=False,
-                        shift_model=shift,
-                        dawn=shift.dawn,
-                        dusk=shift.dusk,
-                        lowest_tide=shift.lowest_tide,
-                        mllw_feet=shift.mllw_feet,
-                        tide_times_svg=tide_times_svg_context(
-                            date=shift.shift_start,
-                            shift_start=shift.shift_start,
-                            shift_end=shift.shift_end,
-                            latitude=team.location.latitude,
-                            longitude=team.location.longitude,
-                            time_zone=team.location.time_zone,
-                            station_id=team.location.station_id,
-                            low_tide_time=shift.lowest_tide,
-                        ),
-                        html="",
-                    ),
+                    "shift": CalculatorShift.from_shift(shift),
                     "team": team,
-                    "shift_id": shift.id,
                 },
             )
         )
