@@ -25,7 +25,7 @@ class Team(models.Model):
 
 def generate_code():
     # Avoid easily confused letters and vowels to avoid accidental swear words
-    return "".join(random.choice("BCDFGHJKMNPQRSTVWXYZ") for i in range(6))
+    return "".join(random.choice("BCDFGHJKMNPQRSTVWXYZ") for i in range(4))
 
 
 class TeamInviteCode(models.Model):
