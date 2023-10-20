@@ -8,10 +8,10 @@
     <!-- <p>To cover all the shifts over the year with <strong>2 stewards</strong> per shift on weekend low tides of <strong>0ft</strong>, <strong>1 steward</strong> on weekday low tides of <strong>-1ft</strong> with an additional <strong>2 stewards</strong> on super low tides of <strong>-2ft</strong>, assuming you want stewards to do on average <strong>3 shifts a year</strong>: you will need to have <strong>XXX active stewards</strong>.</p> -->
   </div>
 </div>
-
+<!--
 <details style="margin-top: 1em; margin-bottom: 1em">
   <summary>Add a shift without using the calculator</summary>
-  <form style="margin-top: 1em">
+  <form style="margin-top: 1em" action="/programs/{{ team.slug }}/add-manual-shift/" method="POST">{% csrf_token %}
 <div class="input-container">
   <label for="birthdate">Date</label>
   <input type="date" name="birthdate" id="birthdate">
@@ -39,3 +39,4 @@
 </div>
 </details>
 </form>
+-->

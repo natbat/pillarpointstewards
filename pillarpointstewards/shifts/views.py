@@ -8,6 +8,7 @@ from django import forms
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
+from django.template import RequestContext
 from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt
 from weather.models import Forecast
@@ -596,6 +597,8 @@ def manage_shifts_calculator(request, program_slug):
                         "num_suggested_shifts": len(results),
                         "num_combined_shifts": team.shifts.count() + len(results),
                         "average_shift_length": average_shift_length,
+                        "team": team,
+                        "request": request,
                     },
                 ),
             },
