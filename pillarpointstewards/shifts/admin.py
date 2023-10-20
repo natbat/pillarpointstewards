@@ -4,7 +4,15 @@ from .models import Shift, ShiftChange, SecretCalendar
 
 class ShiftAdmin(admin.ModelAdmin):
     model = Shift
-    list_display = ("shift_start", "shift_end", "team", "dawn", "dusk", "assigned")
+    list_display = (
+        "shift_start",
+        "shift_end",
+        "team",
+        "target_stewards",
+        "assigned",
+        "dawn",
+        "dusk",
+    )
     ordering = ("shift_start",)
     list_filter = ("team",)
 

@@ -33,6 +33,7 @@ class ShiftForm(forms.ModelForm):
             "shift_end",
             "mllw_feet",
             "lowest_tide",
+            "target_stewards",
         ]
 
 
@@ -398,6 +399,7 @@ class CalculatorShift:
     lowest_tide: datetime.datetime
     mllw_feet: float
     tide_times_svg: str
+    target_stewards: Union[int, None]
     html: Union[str, None]
 
     def shift_start_datetime(self):
@@ -442,6 +444,7 @@ class CalculatorShift:
                 station_id=team.location.station_id,
                 low_tide_time=shift.lowest_tide,
             ),
+            target_stewards=shift.target_stewards or 1,
             html="",
         )
 
@@ -458,6 +461,7 @@ def manage_shifts_calculator(request, program_slug):
     shift_buffer_after = data["shift-buffer-after"]
     earliest_shift_time_buffer = data["earliest-shift-time-buffer"]
     shortest_shift_duration = data["shortest-shift-duration"]
+    people_per_regular_shift = data["people-per-regular-shift"]
 
     with connection.cursor() as cursor:
         cursor.execute(
@@ -535,6 +539,7 @@ def manage_shifts_calculator(request, program_slug):
                 lowest_tide=tide["low_tide_datetime"],
                 mllw_feet=tide["mllw_feet"],
                 tide_times_svg=tide["tide_times_svg"],
+                target_stewards=people_per_regular_shift,
                 html=None,
             )
         )
@@ -562,6 +567,7 @@ def manage_shifts_calculator(request, program_slug):
                     "mllw_feet": result.mllw_feet,
                     "dawn": as_datetime(result.day, result.dawn),
                     "dusk": as_datetime(result.day, result.dusk),
+                    "target_stewards": people_per_regular_shift,
                 },
             },
         )
