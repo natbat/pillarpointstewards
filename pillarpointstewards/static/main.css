@@ -1461,6 +1461,9 @@ a.person-mini:active {
 .shift-mini p {
 	margin: 0;
 }
+.shift-mini .shift-time {
+	font-weight: bold;
+}
 .shift-mini .day-alone {
 	margin: 0 0 1.2em 0;
 	padding: 0;
