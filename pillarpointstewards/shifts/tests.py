@@ -103,3 +103,19 @@ def test_edit_shift(admin_user, admin_user_in_team, admin_user_has_shift, client
     assert response.status_code == 200
     shift.refresh_from_db()
     assert shift.shift_start.isoformat() == "2024-01-01T13:15:00+00:00"
+
+
+def test_cancel_shift(admin_user, admin_user_in_team, admin_user_has_shift, client):
+    shift = admin_user_has_shift
+    # Other user should not be able to cancel
+    other_user = User.objects.create(username="other")
+    client.force_login(other_user)
+    response = client.post("/shifts/{}/cancel/".format(shift.id), {"start": "blah"})
+    assert response.status_code == 403
+    # Admin user should be able to cancel
+    client.force_login(admin_user)
+    response = client.post(
+        "/shifts/{}/cancel/".format(shift.id), {"start": "2024-01-01T13:15:00.000Z"}
+    )
+    assert response.status_code == 200
+    assert not Shift.objects.filter(pk = shift.pk).exists()

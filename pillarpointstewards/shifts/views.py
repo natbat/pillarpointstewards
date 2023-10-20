@@ -101,7 +101,7 @@ def import_shifts(request):
 
 
 @active_user_required
-def assign_shift(request, shift_id):
+def unassign_shift(request, shift_id):
     shift = get_object_or_404(Shift, pk=shift_id)
     if shift.stewards.filter(id=request.user.id).exists():
         shift.stewards.remove(request.user)
@@ -128,6 +128,28 @@ def edit_shift(request, shift_id):
                 "shift": CalculatorShift.from_shift(shift),
                 "team": shift.team,
                 "change_times_open": True,
+            },
+        )
+    )
+
+
+@active_user_required
+def cancel_shift(request, shift_id):
+    shift = get_object_or_404(Shift, pk=shift_id)
+    if not shift.can_edit(request.user):
+        return HttpResponse("You are not allowed to cancel that shift", status=403)
+    if request.method != "POST":
+        return HttpResponse("POST only")
+    details = CalculatorShift.from_shift(shift)
+    shift.delete()
+    details.id = None
+    return HttpResponse(
+        render_to_string(
+            "_calculator_shift.html",
+            {
+                "shift": details,
+                "team": shift.team,
+                "shift_canceled": True,
             },
         )
     )
