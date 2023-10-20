@@ -593,7 +593,7 @@ def manage_shifts_calculator(request, program_slug):
 
 def add_shift(request, program_slug):
     team = get_object_or_404(Team, slug=program_slug)
-    if not team.can_edit(request.user):
+    if not team.is_admin(request.user):
         return HttpResponse(
             "You are not allowed to add shifts for that team", status=403
         )
@@ -619,7 +619,7 @@ def add_shift(request, program_slug):
 
 def add_manual_shift(request, program_slug):
     team = get_object_or_404(Team, slug=program_slug)
-    if not team.can_edit(request.user):
+    if not team.is_admin(request.user):
         return HttpResponse(
             "You are not allowed to add shifts for that team", status=403
         )
