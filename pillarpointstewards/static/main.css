@@ -1568,17 +1568,23 @@ ul.shift-actions a.button:active {
 	background-position: 0 0.1em;
 	background-repeat: no-repeat;
 	background-size: 1em;
-	padding-left: 1.3em;
+	padding-left: 1.5em;
 }
 .icon-header.icon-educate {
 	background-image: url('icons/educate.svg');
+	background-size: 1.2em;
+	background-position: 0 0.05em;
 
 }
 .icon-header.icon-inspire {
 	background-image: url('icons/inspire.svg');
+	background-size: 0.9em;
+	background-position: 0 0.2em;
 }
 .icon-header.icon-empower {
 	background-image: url('icons/empower.svg');
+	background-size: 0.9em;
+	background-position: 0 0.2em;
 }
 
 .program-mini {
