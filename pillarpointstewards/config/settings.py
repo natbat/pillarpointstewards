@@ -61,7 +61,11 @@ ALLOWED_HOSTS = [
 if os.environ.get("ALLOWED_HOSTS_STAR"):
     ALLOWED_HOSTS.append("*")
 
-CSRF_TRUSTED_ORIGINS = ["https://www.pillarpointstewards.com", "http://localhost:8000", "https://www.tidepoolstewards.com"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://www.pillarpointstewards.com",
+    "http://localhost:8000",
+    "https://www.tidepoolstewards.com",
+]
 
 LOGIN_URL = "/login/"
 
@@ -103,6 +107,9 @@ MIDDLEWARE = (
         "django_htmx.middleware.HtmxMiddleware",
     ]
 )
+
+if os.environ.get("DJANGO_PREPEND_WWW"):
+    PREPEND_WWW = True
 
 ROOT_URLCONF = "config.urls"
 
