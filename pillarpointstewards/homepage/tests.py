@@ -21,20 +21,20 @@ def test_homepage_logged_in(django_user_model, client, scenario):
     user.is_active = True
     user.save()
     if scenario != "no-teams":
-        user.teams.create(name="Team 1", slug="team-1")
+        user.teams.add(Team.objects.get(slug="pillar-point"))
     if scenario == "two-teams":
-        user.teams.create(name="Team 2", slug="team-2")
+        user.teams.add(Team.objects.get(slug="duxbury"))
     client.force_login(user)
     response = client.get("/")
     if scenario == "one-team":
         assert response.status_code == 302
-        assert response.url == "/programs/team-1/"
+        assert response.url == "/programs/pillar-point/"
     elif scenario == "two-teams":
         # They should get to pick
         assert response.status_code == 200
         html = response.content.decode("utf-8")
-        assert "/team-1/" in html
-        assert "/team-2/" in html
+        assert "/pillar-point/" in html
+        assert "/duxbury/" in html
     else:
         # Should get a page prompting them to join a team
         assert response.status_code == 200
