@@ -33,7 +33,12 @@ def index(request):
         return HttpResponseRedirect(teams[0].get_absolute_url())
 
     # Otherwise, show them the team picker
-    return render(request, "pick_team.html", {"teams": teams})
+    context = {
+        "teams": teams,
+    }
+    for team in teams:
+        context["show_{}".format(team.slug.replace("-", "_"))] = True
+    return render(request, "pick_team.html", context)
 
 
 @login_required
