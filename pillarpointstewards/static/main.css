@@ -1565,7 +1565,22 @@ ul.shift-actions a.button:active {
 	font-weight: 700;
 	font-size: 1.25rem;
     margin: 0 0 0.25rem 0;
+	background-position: 0 0.1em;
+	background-repeat: no-repeat;
+	background-size: 1em;
+	padding-left: 1.3em;
 }
+.icon-header.icon-educate {
+	background-image: url('icons/educate.svg');
+
+}
+.icon-header.icon-inspire {
+	background-image: url('icons/inspire.svg');
+}
+.icon-header.icon-empower {
+	background-image: url('icons/empower.svg');
+}
+
 .program-mini {
 	margin: 0.3em 0 1em 0;
 }
