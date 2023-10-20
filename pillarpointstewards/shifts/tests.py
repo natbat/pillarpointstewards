@@ -118,4 +118,4 @@ def test_cancel_shift(admin_user, admin_user_in_team, admin_user_has_shift, clie
         "/shifts/{}/cancel/".format(shift.id), {"start": "2024-01-01T13:15:00.000Z"}
     )
     assert response.status_code == 200
-    assert not Shift.objects.filter(pk = shift.pk).exists()
+    assert not Shift.objects.filter(pk=shift.pk).exists()

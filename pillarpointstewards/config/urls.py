@@ -52,6 +52,7 @@ urlpatterns = [
         shifts.manage_shifts_calculator,
     ),
     path("programs/<str:program_slug>/add-shift/", shifts.add_shift),
+    path("programs/<str:program_slug>/add-manual-shift/", shifts.add_manual_shift),
 ]
 
 if settings.DEBUG:

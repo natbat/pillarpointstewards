@@ -593,6 +593,10 @@ def manage_shifts_calculator(request, program_slug):
 
 def add_shift(request, program_slug):
     team = get_object_or_404(Team, slug=program_slug)
+    if not team.can_edit(request.user):
+        return HttpResponse(
+            "You are not allowed to add shifts for that team", status=403
+        )
     if request.method == "POST":
         form = ShiftForm(request.POST)
         if not form.is_valid():
@@ -611,6 +615,15 @@ def add_shift(request, program_slug):
             )
         )
     return HttpResponse("POST only")
+
+
+def add_manual_shift(request, program_slug):
+    team = get_object_or_404(Team, slug=program_slug)
+    if not team.can_edit(request.user):
+        return HttpResponse(
+            "You are not allowed to add shifts for that team", status=403
+        )
+    return HttpResponse("TODO")
 
 
 def round_to_fifteen_minutes(dt):
