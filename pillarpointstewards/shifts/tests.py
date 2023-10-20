@@ -1,5 +1,6 @@
 from shifts.models import SecretCalendar
 from shifts.models import Shift
+from django.contrib.auth.models import User
 import json
 import pytest
 
@@ -85,3 +86,20 @@ def test_personal_shifts_ics(admin_user_has_shift, admin_client):
     assert response.headers["content-type"] == "text/calendar; charset=utf-8"
     assert response.content.decode("utf-8").startswith("BEGIN:VCALENDAR")
     assert b"DESCRIPTION:Shift from" in response.content
+
+
+def test_edit_shift(admin_user, admin_user_in_team, admin_user_has_shift, client):
+    shift = admin_user_has_shift
+    # Other user should not be able to edit
+    other_user = User.objects.create(username="other")
+    client.force_login(other_user)
+    response = client.post("/shifts/{}/edit/".format(shift.id), {"start": "blah"})
+    assert response.status_code == 403
+    # Admin user should be able to edit
+    client.force_login(admin_user)
+    response = client.post(
+        "/shifts/{}/edit/".format(shift.id), {"start": "2024-01-01T13:15:00.000Z"}
+    )
+    assert response.status_code == 200
+    shift.refresh_from_db()
+    assert shift.shift_start.isoformat() == "2024-01-01T13:15:00+00:00"

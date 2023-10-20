@@ -26,6 +26,7 @@ urlpatterns = [
     path("healthcheck/", homepage.healthcheck),
     path("backup.json", homepage.backup),
     path("shifts/<int:shift_id>/", shifts.shift),
+    path("shifts/<int:shift_id>/edit/", shifts.edit_shift),
     path("cancel-shift/<int:shift_id>/", shifts.cancel_shift),
     path("assign-shift/<int:shift_id>/", shifts.assign_shift),
     path("materials/", homepage.materials),

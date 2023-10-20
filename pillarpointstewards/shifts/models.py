@@ -27,6 +27,9 @@ class Shift(models.Model):
 
     stewards = models.ManyToManyField("auth.User", related_name="shifts", blank=True)
 
+    def can_edit(self, user):
+        return self.team.is_admin(user)
+
     @property
     def fullness(self):
         count = self.stewards.count()

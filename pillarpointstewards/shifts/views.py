@@ -112,6 +112,28 @@ def cancel_shift(request, shift_id):
 
 
 @active_user_required
+def edit_shift(request, shift_id):
+    shift = get_object_or_404(Shift, pk=shift_id)
+    if not shift.can_edit(request.user):
+        return HttpResponse("You are not allowed to edit that shift", status=403)
+    if request.POST.get("start"):
+        shift.shift_start = datetime.datetime.fromisoformat(request.POST["start"])
+    if request.POST.get("end"):
+        shift.shift_end = datetime.datetime.fromisoformat(request.POST["end"])
+    shift.save()
+    return HttpResponse(
+        render_to_string(
+            "_calculator_shift.html",
+            {
+                "shift": CalculatorShift.from_shift(shift),
+                "team": shift.team,
+                "change_times_open": True,
+            },
+        )
+    )
+
+
+@active_user_required
 def assign_shift(request, shift_id):
     shift = get_object_or_404(Shift, pk=shift_id)
     if not shift.stewards.filter(id=request.user.id).exists():
@@ -361,6 +383,18 @@ class CalculatorShift:
 
     def shift_end_datetime(self):
         return datetime.datetime.combine(self.day, self.shift_end)
+
+    def shift_start_minus_15(self):
+        return self.shift_start_datetime() - datetime.timedelta(minutes=15)
+
+    def shift_start_plus_15(self):
+        return self.shift_start_datetime() + datetime.timedelta(minutes=15)
+
+    def shift_end_minus_15(self):
+        return self.shift_end_datetime() - datetime.timedelta(minutes=15)
+
+    def shift_end_plus_15(self):
+        return self.shift_end_datetime() + datetime.timedelta(minutes=15)
 
     @classmethod
     def from_shift(cls, shift):

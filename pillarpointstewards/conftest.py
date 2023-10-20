@@ -17,7 +17,7 @@ def admin_user_in_team(admin_user):
     from teams.models import Team
 
     team = Team.objects.get_or_create(name="Pillar Point", slug="pillar-point")[0]
-    team.memberships.get_or_create(user=admin_user)
+    team.memberships.get_or_create(user=admin_user, is_admin=True)
     return team
 
 
@@ -26,7 +26,7 @@ def admin_user_has_shift(admin_user, admin_user_in_team):
     dt = datetime.datetime.utcnow().replace(
         tzinfo=pytz.timezone("America/Los_Angeles")
     ) + datetime.timedelta(hours=96)
-    admin_user.shifts.create(
+    return admin_user.shifts.create(
         team=admin_user_in_team,
         shift_start=dt,
         shift_end=dt + datetime.timedelta(hours=2),
