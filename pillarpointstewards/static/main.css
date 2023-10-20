@@ -78,6 +78,10 @@ html {
 .intro {
     font-size: 1rem;
 }
+.mega {
+	font-size: 1.25rem;
+	font-weight: bold;
+}
 p {
     margin: 0 0 0.75rem 0;
     padding: 0;
@@ -343,7 +347,7 @@ form input[type="reset"]:active {
 	border-radius: 0.4em;
 	border: none;
 	cursor: pointer;
-	font-size: 1rem;
+	font-size: 1em;
 }
 
 form input[type="reset"] {
@@ -583,6 +587,26 @@ footer li {
 .pull-out h3 {
 	margin-top: 0;
 	font-size: 1rem;
+}
+
+.column-container {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	width: 100%;
+	grid-gap: 0;
+	box-sizing: border-box;
+}
+
+.column {
+	text-align: left;
+	box-sizing: border-box;
+	margin-bottom: 1em;
+}
+
+/* Add gap only between the central columns */
+.column-container > .column:nth-child(1),
+.column-container > .column:nth-child(2) {
+	margin-right: 1em; 
 }
 
 
@@ -1486,6 +1510,74 @@ ul.shift-actions a.button:active {
 	display: none;
 }
 
+.teaser-banner {
+	background-color: rgba(154, 205, 49, 0.6);
+	box-sizing: border-box;
+	padding: 1em 1em 0 1em;
+	margin-bottom: 1em;
+}
+.teaser-banner p {
+	margin-bottom: 0.8em;
+}
+.teaser-banner .column {
+	margin-bottom:0.2em;
+}
+.icon-header,
+.heading-override {
+	font-size: 1em;
+	font-weight: normal;
+	text-decoration: none;
+	font-family: inherit;
+	font-style: normal;
+	margin: 0;
+	padding: 0;
+}
+
+.icon-header {
+	text-transform: uppercase;
+	font-family: 'Amaranth', sans-serif;
+	font-weight: 700;
+	font-size: 1.25rem;
+    margin: 0 0 0.25rem 0;
+}
+.program-mini {
+	margin: 0.3em 0 1em 0;
+}
+
+.program-mini .program-mini-header {
+	height: 15vw;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-size: cover;
+	position: relative;
+}
+.program-mini .program-mini-header h1,
+.program-mini .program-mini-header h2,
+.program-mini .program-mini-header h3,
+.program-mini .program-mini-header h4,
+.program-mini .program-mini-header h5,
+.program-mini .program-mini-header h6 {
+	font-weight: normal;
+	text-decoration: none;
+	font-style: normal;
+	padding: 0.3em 0.5em;
+	font-family: 'Amaranth', sans-serif;
+	font-weight: 700;
+	font-size: 1.25rem;
+    margin: 0;
+	background-color: rgba(0,0,0,0.4);
+	color: white;
+	text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	box-sizing: border-box;
+}
+.program-mini .program-mini-location {
+	font-weight: bold;
+	margin: 0.4em 0 0.4em 0;
+}
 /* Overrides --------------------------------------------------------------*/
 @media (max-width: 55rem) {
 	.title-wrapper {
@@ -1541,6 +1633,19 @@ ul.shift-actions a.button:active {
 	.stretch {
 		padding-left: 1%;
 		padding-right: 1%
+	}
+	.column-container {
+		grid-template-columns: 1fr;
+	}
+	
+	.column {
+		margin-bottom: 1em;
+	}
+	
+	/* Add gap only between the central columns */
+	.column-container > .column:nth-child(1),
+	.column-container > .column:nth-child(2) {
+		margin-right: 0; 
 	}
 	.page-controls {
 		right: 1%;
