@@ -454,16 +454,21 @@ header .title {
   color: #0A4B7D;
 	margin: 0.3rem 0 0.3rem 1rem;
 	display: inline-block;
-	background-image: url('logo.png');
+	background-image: url('tide.png');
 	background-position: 0 50%;
 	background-repeat: no-repeat;
     background-size: 1.6em; 
     padding-left: 2em;
     font-size: 3em;
-    padding-top: 0.3em;
+    padding-top: 0.4em;
 }
+header.header-team-goldengate .title,
 header.header-team-duxbury .title {
     background-image: url('golden-gate-mpa.png')
+}
+header.header-team-sanmateo .title,
+header.header-team-pillar-point .title {
+    background-image: url('san-mateo-mpa.png')
 }
 header .title-link:link,
 header .title-link:visited,
