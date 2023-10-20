@@ -1578,6 +1578,29 @@ ul.shift-actions a.button:active {
 	font-weight: bold;
 	margin: 0.4em 0 0.4em 0;
 }
+.program-mini > a:link,
+.program-mini > a:visited,
+.program-mini > a:hover,
+.program-mini > a:focus,
+.program-mini > a:active {
+	display:block;
+	color: inherit;
+	text-decoration: none;
+}
+.program-mini > a:hover,
+.program-mini > a:focus,
+.program-mini > a:active {
+	opacity: 0.7;
+}
+.program-mini > a .program-mini-header h1,
+.program-mini > a .program-mini-header h2,
+.program-mini > a .program-mini-header h3,
+.program-mini > a .program-mini-header h4,
+.program-mini > a .program-mini-header h5,
+.program-mini > a .program-mini-header h6 {
+	text-decoration: underline;
+}
+
 /* Overrides --------------------------------------------------------------*/
 @media (max-width: 55rem) {
 	.title-wrapper {
