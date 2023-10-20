@@ -50,13 +50,24 @@
   <!-- This is below the shift content for accessibity -->
   <ul class="shift-actions">
     <li class="shift-status"><p><em class="context-text">Shift status: </em><span>{% if shift.is_suggested %}Suggested{% else %}Confirmed{% endif %}</span></p></li>
-    {% if shift.is_suggested %}<li><a href="#"
-      hx-post="/programs/{{ team.slug }}/add-shift/"
-      hx-vals="{{ post_vars|to_json }}"
-      hx-target="closest .shift-mini"
-      hx-swap="outerHTML"
-      class="button"
-    >confirm</a></li>{% endif %}
+    {% if shift.is_suggested %}
+      <li><a href="#"
+        hx-post="/programs/{{ team.slug }}/add-shift/"
+        hx-vals="{{ post_vars|to_json }}"
+        hx-target="closest .shift-mini"
+        hx-swap="outerHTML"
+        class="button"
+      >confirm</a></li>
+    {% else %}
+      <li><a href="#"
+        hx-post="/programs/{{ team.slug }}/delete-shift/"
+        hx-confirm="Are you sure you wish to cancel this shift?"
+        hx-vals="{{ post_vars|to_json }}"
+        hx-target="closest .shift-mini"
+        hx-swap="outerHTML"
+        class="button"
+      >cancel</a></li>
+    {% endif %}
     <!-- <li><a href="#">edit</a></li> 
     <li><a href="#">cancel</a></li> -->
   </ul>

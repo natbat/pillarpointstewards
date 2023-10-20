@@ -101,7 +101,7 @@ def import_shifts(request):
 
 
 @active_user_required
-def cancel_shift(request, shift_id):
+def assign_shift(request, shift_id):
     shift = get_object_or_404(Shift, pk=shift_id)
     if shift.stewards.filter(id=request.user.id).exists():
         shift.stewards.remove(request.user)

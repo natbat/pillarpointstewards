@@ -60,7 +60,7 @@
     <!--endif -->
 
     {% if user_is_on_shift %}
-      <form action="/cancel-shift/{{ shift.pk }}/" method="POST">{% csrf_token %}
+      <form action="/unassign-shift/{{ shift.pk }}/" method="POST">{% csrf_token %}
         <button type="submit" class="button shift-assign">Remove me from this shift</button>
       </form>
     {% else %}
