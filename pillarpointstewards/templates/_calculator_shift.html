@@ -57,6 +57,16 @@
           hx-target="closest .shift-mini"
           hx-swap="outerHTML">+</button>
       </p>
+      <form
+        hx-post="/shifts/{{ shift.id }}/edit/"
+        hx-target="closest .shift-mini"
+        hx-swap="outerHTML">
+        <p>
+          <label for="description_{{ shift.id }}">Description:</label>
+          <input type="text" name="description" id="description_{{ shift.id }}" value="{{ shift.description }}">
+          <button>Update description</button>
+        </p>
+      </form>
     </details>
     {% endif %}
     <!--

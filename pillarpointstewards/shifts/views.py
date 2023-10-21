@@ -132,6 +132,8 @@ def edit_shift(request, shift_id):
         shift.shift_end = datetime.datetime.fromisoformat(request.POST["end"])
     if request.POST.get("target_stewards"):
         shift.target_stewards = int(request.POST["target_stewards"])
+    if request.POST.get("description"):
+        shift.description = request.POST["description"].strip()
     shift.save()
     return HttpResponse(
         render_to_string(
