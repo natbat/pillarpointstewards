@@ -32,7 +32,7 @@
           hx-target="closest .shift-mini"
           hx-swap="outerHTML">{{ shift.shift_start_plus_15|date:"g:iA"|lower }}</button>
       </p>
-      <p>End:
+      <p style="margin-top: 0.5em">End:
         <button hx-post="/shifts/{{ shift.id }}/edit/"
           hx-vals='{"end": "{{ shift.shift_end_minus_15|date:"c" }}"}'
           hx-target="closest .shift-mini"
@@ -43,7 +43,8 @@
           hx-target="closest .shift-mini"
           hx-swap="outerHTML">{{ shift.shift_end_plus_15|date:"g:iA"|lower }}</button>
       </p>
-      <p>Number of stewards:
+      <p style="margin-top: 0.5em">
+        Number of stewards:
         {% if shift.target_stewards > 1 %}
         <button hx-post="/shifts/{{ shift.id }}/edit/"
           hx-vals='{"target_stewards": "{{ shift.target_stewards_minus_one }}"}'
