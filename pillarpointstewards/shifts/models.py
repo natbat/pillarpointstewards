@@ -15,8 +15,8 @@ class Shift(models.Model):
         related_name="shifts",
     )
 
-    dawn = models.DateTimeField()
-    dusk = models.DateTimeField()
+    dawn = models.DateTimeField(null=True, blank=True)
+    dusk = models.DateTimeField(null=True, blank=True)
 
     shift_start = models.DateTimeField()
     shift_end = models.DateTimeField()
