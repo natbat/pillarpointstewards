@@ -26,6 +26,7 @@ class Shift(models.Model):
     target_stewards = models.IntegerField(blank=True, null=True)
 
     stewards = models.ManyToManyField("auth.User", related_name="shifts", blank=True)
+    description = models.CharField(max_length=255, blank=True, default="")
 
     def can_edit(self, user):
         return self.team.is_admin(user)

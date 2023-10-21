@@ -38,6 +38,14 @@ class ShiftForm(forms.ModelForm):
         ]
 
 
+class ManualShiftForm(forms.Form):
+    day = forms.DateField()
+    shift_start_time = forms.TimeField()
+    shift_end_time = forms.TimeField()
+    description = forms.CharField(max_length=255, required=False)
+    target_stewards = forms.IntegerField(min_value=1, max_value=10, required=False)
+
+
 @active_user_required
 def shift(request, shift_id):
     shift = get_object_or_404(Shift, pk=shift_id)
@@ -403,6 +411,7 @@ class CalculatorShift:
     mllw_feet: float
     tide_times_svg: str
     target_stewards: Union[int, None]
+    description: str
     html: Union[str, None]
 
     def shift_start_datetime(self):
@@ -454,6 +463,7 @@ class CalculatorShift:
                 low_tide_time=shift.lowest_tide,
             ),
             target_stewards=shift.target_stewards or 1,
+            description=shift.description,
             html="",
         )
 
@@ -549,6 +559,7 @@ def manage_shifts_calculator(request, program_slug):
                 mllw_feet=tide["mllw_feet"],
                 tide_times_svg=tide["tide_times_svg"],
                 target_stewards=people_per_regular_shift,
+                description="",
                 html=None,
             )
         )
@@ -572,10 +583,16 @@ def manage_shifts_calculator(request, program_slug):
                 "post_vars": {
                     "shift_start": as_datetime(result.day, result.shift_start),
                     "shift_end": as_datetime(result.day, result.shift_end),
-                    "lowest_tide": result.lowest_tide.isoformat(),
+                    "lowest_tide": result.lowest_tide.isoformat()
+                    if result.lowest_tide
+                    else None,
                     "mllw_feet": result.mllw_feet,
-                    "dawn": as_datetime(result.day, result.dawn),
-                    "dusk": as_datetime(result.day, result.dusk),
+                    "dawn": as_datetime(result.day, result.dawn)
+                    if result.dawn
+                    else None,
+                    "dusk": as_datetime(result.day, result.dusk)
+                    if result.dusk
+                    else None,
                     "target_stewards": people_per_regular_shift,
                 },
             },
@@ -598,8 +615,8 @@ def manage_shifts_calculator(request, program_slug):
                         "num_combined_shifts": team.shifts.count() + len(results),
                         "average_shift_length": average_shift_length,
                         "team": team,
-                        "request": request,
                     },
+                    request=request,
                 ),
             },
             default=str,
@@ -640,7 +657,20 @@ def add_manual_shift(request, program_slug):
         return HttpResponse(
             "You are not allowed to add shifts for that team", status=403
         )
-    return HttpResponse("TODO")
+    form = ManualShiftForm(request.POST)
+    if not form.is_valid():
+        return HttpResponse("Invalid submission: " + str(form.errors))
+    team.shifts.create(
+        shift_start=datetime.datetime.combine(
+            form.cleaned_data["day"], form.cleaned_data["shift_start_time"]
+        ).replace(tzinfo=datetime.UTC),
+        shift_end=datetime.datetime.combine(
+            form.cleaned_data["day"], form.cleaned_data["shift_end_time"]
+        ).replace(tzinfo=datetime.UTC),
+        target_stewards=form.cleaned_data["target_stewards"],
+        description=form.cleaned_data["description"],
+    )
+    return HttpResponseRedirect("/programs/{}/manage-shifts/".format(team.slug))
 
 
 def round_to_fifteen_minutes(dt):

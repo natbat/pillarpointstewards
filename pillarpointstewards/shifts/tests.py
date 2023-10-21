@@ -119,3 +119,31 @@ def test_cancel_shift(admin_user, admin_user_in_team, admin_user_has_shift, clie
     )
     assert response.status_code == 200
     assert not Shift.objects.filter(pk=shift.pk).exists()
+
+
+def test_manual_add_shift(admin_user, admin_user_in_team, client):
+    # Other user should not be able to manually add a shift
+    other_user = User.objects.create(username="other")
+    client.force_login(other_user)
+    team = admin_user_in_team
+    assert not team.shifts.count()
+    response = client.post(
+        "/programs/pillar-point/add-manual-shift/", {"start": "blah"}
+    )
+    assert response.status_code == 403
+    client.force_login(admin_user)
+    response = client.post(
+        "/programs/pillar-point/add-manual-shift/",
+        {
+            "day": "2024-01-01",
+            "shift_start_time": "13:15",
+            "shift_end_time": "15:15",
+            "description": "Description",
+        },
+    )
+    assert response.status_code == 302
+    assert team.shifts.count() == 1
+    shift = team.shifts.get()
+    assert shift.shift_start.isoformat() == "2024-01-01T13:15:00+00:00"
+    assert shift.shift_end.isoformat() == "2024-01-01T15:15:00+00:00"
+    assert shift.description == "Description"

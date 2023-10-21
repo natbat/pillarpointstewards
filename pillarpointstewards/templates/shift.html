@@ -32,8 +32,8 @@
       {% if shift.mllw_feet %}
         <p><strong>Lowest tide:</strong> {{ shift.mllw_feet }}ft at {{ shift.lowest_tide|date:"g:iA"|lower }}</p>
       {% endif %}
-      <p><strong>Dawn:</strong> {{ shift.dawn|date:"g:iA"|lower }}</p>
-      <p><strong>Dusk:</strong> {{ shift.dusk|date:"g:iA"|lower }}</p>
+      {% if shift.dawn %}<p><strong>Dawn:</strong> {{ shift.dawn|date:"g:iA"|lower }}</p>{% endif %}
+      {% if shift.dusk %}<p><strong>Dusk:</strong> {{ shift.dusk|date:"g:iA"|lower }}</p>{% endif %}
     </div><br>
 
     <h2>Volunteers on this shift <em>({{ stewards|length }}{% if shift.target_stewards %}/{{ shift.target_stewards }}{% endif %})</em></h2>
