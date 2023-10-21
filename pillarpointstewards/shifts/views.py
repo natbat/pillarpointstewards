@@ -510,11 +510,11 @@ def manage_shifts_calculator(request, program_slug):
     # Add "start" and "end" field to each result and append to calculator_shifts
     for tide in results:
         low_tide_dt = tide["low_tide_datetime"]
-        new_start = low_tide_dt - datetime.timedelta(hours=shift_buffer_before)
-        new_end = low_tide_dt + datetime.timedelta(hours=shift_buffer_after)
+        new_start = low_tide_dt - datetime.timedelta(minutes=shift_buffer_before)
+        new_end = low_tide_dt + datetime.timedelta(minutes=shift_buffer_after)
         dawn = datetime.datetime.combine(tide["day"], tide["dawn"], datetime.UTC)
         dusk = datetime.datetime.combine(tide["day"], tide["dusk"], datetime.UTC)
-        pretend_dawn = dawn + datetime.timedelta(hours=earliest_shift_time_buffer)
+        pretend_dawn = dawn + datetime.timedelta(minutes=earliest_shift_time_buffer)
 
         if pretend_dawn > new_start:
             new_start = pretend_dawn

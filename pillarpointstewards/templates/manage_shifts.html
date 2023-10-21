@@ -18,13 +18,13 @@
       <div class="input-container block-container">
         <label for="weekday-low-tide">Weekday low tide (ft)</label>
         <input type="number" value="-1" min="-2" max="8" step="0.05" name="weekday-low-tide">
-        <input type="range" min="-2" max="8" step="0.05" name="range_weekday-low-tide">
+        <input type="range" value="-1" min="-2" max="8" step="0.05" name="range_weekday-low-tide">
       </div>
       <!-- weekend low tide -->
       <div class="input-container block-container">
         <label for="weekend-low-tide">Weekend low tide (ft)</label>
         <input type="number" value="0" min="-2" max="8" step="0.05" name="weekend-low-tide">
-        <input type="range" min="-2" max="8" step="0.05" name="range_weekend-low-tide">
+        <input type="range" value="0" min="-2" max="8" step="0.05" name="range_weekend-low-tide">
       </div>
       <!-- Super low tide (ft) must be lower than both above
       <div class="input-container block-container">
@@ -32,23 +32,21 @@
         <input type="number" value="-1.5" min="-2" max="8" step="0.05" name="super-low-tide">
         <input type="range" min="-2" max="8" step="0.05" name="range_super-low-tide">
       </div> -->
-      <!-- Shift buffer before tide threshold (in hours) -->
       <div class="input-container block-container">
-        <label for="shift-buffer-before">Shift buffer before tide threshold (in hours)</label>
-        <input type="number" value="0.75" min="0" max="3" step="0.25" name="shift-buffer-before">
-        <input type="range" min="0" max="3" step="0.25" name="range_shift-buffer-before">
+        <label for="shift-buffer-before">Shift minutes before low tide</label>
+        <input type="number" value="45" min="0" max="180" step="15" name="shift-buffer-before">
+        <input type="range" value="45" min="0" max="180" step="15" name="range_shift-buffer-before">
       </div>
-      <!-- Shift buffer after tide threshold (in hours) -->
       <div class="input-container block-container">
-        <label for="shift-buffer-after">Shift buffer after tide threshold (in hours)</label>
-        <input type="number" value="1.5" min="0" max="3" step="0.25" name="shift-buffer-after">
-        <input type="range" min="0" max="3" step="0.25" name="range_shift-buffer-after">
+        <label for="shift-buffer-after">Shift minutes after low tide</label>
+        <input type="number" value="90" min="0" max="180" step="15" name="shift-buffer-after">
+        <input type="range" value="90" min="0" max="180" step="15" name="range_shift-buffer-after">
       </div>
       <!-- People per regular shift -->
       <div class="input-container block-container">
         <label for="people-per-regular-shift">People per shift</label>
         <input type="number" value="2" min="1" max="15" step="1" name="people-per-regular-shift">
-        <input type="range" min="1" max="15" step="1" name="range_people-per-regular-shift">
+        <input type="range" value="2" min="1" max="15" step="1" name="range_people-per-regular-shift">
       </div>
       <!-- People per super-low shift
       <div class="input-container block-container">
@@ -56,19 +54,19 @@
         <input type="number" value="3" min="1" max="15" step="1" name="people-per-super-low-shift">
         <input type="range" min="1" max="15" step="1" name="range_people-per-super-low-shift">
       </div> -->
-      <!-- Earliest shift time buffer (choose a duration in hours after civil dawn) -->
+      <!-- Earliest shift time buffer -->
       <div class="input-container block-container">
-        <label for="earliest-shift-time-buffer">Earliest shift time buffer (choose a duration in hours after civil dawn)</label>
-        <input type="number" value="1" min="0" max="3" step="0.5" name="earliest-shift-time-buffer">
-        <input type="range" min="0" max="3" step="0.5" name="range_earliest-shift-time-buffer">
+        <label for="earliest-shift-time-buffer">Earliest minutes after sunrise</label>
+        <input type="number" value="60" min="0" max="180" step="15" name="earliest-shift-time-buffer">
+        <input type="range" value="60" min="0" max="180" step="15" name="range_earliest-shift-time-buffer">
+        <p class="meta">Treat the start of the day as this many minutes past sunrise, to avoid sending people out for shifts that start in the dark.</p>
       </div>
       <!-- Don't schedule shifts shorter than this duration (mins) -->
       <div class="input-container block-container">
-        <label for="shortest-shift-duration">Don't schedule shifts shorter than this duration (mins)</label>
-        <input type="number" value="90" min="0" max="120" step="1" name="shortest-shift-duration">
-        <input type="range" min="0" max="120" step="1" name="range_shortest-shift-duration">
+        <label for="shortest-shift-duration">No shifts shorter than x minutes</label>
+        <input type="number" value="90" min="0" max="360" step="15" name="shortest-shift-duration">
+        <input type="range" value="90" min="0" max="360" step="15" name="range_shortest-shift-duration">
       </div>
-      <p><input type="submit" value="Update suggested shifts"></p>
     </form>
   </div>
 </section>
