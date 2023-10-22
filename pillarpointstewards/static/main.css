@@ -252,7 +252,8 @@ form label:focus {
 	color: rgba(0,0,0,1);
 }
 
-form .input-container label {
+form .input-container label,
+.inline-form .meta-label {
 	display: inline-block; 
 	width: 8em 
 }
@@ -383,6 +384,17 @@ form .block-container input {
 	width: 100%;
 	display: block;
 	box-sizing: border-box;
+}
+
+summary {
+	margin-bottom: 1em;
+}
+.inline-form {
+	
+}
+.inline-form .button {
+	margin-right: 1em;
+	margin-left: 1em;
 }
 
 
@@ -1460,6 +1472,9 @@ a.person-mini:active {
 }
 .shift-mini p {
 	margin: 0;
+}
+.shift-mini p.inline-form {
+	margin-bottom: 0.5em
 }
 .shift-mini .shift-time {
 	font-weight: bold;
