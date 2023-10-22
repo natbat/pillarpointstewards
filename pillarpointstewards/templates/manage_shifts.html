@@ -102,26 +102,40 @@ function serializeNumbers(formElement) {
     return JSON.stringify(data);
 }
 let previousSerialization = "";
+let previousAbortController = null;
 
 function monitorForm(formElement) {
     const currentSerialization = serializeNumbers(formElement);
     // Check if the serialization has changed since the last check
     if (currentSerialization !== previousSerialization) {
+        if (previousAbortController) {
+            console.log('Aborting previous request');
+            previousAbortController.abort();
+        }
+        let abortController = new AbortController();
+        previousAbortController = abortController;
+        document.querySelector('#calculator-results').style.opacity = 0.3;
+        document.querySelector('#calculator-results').style.pointerEvents = 'none';
         fetch('/programs/{{ program_slug }}/manage-shifts/calculator/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: currentSerialization
+            body: currentSerialization,
+            signal: abortController.signal,
         })
-        .then(response => response.json())
+        .then(response => {
+            previousAbortController = null;
+            return response.json(); 
+        })
         .then(data => {
             let html = data.results.map(result => result.html).join('\n');
             document.querySelector('#calculator-results').innerHTML = data.top_block + html;
+            document.querySelector('#calculator-results').style.opacity = 1;
+            document.querySelector('#calculator-results').style.pointerEvents = 'auto';
             htmx.process(document.querySelector('#calculator-results'));
         })
         .catch(error => {
-            document.querySelector('#calculator-results').innerText = JSON.stringify(error, null, 2);
             console.error('Error fetching:', error);
         });
         previousSerialization = currentSerialization;
@@ -129,4 +143,4 @@ function monitorForm(formElement) {
 }
 
 </script>
-   {% endblock %}
+{% endblock %}
