@@ -253,9 +253,11 @@ form label:focus {
 }
 
 form .input-container label,
-.inline-form .meta-label {
+.inline-form .meta-label,
+form.inline-form label {
 	display: inline-block; 
-	width: 8em 
+	width: 8em;
+	font-weight: bold;
 }
 
 form .radio-container label, 

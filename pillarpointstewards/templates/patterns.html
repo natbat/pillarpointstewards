@@ -291,6 +291,37 @@
               </a>
               Fully populated shift with 2/2 stewards
             </p>
+            <details style="margin-top: 1em" open="">
+              <summary>Edit shift details</summary>
+              <p class="inline-form"><span class="meta-label">Start time</span>
+                <button hx-post="/shifts/253/edit/" hx-vals="{&quot;start&quot;: &quot;2023-10-28T16:15:00&quot;}" hx-target="closest .shift-mini" hx-swap="outerHTML" class="button">4:15pm</button>
+                <strong>4:30pm </strong>
+                <button hx-post="/shifts/253/edit/" hx-vals="{&quot;start&quot;: &quot;2023-10-28T16:45:00&quot;}" hx-target="closest .shift-mini" hx-swap="outerHTML" class="button">4:45pm</button>
+              </p>
+              <p class="inline-form"><span class="meta-label">End time</span>
+                <button hx-post="/shifts/253/edit/" hx-vals="{&quot;end&quot;: &quot;2023-10-28T18:30:00&quot;}" hx-target="closest .shift-mini" hx-swap="outerHTML" class="button">6:30pm</button>
+                6:45pm
+                <button hx-post="/shifts/253/edit/" hx-vals="{&quot;end&quot;: &quot;2023-10-28T19:00:00&quot;}" hx-target="closest .shift-mini" hx-swap="outerHTML" class="button">7:00pm</button>
+              </p>
+              <p class="inline-form"">
+                <span class="meta-label">Stewards</span>
+                
+                <button hx-post="/shifts/253/edit/" hx-vals="{&quot;target_stewards&quot;: &quot;1&quot;}" hx-target="closest .shift-mini" hx-swap="outerHTML" class="button"><span class="context-text">Remove one steward </span>-</button>
+                
+                <strong>2</strong>
+                <button hx-post="/shifts/253/edit/" hx-vals="{&quot;target_stewards&quot;: &quot;3&quot;}" hx-target="closest .shift-mini" hx-swap="outerHTML" class="button"><span class="context-text">Add one steward </span>+</button>
+              </p>
+              <form hx-post="/shifts/253/edit/" hx-target="closest .shift-mini" hx-swap="outerHTML" class="inline-form">
+                <p>
+                  <label for="description_253">Description</label>
+                  <input type="text" name="description" id="description_253" value="">
+                  <button type="submit">Update description</button>
+                </p>
+              </form>
+            </details>
+
+
+
 
           </div> <!-- .shift-content -->
           <!-- This is below the shift content for accessibity -->
@@ -452,35 +483,6 @@
             </div>
 
             <p>Two stewards will be needed on this shift</p>
-
-            <details style="margin-top: 1em" open="">
-              <summary>Edit shift details</summary>
-              <p class="inline-form"><span class="meta-label">Start:</span>
-                <button hx-post="/shifts/253/edit/" hx-vals="{&quot;start&quot;: &quot;2023-10-28T16:15:00&quot;}" hx-target="closest .shift-mini" hx-swap="outerHTML" class="button">4:15pm</button>
-                <strong>4:30pm </strong>
-                <button hx-post="/shifts/253/edit/" hx-vals="{&quot;start&quot;: &quot;2023-10-28T16:45:00&quot;}" hx-target="closest .shift-mini" hx-swap="outerHTML" class="button">4:45pm</button>
-              </p>
-              <p class="inline-form"><span class="meta-label">End:</span>
-                <button hx-post="/shifts/253/edit/" hx-vals="{&quot;end&quot;: &quot;2023-10-28T18:30:00&quot;}" hx-target="closest .shift-mini" hx-swap="outerHTML" class="button">6:30pm</button>
-                6:45pm
-                <button hx-post="/shifts/253/edit/" hx-vals="{&quot;end&quot;: &quot;2023-10-28T19:00:00&quot;}" hx-target="closest .shift-mini" hx-swap="outerHTML" class="button">7:00pm</button>
-              </p>
-              <p class="inline-form"">
-                Number of stewards:
-                
-                <button hx-post="/shifts/253/edit/" hx-vals="{&quot;target_stewards&quot;: &quot;1&quot;}" hx-target="closest .shift-mini" hx-swap="outerHTML" class="button"><span class="context-text">Remove one steward </span>-</button>
-                
-                <strong>2</strong>
-                <button hx-post="/shifts/253/edit/" hx-vals="{&quot;target_stewards&quot;: &quot;3&quot;}" hx-target="closest .shift-mini" hx-swap="outerHTML" class="button"><span class="context-text">Add one steward </span>+</button>
-              </p>
-              <form hx-post="/shifts/253/edit/" hx-target="closest .shift-mini" hx-swap="outerHTML" class="inline-form">
-                <p>
-                  <label for="description_253">Description:</label>
-                  <input type="text" name="description" id="description_253" value="">
-                  <button type="submit">Update description</button>
-                </p>
-              </form>
-            </details>
 
           </div> <!-- .shift-content -->
           <!-- This is below the shift content for accessibity -->
