@@ -19,43 +19,43 @@
     <p>{{ shift.target_stewards }} steward{{ shift.target_stewards|pluralize }} will be needed on this shift</p>
     {% if shift.id %}
     <!-- use <details> <summary> -->
-    <details{% if change_times_open %} open{% endif %} style="margin-top: 1em">
+      <details{% if change_times_open %} open{% endif %} style="margin-top: 1em">
       <summary>Edit shift details</summary>
-      <p style="margin-top: 1em">Start:
-        <button hx-post="/shifts/{{ shift.id }}/edit/"
+      <p class="inline-form"><span class="meta-label">Start time</span>
+        <button class="button" hx-post="/shifts/{{ shift.id }}/edit/"
           hx-vals='{"start": "{{ shift.shift_start_minus_15|date:"c" }}"}'
           hx-target="closest .shift-mini"
           hx-swap="outerHTML">{{ shift.shift_start_minus_15|date:"g:iA"|lower }}</button>
-        {{ shift.shift_start|date:"g:iA"|lower }}
-        <button hx-post="/shifts/{{ shift.id }}/edit/"
+        <strong>{{ shift.shift_start|date:"g:iA"|lower }}</strong>
+        <button class="button" hx-post="/shifts/{{ shift.id }}/edit/"
           hx-vals='{"start": "{{ shift.shift_start_plus_15|date:"c" }}"}'
           hx-target="closest .shift-mini"
           hx-swap="outerHTML">{{ shift.shift_start_plus_15|date:"g:iA"|lower }}</button>
       </p>
-      <p style="margin-top: 0.5em">End:
-        <button hx-post="/shifts/{{ shift.id }}/edit/"
+      <p class="inline-form"><span class="meta-label">End time</span>
+        <button class="button" hx-post="/shifts/{{ shift.id }}/edit/"
           hx-vals='{"end": "{{ shift.shift_end_minus_15|date:"c" }}"}'
           hx-target="closest .shift-mini"
           hx-swap="outerHTML">{{ shift.shift_end_minus_15|date:"g:iA"|lower }}</button>
-        {{ shift.shift_end|date:"g:iA"|lower }}
-        <button hx-post="/shifts/{{ shift.id }}/edit/"
+        <strong>{{ shift.shift_end|date:"g:iA"|lower }}</strong>
+        <button class="button" hx-post="/shifts/{{ shift.id }}/edit/"
           hx-vals='{"end": "{{ shift.shift_end_plus_15|date:"c" }}"}'
           hx-target="closest .shift-mini"
           hx-swap="outerHTML">{{ shift.shift_end_plus_15|date:"g:iA"|lower }}</button>
       </p>
-      <p style="margin-top: 0.5em">
-        Number of stewards:
+      <p class="inline-form"">
+        <span class="meta-label">Stewards</span>
         {% if shift.target_stewards > 1 %}
-        <button hx-post="/shifts/{{ shift.id }}/edit/"
+        <button class="button" hx-post="/shifts/{{ shift.id }}/edit/"
           hx-vals='{"target_stewards": "{{ shift.target_stewards_minus_one }}"}'
           hx-target="closest .shift-mini"
-          hx-swap="outerHTML">-</button>
+          hx-swap="outerHTML"><span class="context-text">Remove one steward</span>-</button>
         {% endif %}
         <strong>{{ shift.target_stewards }}</strong>
-        <button hx-post="/shifts/{{ shift.id }}/edit/"
+        <button class="button" hx-post="/shifts/{{ shift.id }}/edit/"
           hx-vals='{"target_stewards": "{{ shift.target_stewards_plus_one }}"}'
           hx-target="closest .shift-mini"
-          hx-swap="outerHTML">+</button>
+          hx-swap="outerHTML"><span class="context-text">Add one steward</span>+</button>
       </p>
       <form
         hx-post="/shifts/{{ shift.id }}/edit/"
@@ -64,7 +64,7 @@
         <p>
           <label for="description_{{ shift.id }}">Description:</label>
           <input type="text" name="description" id="description_{{ shift.id }}" value="{{ shift.description }}">
-          <button>Update description</button>
+          <button type="submit">Update</button>
         </p>
       </form>
     </details>
