@@ -58,6 +58,7 @@
           hx-swap="outerHTML"><span class="context-text">Add one steward</span>+</button>
       </p>
       <form
+        class="inline-form"
         hx-post="/shifts/{{ shift.id }}/edit/"
         hx-target="closest .shift-mini"
         hx-swap="outerHTML">
