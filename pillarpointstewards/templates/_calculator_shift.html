@@ -9,7 +9,7 @@
       {% endif %}
     </h2>
     <p class="shift-type">Weekend low tide</p>
-    <p class="shift-time">{{ shift.shift_start|date:"g:iA"|lower }} &mdash; {{ shift.shift_end|date:"g:iA"|lower }}{% if lowest_tide %}, lowest tide of {{ shift.mllw_feet }}ft at {{ shift.lowest_tide|date:"g:iA"|lower }}{% endif %}</p>
+    <p class="shift-time">{{ shift.shift_start|date:"g:iA"|lower }} &mdash; {{ shift.shift_end|date:"g:iA"|lower }}{% if shift.lowest_tide %}, lowest tide of {{ shift.mllw_feet }}ft at {{ shift.lowest_tide|date:"g:iA"|lower }}{% endif %}</p>
     <div class="day-alone">
       {% with shift.tide_times_svg as tide_times_svg %}
         {% include "_tide_svg.html" %}
