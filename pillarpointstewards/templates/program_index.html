@@ -76,8 +76,8 @@
         <br>
 
         <p class="intro">
-          <a href="/programs/{{ team.slug }}/shifts/">Agenda view of shifts</a> &middot;
-          <a href="/materials/">Volunteer training materials</a>
+          <a href="/programs/{{ team.slug }}/shifts/">Agenda view of shifts</a>
+          {% if team.slug == "pillar-point" %}&middot; <a href="/materials/">Volunteer training materials</a>{% endif %}
         </p>
       </div>
       <div class="secondary pull-out">
