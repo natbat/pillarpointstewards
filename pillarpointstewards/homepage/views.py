@@ -227,7 +227,10 @@ def program_index(request, program_slug):
             "shift_start"
         )
     )
-    contact_details = Fragment.objects.get(slug="contact_details").fragment
+    try:
+        contact_details = Fragment.objects.get(slug="contact_details_{}".format(team.slug)).fragment
+    except Fragment.DoesNotExist:
+        contact_details = ""
     # Show calendar for next three months
     month_now = datetime.datetime.utcnow().date().replace(day=1)
     calendars = []

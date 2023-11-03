@@ -55,6 +55,11 @@ def shift(request, shift_id):
     if user_is_on_shift:
         stewards = [s for s in stewards if s != request.user] + [request.user]
 
+    try:
+        contact_details = Fragment.objects.get(slug="contact_details_{}".format(shift.team.slug)).fragment
+    except Fragment.DoesNotExist:
+        contact_details = ""
+
     return render(
         request,
         "shift.html",
@@ -63,7 +68,7 @@ def shift(request, shift_id):
             "shift": shift,
             "user_is_on_shift": user_is_on_shift,
             "stewards": stewards,
-            "contact_details": Fragment.objects.get(slug="contact_details").fragment,
+            "contact_details": contact_details,
             "forecast": Forecast.for_date(shift.shift_start.date()),
             "tide_times_svg": tide_times_svg_context_for_shift(shift),
         },
