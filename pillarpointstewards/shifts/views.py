@@ -215,7 +215,7 @@ def shifts(request, program_slug):
         "shifts.html",
         {
             "team": team,
-            "shifts": team.shifts.prefetch_related("stewards"),
+            "shifts": team.shifts.prefetch_related("stewards").order_by("shift_start"),
         },
     )
 
