@@ -3,7 +3,7 @@
     <!-- Style wise it doesnt matter which heading level we use, use what ever is right for accessibility -->
     <h2 class="shift-title">{% if shift_canceled %}CANCELED{% endif %}
       {% if shift.id %}
-        <a href="/shifts/{{ shift.id }}/">{{ shift.day|date:"D, F jS Y" }}</a>
+        <a href="/programs/{{ team.slug }}/shifts/{{ shift.id }}/">{{ shift.day|date:"D, F jS Y" }}</a>
       {% else %}
         {{ shift.day|date:"D, F jS Y" }}
       {% endif %}

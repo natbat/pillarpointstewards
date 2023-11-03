@@ -31,6 +31,9 @@ class Shift(models.Model):
     def can_edit(self, user):
         return self.team.is_admin(user)
 
+    def get_absolute_url(self):
+        return "/programs/{}/shifts/{}".format(self.team.slug, self.id)
+
     @property
     def fullness(self):
         count = self.stewards.count()

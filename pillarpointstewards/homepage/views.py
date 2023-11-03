@@ -228,7 +228,9 @@ def program_index(request, program_slug):
         )
     )
     try:
-        contact_details = Fragment.objects.get(slug="contact_details_{}".format(team.slug)).fragment
+        contact_details = Fragment.objects.get(
+            slug="contact_details_{}".format(team.slug)
+        ).fragment
     except Fragment.DoesNotExist:
         contact_details = ""
     # Show calendar for next three months

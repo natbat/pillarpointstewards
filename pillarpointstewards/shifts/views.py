@@ -46,9 +46,16 @@ class ManualShiftForm(forms.Form):
     target_stewards = forms.IntegerField(min_value=1, max_value=10, required=False)
 
 
-@active_user_required
-def shift(request, shift_id):
+def old_shift(request, shift_id):
     shift = get_object_or_404(Shift, pk=shift_id)
+    return HttpResponseRedirect(shift.get_absolute_url())
+
+
+@active_user_required
+def shift(request, program_slug, shift_id):
+    shift = get_object_or_404(Shift, pk=shift_id)
+    if shift.team.slug != program_slug:
+        return HttpResponseRedirect(shift.get_absolute_url())
     user_is_on_shift = shift.stewards.filter(id=request.user.id).exists()
     stewards = list(shift.stewards.all())
     # Ensure current user is at the bottom, if they are a steward
@@ -56,7 +63,9 @@ def shift(request, shift_id):
         stewards = [s for s in stewards if s != request.user] + [request.user]
 
     try:
-        contact_details = Fragment.objects.get(slug="contact_details_{}".format(shift.team.slug)).fragment
+        contact_details = Fragment.objects.get(
+            slug="contact_details_{}".format(shift.team.slug)
+        ).fragment
     except Fragment.DoesNotExist:
         contact_details = ""
 

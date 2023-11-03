@@ -18,7 +18,7 @@
         {% for day in week %}
         <td class="{{ day.classes }}" data-date="{{ day.date|date:"Y-m-d" }}">
             {% if day.shift %}
-              <a href="/shifts/{{ day.shift.id }}/">{{ day.date|date:"j" }}<span class="context-text">{{ day.date|date:"S F" }}</span>
+              <a href="{{ day.shift.get_absolute_url }}">{{ day.date|date:"j" }}<span class="context-text">{{ day.date|date:"S F" }}</span>
                 <span class="shifttime">{{ day.shift.shift_start|date:"g:iA"|lower }}-{{ day.shift.shift_end|date:"g:iA"|lower }}</span>
               </a>
             {% else %}
