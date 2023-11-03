@@ -67,8 +67,8 @@ To upgrade your local virtual environment to the exact versions of the packages 
 
 Some site content - such as emergency contact phone numbers - is held in the database to avoid sharing it in a public GitHub repository.
 
-The `contact_details` fragment shows contact details and is displayed on the logged-in homepage.
+The `contact_details_$team-slug` fragments show contact details and are displayed on the logged-in homepage for each team.
 
-Content for these needs to be copiend and pasted into new databases - we keep those in the private repository [pillarpointstewards-private](https://github.com/natbat/pillarpointstewards-private).
+Content for these needs to be copied and pasted into new databases - we keep those in the private repository [pillarpointstewards-private](https://github.com/natbat/pillarpointstewards-private).
 
 They can be edited at `/admin/homepage/fragment/`.
