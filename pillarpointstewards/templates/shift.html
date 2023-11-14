@@ -28,6 +28,9 @@
   <div class="primary">
     <h2 class="header1" title="{{ shift.shift_start.date }}">You are {% if not user_is_on_shift %}not{% endif %} scheduled on this shift</h2>
     <div class="intro">
+      {% if shift.description %}
+        <p class="intro">{{ shift.description }}</p>
+      {% endif %}
       <p><strong>Shift time:</strong> from {{ shift.shift_start|date:"g:iA"|lower }} to {{ shift.shift_end|date:"g:iA"|lower }}</p>
       {% if shift.mllw_feet %}
         <p><strong>Lowest tide:</strong> {{ shift.mllw_feet }}ft at {{ shift.lowest_tide|date:"g:iA"|lower }}</p>
