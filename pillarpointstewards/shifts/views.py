@@ -279,7 +279,7 @@ def shifts_ics_personal(request, id, key, all=False):
         return HttpResponse("Wrong secret", status=400)
 
     qs = Shift.objects.select_related("team").prefetch_related("stewards")
-    if all:
+    if not all:
         qs = qs.filter(stewards=secret_calendar.user)
 
     title = "{} shifts for Tidepool Stewards".format(
