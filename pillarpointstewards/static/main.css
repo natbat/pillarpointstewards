@@ -485,6 +485,10 @@ header.header-team-sanmateo .title,
 header.header-team-pillar-point .title {
     background-image: url('san-mateo-mpa.png')
 }
+header.header-team-nature-collective .title,
+header.header-team-swamis .title {
+    background-image: url('nature-collective.png')
+}
 header .title-link:link,
 header .title-link:visited,
 header .title-link:hover,
