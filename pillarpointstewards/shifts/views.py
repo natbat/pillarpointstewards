@@ -606,9 +606,10 @@ def manage_shifts_calculator(request, program_slug):
             return time.isoformat()
         return datetime.datetime.combine(day, time).isoformat()
 
-    # Add rendered HTML fragment to each one
+    # Create rendered HTML fragment for each one
+    results_to_return = []
     for result in results:
-        result.html = render_to_string(
+        results_to_return.append({"html": render_to_string(
             "_calculator_shift.html",
             {
                 "shift": result,
@@ -629,7 +630,7 @@ def manage_shifts_calculator(request, program_slug):
                     "target_stewards": people_per_regular_shift,
                 },
             },
-        )
+        )})
     # Can't calculate this yet, because we are missing the logic that figures out
     # the actual start and end time of each shift
     average_shift_length = None
@@ -638,7 +639,7 @@ def manage_shifts_calculator(request, program_slug):
         json.dumps(
             {
                 "input": data,
-                "results": [asdict(r) for r in results],
+                "results": results_to_return,
                 "top_block": render_to_string(
                     "_calculator_top_block.html",
                     {
