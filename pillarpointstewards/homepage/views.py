@@ -241,7 +241,7 @@ def program_index(request, program_slug):
         year = month_now.year
         if month > 12:
             year += 1
-            month = 1
+            month -= 12
         calendars.append(render_calendar(request, team, year, month))
     return render(
         request,
