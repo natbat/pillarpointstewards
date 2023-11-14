@@ -22,19 +22,25 @@
 
       <p>Follow this link to subscribe to your shifts in Google Calendar:</p>
 
-      <p><a href="https://www.google.com/calendar/render?cid=webcal://www.tidepoolstewards.com{{ secret_calendar.path }}" class="button">Subscribe in Google Calendar</a></p>
+      <p><a href="https://www.google.com/calendar/render?cid=webcal://www.tidepoolstewards.com{{ secret_calendar.path }}" class="button">Subscribe to your shifts in Google Calendar</a></p>
+      <p><a href="https://www.google.com/calendar/render?cid=webcal://www.tidepoolstewards.com{{ secret_calendar.path_all }}" class="button">Subscribe to all shifts in Google Calendar</a></p>
 
       <h2>Apple Calendar</h2>
 
       <p>To subscribe in your calendar on your Mac or iPhone, use this link:</p>
 
-      <p><a href="webcal://www.tidepoolstewards.com{{ secret_calendar.path }}" class="button">Subscribe in your calendar</a></p>
+      <p><a href="webcal://www.tidepoolstewards.com{{ secret_calendar.path }}" class="button">Subscribe to your shifts in your calendar</a></p>
+      <p><a href="webcal://www.tidepoolstewards.com{{ secret_calendar.path_all }}" class="button">Subscribe to all shifts in your calendar</a></p>
 
       <h2>Other calendar software</h2>
 
       <p>Copy and paste this URL into the "Subscribe to calendar" option in your calendar software:</p>
 
+      <p>For your shifts:</p>
       <p><pre style="font-family: courier; font-size: 0.8em">{{ secret_calendar.calendar_url }}</pre></p>
+
+      <p>For all shifts:</p>
+      <p><pre style="font-family: courier; font-size: 0.8em">{{ secret_calendar.calendar_url_all }}</pre></p>
     {% endif %}
   </div>
 </section>

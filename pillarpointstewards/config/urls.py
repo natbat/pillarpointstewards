@@ -34,6 +34,7 @@ urlpatterns = [
     path("materials/", homepage.materials),
     path("shifts/calendar-instructions/", shifts.calendar_instructions),
     path("shifts-personal-<int:id>-<str:key>.ics", shifts.shifts_ics_personal),
+    path("shifts-all-<int:id>-<str:key>.ics", shifts.shifts_ics_all),
     path("shifts-<str:key>.ics", shifts.shifts_ics),
     path("fetch-weather/", weather.fetch_weather),
     path("patterns/", homepage.patterns),

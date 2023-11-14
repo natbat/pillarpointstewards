@@ -79,8 +79,19 @@ class SecretCalendar(models.Model):
         return "/shifts-personal-{}-{}.ics".format(self.pk, self.secret)
 
     @property
+    def path_all(self):
+        return "/shifts-all-{}-{}.ics".format(self.pk, self.secret)
+
+    @property
     def calendar_url(self):
         if self.pk:
             return "https://www.pillarpointstewards.com{}".format(self.path)
+        else:
+            return ""
+
+    @property
+    def calendar_url_all(self):
+        if self.pk:
+            return "https://www.pillarpointstewards.com{}".format(self.path_all)
         else:
             return ""

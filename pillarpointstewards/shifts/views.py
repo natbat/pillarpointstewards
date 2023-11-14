@@ -273,20 +273,30 @@ def render_calendar(request, shifts, title):
     return HttpResponse(s, content_type=content_type)
 
 
-def shifts_ics_personal(request, id, key):
+def shifts_ics_personal(request, id, key, all=False):
     secret_calendar = get_object_or_404(SecretCalendar, pk=id)
     if not secrets.compare_digest(key, secret_calendar.secret):
         return HttpResponse("Wrong secret", status=400)
 
+    qs = Shift.objects.select_related("team").prefetch_related("stewards")
+    if all:
+        qs = qs.filter(stewards=secret_calendar.user)
+
+    title = "{} shifts for Tidepool Stewards".format(
+        secret_calendar.user.get_full_name() or secret_calendar.user.username
+    )
+    if all:
+        title = "All shifts on Tidepool Stewards"
+
     return render_calendar(
         request,
-        Shift.objects.select_related("team")
-        .filter(stewards=secret_calendar.user)
-        .prefetch_related("stewards"),
-        title="{} shifts for Tidepool Stewards".format(
-            secret_calendar.user.get_full_name() or secret_calendar.user.username
-        ),
+        qs,
+        title=title,
     )
+
+
+def shifts_ics_all(request, id, key):
+    return shifts_ics_personal(request, id, key, all=True)
 
 
 @active_user_required
