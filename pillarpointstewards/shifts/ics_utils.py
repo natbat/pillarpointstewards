@@ -50,7 +50,7 @@ class EventWithTimezone(Event):
 
 
 def calendar(rows, title=None):
-    c = Calendar(creator="-//www.pillarpointstewards.com//ics//EN")
+    c = Calendar(creator="-//www.tidepoolstewards.com//ics//EN")
     if title:
         c.extra.append(ContentLine(name="X-WR-CALNAME", params={}, value=title))
 

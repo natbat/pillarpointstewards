@@ -238,18 +238,25 @@ def render_calendar(request, shifts, title):
         stewards = (
             "Stewards: {}".format(stewards) if stewards else "No stewards signed up yet"
         )
-        lines = [
-            f"Shift from {shift.shift_start.time()} to {shift.shift_end.time()}",
-            stewards,
-        ]
+        lines = []
+        if shift.description:
+            lines.append(shift.description)
+        lines.extend(
+            [
+                f"Shift at {shift.team.name} from {shift.shift_start.time()} to {shift.shift_end.time()}",
+                stewards,
+            ]
+        )
         if shift.mllw_feet:
             lines.append(f"Low tide {shift.mllw_feet}ft at {shift.lowest_tide}")
-        lines.append(f"https://www.pillarpointstewards.com/shifts/{shift.id}/")
+        lines.append(
+            f"https://www.tidepoolstewards.com/programs/{shift.team.slug}/shifts/{shift.id}/"
+        )
         return "\n\n".join(lines)
 
     shifts = [
         {
-            "name": "Steward shift at Pillar Point",
+            "name": "Steward shift at {}".format(shift.team.name),
             "dtstart": shift.shift_start.isoformat().rstrip("Z"),
             "dtend": shift.shift_end.isoformat().rstrip("Z"),
             "description": description(shift),
@@ -273,10 +280,10 @@ def shifts_ics_personal(request, id, key):
 
     return render_calendar(
         request,
-        Shift.objects.filter(stewards=secret_calendar.user).prefetch_related(
-            "stewards"
-        ),
-        title="{} shifts for Pillar Point Stewards".format(
+        Shift.objects.select_related("team")
+        .filter(stewards=secret_calendar.user)
+        .prefetch_related("stewards"),
+        title="{} shifts for Tidepool Stewards".format(
             secret_calendar.user.get_full_name() or secret_calendar.user.username
         ),
     )
