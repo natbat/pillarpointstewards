@@ -85,7 +85,7 @@ def test_personal_shifts_ics(admin_user_has_shift, admin_client):
     response = admin_client.get(secret_calendar.path)
     assert response.headers["content-type"] == "text/calendar; charset=utf-8"
     assert response.content.decode("utf-8").startswith("BEGIN:VCALENDAR")
-    assert b"DESCRIPTION:Shift from" in response.content
+    assert b"DESCRIPTION:Shift at Pillar Point from" in response.content
 
 
 def test_edit_shift(admin_user, admin_user_in_team, admin_user_has_shift, client):
