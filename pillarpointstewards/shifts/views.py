@@ -325,12 +325,33 @@ def manage_shifts(request, program_slug):
     # once we have a mapping of program_slug to location
     for location in Location.objects.all():
         location.populate_sunrise_sunsets()
+
+    calculator_defaults = {
+        "weekday-low-tide": -1,
+        "weekend-low-tide": 0,
+        "super-low-tide": -1.5,
+        "shift-buffer-before": 45,
+        "shift-buffer-after": 90,
+        "people-per-regular-shift": 2,
+        "earliest-shift-time-buffer": 60,
+        "shortest-shift-duration": 90,
+    }
+
+    calculator_settings = team.calculator_settings
+    for key, value in calculator_defaults.items():
+        if key not in calculator_settings:
+            calculator_settings[key] = value
+
     return render(
         request,
         "manage_shifts.html",
         {
             "program_slug": program_slug,
             "team": team,
+            "calculator_settings": dict(
+                (key.replace("-", "_"), value)
+                for key, value in calculator_settings.items()
+            ),
         },
     )
 
@@ -508,6 +529,8 @@ def manage_shifts_calculator(request, program_slug):
     data = json.loads(request.body)
 
     team = get_object_or_404(Team, slug=program_slug)
+    team.calculator_settings = data
+    team.save()
 
     shift_buffer_before = data["shift-buffer-before"]
     shift_buffer_after = data["shift-buffer-after"]

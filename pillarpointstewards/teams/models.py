@@ -12,6 +12,7 @@ class Team(models.Model):
     location = models.ForeignKey(
         "tides.Location", on_delete=models.SET_NULL, null=True, blank=True
     )
+    calculator_settings = models.JSONField(default=dict, blank=True)
 
     def is_admin(self, user) -> bool:
         return self.memberships.filter(user=user, is_admin=True).exists()
