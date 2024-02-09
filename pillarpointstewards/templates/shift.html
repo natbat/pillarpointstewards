@@ -72,6 +72,25 @@
       </form>
     {% endif %}
 
+    {% if shift_reports %}
+      <h2>Shift reports</h2>
+      <ul>
+        {% for report in shift_reports %}
+          <li id="report-{{ report.pk }}">
+            <p><strong>{{ report.created|date:"jS F Y g:iA" }}</strong> - {{ report.user }}</p>
+            <p style="padding-left: 1em">{{ report.report }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if can_add_report %}
+      <h2>Add your shift report</h2>
+      <form action="{{ shift.get_absolute_url }}report/" method="POST">{% csrf_token %}
+        <p style="margin-bottom: 0"><textarea style="width: 70%; height: 5em" name="report" placeholder="Add a report"></textarea></p>
+        <p><button type="submit" class="button shift-assign">Add report</button></p>
+      </form>
+    {% endif %}
+
     <p class="intro"><a href="/programs/{{ team.slug }}/">&lt; Back to homepage</a></p>
 
     {% if tide_times_svg %}

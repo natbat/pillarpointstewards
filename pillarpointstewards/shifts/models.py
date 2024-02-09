@@ -32,7 +32,7 @@ class Shift(models.Model):
         return self.team.is_admin(user)
 
     def get_absolute_url(self):
-        return "/programs/{}/shifts/{}".format(self.team.slug, self.id)
+        return "/programs/{}/shifts/{}/".format(self.team.slug, self.id)
 
     @property
     def fullness(self):
@@ -95,3 +95,24 @@ class SecretCalendar(models.Model):
             return "https://www.pillarpointstewards.com{}".format(self.path_all)
         else:
             return ""
+
+
+class ShiftReport(models.Model):
+    user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.SET_NULL,
+        related_name="shift_reports",
+        null=True,
+    )
+    shift = models.ForeignKey(
+        Shift, on_delete=models.CASCADE, related_name="shift_reports"
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    report = models.TextField()
+
+    def get_absolute_url(self):
+        return self.shift.get_absolute_url() + "#report-" + str(self.id)
+
+    def __str__(self):
+        user_str = self.user.username if self.user else "Deleted User"
+        return f"Report by {user_str} on {self.shift}"

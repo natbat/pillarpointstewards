@@ -27,6 +27,7 @@ urlpatterns = [
     path("backup.json", homepage.backup),
     path("shifts/<int:shift_id>/", shifts.old_shift),
     path("programs/<str:program_slug>/shifts/<int:shift_id>/", shifts.shift),
+    path("programs/<str:program_slug>/shifts/<int:shift_id>/report/", shifts.shift_report),
     path("shifts/<int:shift_id>/edit/", shifts.edit_shift),
     path("shifts/<int:shift_id>/cancel/", shifts.cancel_shift),
     path("unassign-shift/<int:shift_id>/", shifts.unassign_shift),

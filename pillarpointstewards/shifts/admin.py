@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Shift, ShiftChange, SecretCalendar
+from .models import Shift, ShiftChange, ShiftReport, SecretCalendar
 
 
 class ShiftAdmin(admin.ModelAdmin):
@@ -31,6 +31,14 @@ class SecretCalendarAdmin(admin.ModelAdmin):
         return self.readonly_fields
 
 
+class ShiftReportAdmin(admin.ModelAdmin):
+    model = ShiftReport
+    list_display = ("shift", "user", "created")
+    ordering = ("-created",)
+    raw_id_fields = ("shift", "user")
+
+
 admin.site.register(Shift, ShiftAdmin)
 admin.site.register(ShiftChange)
+admin.site.register(ShiftReport, ShiftReportAdmin)
 admin.site.register(SecretCalendar, SecretCalendarAdmin)
