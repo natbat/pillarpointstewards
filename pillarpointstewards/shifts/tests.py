@@ -88,6 +88,17 @@ def test_personal_shifts_ics(admin_user_has_shift, admin_client):
     assert b"DESCRIPTION:Shift at Pillar Point from" in response.content
 
 
+def test_all_shifts_ics(admin_user_has_shift, admin_client):
+    assert admin_client.post("/shifts/calendar-instructions/").status_code == 302
+    secret_calendar = SecretCalendar.objects.get()
+    response = admin_client.get(secret_calendar.path_all)
+    assert response.headers["content-type"] == "text/calendar; charset=utf-8"
+    text = response.content.decode("utf-8")
+    assert text.startswith("BEGIN:VCALENDAR")
+    assert "DESCRIPTION:Shift at Other Team" not in text
+    assert "DESCRIPTION:Shift at Pillar Point" in text
+
+
 def test_edit_shift(admin_user, admin_user_in_team, admin_user_has_shift, client):
     shift = admin_user_has_shift
     # Other user should not be able to edit
