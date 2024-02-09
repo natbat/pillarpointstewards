@@ -460,6 +460,8 @@ where
     ) in (0, 6) then mllw_feet < %(tide_weekend)s
     else mllw_feet < %(tide_weekday)s
   end
+  -- And coming up in the future
+  and day >= now()::date
 """
 
 
