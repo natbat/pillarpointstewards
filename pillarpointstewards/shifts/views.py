@@ -92,14 +92,17 @@ def shift(request, program_slug, shift_id):
         },
     )
 
+
 @active_user_required
 def shift_report(request, program_slug, shift_id):
     if request.method != "POST":
         return HttpResponse("POST only")
     shift = get_object_or_404(Shift, pk=shift_id)
-    report_text = request.POST.get("report") or ''
+    report_text = request.POST.get("report") or ""
+    if not report_text:
+        return HttpResponseRedirect(shift.get_absolute_url())
     report = shift.shift_reports.create(user=request.user, report=report_text)
-    return HttpResponseRedirect(shift.get_absolute_url() + '#report-' + str(report.id))
+    return HttpResponseRedirect(shift.get_absolute_url() + "#report-" + str(report.id))
 
 
 @staff_member_required
