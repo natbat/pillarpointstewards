@@ -116,3 +116,46 @@ class ShiftReport(models.Model):
     def __str__(self):
         user_str = self.user.username if self.user else "Deleted User"
         return f"Report by {user_str} on {self.shift}"
+
+
+class ShiftReportQuestion(models.Model):
+    team = models.ForeignKey(
+        "teams.Team", on_delete=models.CASCADE, related_name="report_questions"
+    )
+    question = models.CharField(max_length=255)
+    required = models.BooleanField(default=False)
+    question_type = models.CharField(
+        max_length=10,
+        choices=[
+            ("integer", "Integer"),
+            ("float", "Float"),
+            ("text", "Text"),
+        ],
+        default="text",
+    )
+
+    def __str__(self):
+        return self.question
+
+
+class ShiftReportAnswer(models.Model):
+    report = models.ForeignKey(
+        ShiftReport, on_delete=models.CASCADE, related_name="answers"
+    )
+    question = models.ForeignKey(
+        ShiftReportQuestion, on_delete=models.CASCADE, related_name="answers"
+    )
+    answer_integer = models.IntegerField(blank=True, null=True)
+    answer_float = models.FloatField(blank=True, null=True)
+    answer_text = models.TextField(blank=True, null=True)
+
+    def answer(self):
+        if self.question.question_type == "integer":
+            return str(self.answer_integer)
+        elif self.question.question_type == "float":
+            return str(self.answer_float)
+        else:
+            return self.answer_text
+
+    def __str__(self):
+        return f"Answer for {self.question} in {self.report}"

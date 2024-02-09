@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import Shift, ShiftChange, ShiftReport, SecretCalendar
+from .models import (
+    Shift,
+    ShiftChange,
+    ShiftReport,
+    ShiftReportQuestion,
+    ShiftReportAnswer,
+    SecretCalendar,
+)
 
 
 class ShiftAdmin(admin.ModelAdmin):
@@ -38,7 +45,26 @@ class ShiftReportAdmin(admin.ModelAdmin):
     raw_id_fields = ("shift", "user")
 
 
+class ShiftReportQuestionAdmin(admin.ModelAdmin):
+    model = ShiftReportQuestion
+    list_display = ("team", "question", "required", "question_type")
+    list_filter = ("team",)
+    ordering = ("team",)
+
+
+class ShiftReportAnswerAdmin(admin.ModelAdmin):
+    model = ShiftReportAnswer
+    list_display = ("report_team", "report", "question", "answer")
+    list_filter = ("question",)
+    ordering = ("report",)
+
+    def report_team(self, obj):
+        return obj.report.shift.team
+
+
 admin.site.register(Shift, ShiftAdmin)
 admin.site.register(ShiftChange)
 admin.site.register(ShiftReport, ShiftReportAdmin)
+admin.site.register(ShiftReportQuestion, ShiftReportQuestionAdmin)
+admin.site.register(ShiftReportAnswer, ShiftReportAnswerAdmin)
 admin.site.register(SecretCalendar, SecretCalendarAdmin)

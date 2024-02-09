@@ -76,6 +76,8 @@ def shift(request, program_slug, shift_id):
     # For the moment this is just admin level users as a feature preview
     can_add_report = request.user.is_superuser
 
+    report_questions = shift.team.report_questions.all()
+
     return render(
         request,
         "shift.html",
@@ -89,6 +91,7 @@ def shift(request, program_slug, shift_id):
             "tide_times_svg": tide_times_svg_context_for_shift(shift),
             "shift_reports": shift_reports,
             "can_add_report": can_add_report,
+            "report_questions": report_questions,
         },
     )
 
@@ -102,6 +105,17 @@ def shift_report(request, program_slug, shift_id):
     if not report_text:
         return HttpResponseRedirect(shift.get_absolute_url())
     report = shift.shift_reports.create(user=request.user, report=report_text)
+    for question in shift.team.report_questions.all():
+        answer = request.POST.get(f"question_{question.id}")
+        if answer:
+            kwargs = {}
+            if question.question_type == "integer":
+                kwargs["answer_integer"] = int(answer)
+            elif question.question_type == "float":
+                kwargs["answer_float"] = float(answer)
+            else:
+                kwargs["answer_text"] = answer
+            report.answers.create(question=question, **kwargs)
     return HttpResponseRedirect(shift.get_absolute_url() + "#report-" + str(report.id))
 
 

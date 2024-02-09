@@ -79,6 +79,14 @@
           <li id="report-{{ report.pk }}">
             <p><strong>{{ report.created|date:"jS F Y g:iA" }}</strong> - {{ report.user }}</p>
             <p style="padding-left: 1em">{{ report.report }}</p>
+            <!-- show repart.answers if available -->
+            {% if report.answers.count %}
+              <ul>
+                {% for answer in report.answers.all %}
+                  <li>{{ answer.question }}: {{ answer.answer }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
           </li>
         {% endfor %}
       </ul>
@@ -86,7 +94,17 @@
     {% if can_add_report %}
       <h2>Add your shift report</h2>
       <form action="{{ shift.get_absolute_url }}report/" method="POST">{% csrf_token %}
-        <p style="margin-bottom: 0"><textarea style="width: 70%; height: 5em" name="report" placeholder="Add a report"></textarea></p>
+        <p><textarea style="width: 70%; height: 5em" name="report" placeholder="Add a report"></textarea></p>
+        {% for question in shift.team.report_questions.all %}
+            <p><label for="id_question_{{ question.pk }}">{{ question.question }}</label></p>
+            <p>{% if question.question_type == "integer" %}
+              <input id="id_question_{{ question.pk }}" type="number" name="question_{{ question.pk }}"{% if question.required %} required{% endif %}>
+            {% elif question.question_type == "float" %}
+              <input id="id_question_{{ question.pk }}" type="number" step="0.01" name="question_{{ question.pk }}"{% if question.required %} required{% endif %}>
+            {% else %}
+              <input id="id_question_{{ question.pk }}" type="text" name="question_{{ question.pk }}"{% if question.required %} required{% endif %}>
+            {% endif %}</p>
+          {% endfor %}
         <p><button type="submit" class="button shift-assign">Add report</button></p>
       </form>
     {% endif %}
