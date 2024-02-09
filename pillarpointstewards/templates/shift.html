@@ -72,24 +72,39 @@
       </form>
     {% endif %}
 
-    {% if shift_reports %}
-      <h2>Shift reports</h2>
-      <ul>
-        {% for report in shift_reports %}
-          <li id="report-{{ report.pk }}">
-            <p><strong>{{ report.created|date:"jS F Y g:iA" }}</strong> - {{ report.user }}</p>
-            <p style="padding-left: 1em">{{ report.report }}</p>
-          </li>
-        {% endfor %}
-      </ul>
+    {% if shift_reports or can_add_report %}
+      {% if shift_reports %}
+      <div class="dropdown-block">
+        <h2 class="dropdown-title">Shift reports</h2>
+        <div class="dropdown-content">
+          
+          <ul>
+            
+            {% for report in shift_reports %}
+              <li class="comment-container id="report-{{ report.pk }}">
+                <p class="comment-meta"><strong>{{ report.created|date:"jS F Y g:iA" }}</strong> by {{ report.user }}</p>
+                <div class="comment-block" ><p>{{ report.report }}</p></div>
+              </li>
+            {% endfor %}
+
+          </ul>
+          {% endif %}
+
+          {% if can_add_report %}
+          <h2>Add your shift report</h2>
+          <form action="{{ shift.get_absolute_url }}report/" method="POST">{% csrf_token %}
+            <div class="input-container block-container">
+              <textarea name="report" placeholder="Add a report"></textarea>
+            </div>
+            <button type="submit" class="button">Add report</button>
+          </form>
+          {% endif %}
+
+        </div>
+      </div>
+
     {% endif %}
-    {% if can_add_report %}
-      <h2>Add your shift report</h2>
-      <form action="{{ shift.get_absolute_url }}report/" method="POST">{% csrf_token %}
-        <p style="margin-bottom: 0"><textarea style="width: 70%; height: 5em" name="report" placeholder="Add a report"></textarea></p>
-        <p><button type="submit" class="button shift-assign">Add report</button></p>
-      </form>
-    {% endif %}
+    
 
     <p class="intro"><a href="/programs/{{ team.slug }}/">&lt; Back to homepage</a></p>
 

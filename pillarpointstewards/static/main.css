@@ -270,6 +270,12 @@ form .block-container label {
 	width: 100%;
 	box-sizing: border-box;
 }
+form .block-container textarea {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0.5em;
+	min-height: 6em;
+}
 form .slider-combo-container label {
 	margin-right: 0.3rem;
 }
@@ -1392,8 +1398,13 @@ a.person-mini:active {
 .dropdown-block {
 	background-color: rgba(154, 205, 49, 0.6);
 	padding: 0.5em 0.8em 0 0.8em;
+	margin-bottom: 2em;
+}
+
+.dropdown-block form {
 	margin-bottom: 1em;
 }
+
 .dropdown-block .dropdown-title {
 	font-size: 1em;
 	margin: -0.5em -0.8em 0 -0.8em;
@@ -1426,6 +1437,26 @@ a.person-mini:active {
 .dropdown-block .dropdown-content {
 	padding-top: 1em;
 	padding-bottom: 0.2em;
+}
+
+.comment-container {
+
+}
+
+.comment-block {
+	background-color: rgba(255,255,255,0.5);
+	padding: 0.875em 0.875em 1px 0.875em;
+	border-radius: 0.5em;
+}
+
+p.comment-meta {
+	font-size: 0.875em;
+	margin-bottom: 0.2em;
+	font-style: italic;
+}
+p.comment-meta strong {
+	font-weight: bold;
+	font-style: normal;
 }
 
 .year-view {
