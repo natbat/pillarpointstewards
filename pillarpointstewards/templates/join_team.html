@@ -26,6 +26,9 @@
             <br><br>
             <p><strong>{{ error }}</strong></p>
         {% endif %}
+        {% if request.user.is_staff or request.user.is_superuser %}
+            <p><a href="/admin/">Admin panel</a></p>
+        {% endif %}
     </div>
   </div>
 </section>
