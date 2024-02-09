@@ -73,9 +73,6 @@ def shift(request, program_slug, shift_id):
         shift.shift_reports.all().order_by("created").select_related("user")
     )
 
-    # For the moment this is just admin level users as a feature preview
-    can_add_report = request.user.is_superuser
-
     return render(
         request,
         "shift.html",
@@ -88,7 +85,7 @@ def shift(request, program_slug, shift_id):
             "forecast": Forecast.for_date(shift.shift_start.date()),
             "tide_times_svg": tide_times_svg_context_for_shift(shift),
             "shift_reports": shift_reports,
-            "can_add_report": can_add_report,
+            "can_add_report": user_is_on_shift,
         },
     )
 
