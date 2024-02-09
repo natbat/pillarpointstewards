@@ -179,7 +179,7 @@ def test_backup(admin_user_has_shift, client, settings):
     # With the correct secret it should work
     response = client.get("/backup.json", HTTP_AUTHORIZATION="Bearer backup-secret")
     assert response.status_code == 200
-    assert response.json() == {
+    expected = {
         "auth0_users": [],
         "users": [
             {
@@ -193,7 +193,19 @@ def test_backup(admin_user_has_shift, client, settings):
                 "is_staff": True,
                 "is_superuser": True,
                 "date_joined": wildcard,
-            }
+            },
+            {
+                "id": wildcard,
+                "last_login": None,
+                "username": "other",
+                "first_name": "",
+                "last_name": "",
+                "email": "",
+                "is_active": True,
+                "is_staff": False,
+                "is_superuser": False,
+                "date_joined": wildcard,
+            },
         ],
         "shifts": [
             {
@@ -205,10 +217,22 @@ def test_backup(admin_user_has_shift, client, settings):
                 "mllw_feet": None,
                 "lowest_tide": None,
                 "target_stewards": None,
+                "steward_usernames": ["other"],
+            },
+            {
+                "id": wildcard,
+                "dawn": wildcard,
+                "dusk": wildcard,
+                "shift_start": wildcard,
+                "shift_end": wildcard,
+                "mllw_feet": None,
+                "lowest_tide": None,
+                "target_stewards": None,
                 "steward_usernames": ["admin"],
-            }
+            },
         ],
         "fragments": [
             {"slug": "contact_details", "fragment": "Contact details go here"}
         ],
     }
+    assert response.json() == expected

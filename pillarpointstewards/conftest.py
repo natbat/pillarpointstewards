@@ -31,7 +31,7 @@ def admin_user_has_shift(admin_user, admin_user_in_team):
     ) + datetime.timedelta(hours=96)
     # Create a shift in some other team as well
     other_team = Team.objects.get_or_create(name="Other Team", slug="other-team")[0]
-    other_user = User.objects.create(username="other")
+    other_user = User.objects.get_or_create(username="other")[0]
     other_team.memberships.get_or_create(user=other_user)
     other_user.shifts.create(
         team=other_team,

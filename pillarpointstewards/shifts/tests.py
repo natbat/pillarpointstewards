@@ -102,7 +102,7 @@ def test_all_shifts_ics(admin_user_has_shift, admin_client):
 def test_edit_shift(admin_user, admin_user_in_team, admin_user_has_shift, client):
     shift = admin_user_has_shift
     # Other user should not be able to edit
-    other_user = User.objects.create(username="other")
+    other_user = User.objects.get_or_create(username="other")[0]
     client.force_login(other_user)
     response = client.post("/shifts/{}/edit/".format(shift.id), {"start": "blah"})
     assert response.status_code == 403
@@ -119,7 +119,7 @@ def test_edit_shift(admin_user, admin_user_in_team, admin_user_has_shift, client
 def test_cancel_shift(admin_user, admin_user_in_team, admin_user_has_shift, client):
     shift = admin_user_has_shift
     # Other user should not be able to cancel
-    other_user = User.objects.create(username="other")
+    other_user = User.objects.get_or_create(username="other")[0]
     client.force_login(other_user)
     response = client.post("/shifts/{}/cancel/".format(shift.id), {"start": "blah"})
     assert response.status_code == 403
@@ -134,7 +134,7 @@ def test_cancel_shift(admin_user, admin_user_in_team, admin_user_has_shift, clie
 
 def test_manual_add_shift(admin_user, admin_user_in_team, client):
     # Other user should not be able to manually add a shift
-    other_user = User.objects.create(username="other")
+    other_user = User.objects.get_or_create(username="other")[0]
     client.force_login(other_user)
     team = admin_user_in_team
     assert not team.shifts.count()
