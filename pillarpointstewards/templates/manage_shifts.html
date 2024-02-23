@@ -71,6 +71,16 @@
         <input type="range" value="{{ calculator_settings.shortest_shift_duration }}" min="0" max="360" step="15" name="range_shortest-shift-duration">
       </div>
     </form>
+    <div id="export-results" style="display: none">
+      <h3>Export results</h3>
+      <p><textarea style="width: 100%; height: 6em"></textarea></p>
+      <p><label style="font-size: 0.75em"><input id="includeEmptyDates" type="checkbox" checked onchange="updateExport()"> Include dates with no shifts</label></p>
+      <p><button onclick="
+        document.querySelector('#export-results textarea').select();
+        document.execCommand('copy');"
+      >Copy to clipboard</button></p>
+      <p class="meta">Copy and paste this into Google Sheets or Excel </p>
+    </div>
   </div>
 </section>
 <script>
@@ -139,12 +149,76 @@ function monitorForm(formElement) {
             document.querySelector('#calculator-results').style.opacity = 1;
             document.querySelector('#calculator-results').style.pointerEvents = 'auto';
             htmx.process(document.querySelector('#calculator-results'));
+            // And update the copy-paste export
+            window.lastResults = data.results;
+            updateExport();
         })
         .catch(error => {
             console.error('Error fetching:', error);
         });
         previousSerialization = currentSerialization;
     }
+}
+
+function updateExport() {
+    const includeEmptyDates = document.querySelector('#includeEmptyDates').checked;
+    const results = window.lastResults;
+    const tsv = convertToTsv(results, includeEmptyDates);
+    document.querySelector('#export-results textarea').value = tsv;
+    document.querySelector('#export-results').style.display = 'block';
+}
+
+function convertToTsv(results, includeEmptyDates) {
+    const tsvRows = ["Date\tDay\tTime In\tTime Out"];
+    let resultsByDay = {};
+    results.forEach((shift) => {
+        const shiftStart = new Date(shift.shift_start);
+        const date = `${shiftStart.getMonth() + 1}/${shiftStart.getDate()}/${shiftStart.getFullYear()}`;
+        if (!resultsByDay[date]) {
+            resultsByDay[date] = [];
+        }
+        resultsByDay[date].push(shift);
+    });
+    // One TSV line for each date
+    let dates = [];
+    if (includeEmptyDates) {
+        const firstDate = new Date(results[0].shift_start);
+        const lastDate = new Date(results[results.length - 1].shift_start);
+        for (
+            let date = new Date(firstDate);
+            date <= lastDate;
+            date.setDate(date.getDate() + 1)
+        ) {
+            dates.push(
+                `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
+            );
+        }
+    } else {
+        dates = Object.keys(resultsByDay);
+    }
+    for (let dateString of dates) {
+        if (!resultsByDay[dateString]) {
+            const date = new Date(dateString);
+            tsvRows.push(
+                `${dateString}\t${date.toLocaleString("default", { weekday: "short" })}\t\t`,
+            );
+        } else {
+            resultsByDay[dateString].forEach((shift) => {
+                const shiftStart = new Date(shift.shift_start);
+                const shiftEnd = new Date(shift.shift_end);
+                const date = `${shiftStart.getMonth() + 1}/${shiftStart.getDate()}/${shiftStart.getFullYear()}`;
+                const day = shiftStart.toLocaleString("default", {
+                    weekday: "short",
+                });
+                const timeIn =
+                    shiftStart.getHours() * 100 + shiftStart.getMinutes();
+                const timeOut =
+                    shiftEnd.getHours() * 100 + shiftEnd.getMinutes();
+                tsvRows.push(`${date}\t${day}\t${timeIn}\t${timeOut}`);
+            });
+        }
+    }
+    return tsvRows.join("\n");
 }
 
 </script>

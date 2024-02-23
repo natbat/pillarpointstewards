@@ -678,7 +678,10 @@ def manage_shifts_calculator(request, program_slug):
                             "target_stewards": people_per_regular_shift,
                         },
                     },
-                )
+                ),
+                "shift_start": as_datetime(result.day, result.shift_start),
+                "shift_end": as_datetime(result.day, result.shift_end),
+                "day": result.day.isoformat(),
             }
         )
     # Can't calculate this yet, because we are missing the logic that figures out
