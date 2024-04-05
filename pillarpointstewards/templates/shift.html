@@ -96,8 +96,8 @@
                 <div class="photo-gallery">
                   {% for photo in photos %}
                     <div>
-                      <img src="https://s3.amazonaws.com/images.tidepoolstewards.com/{{ photo.path }}" style="max-width: 400px">
-                      {{ photo.owner }}
+                      <img src="https://s3.amazonaws.com/images.tidepoolstewards.com/{{ photo.path }}" style="max-width: 100%; width: 400px">
+                      <div><strong>{{ photo.owner }}</strong> - {{ photo.created_pst }}</div>
                     </div>
                   {% endfor %}
                 </div>

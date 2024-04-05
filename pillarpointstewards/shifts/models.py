@@ -2,7 +2,9 @@ from django.conf import settings
 from django.db.models.signals import post_delete
 from django.db import models
 from django.dispatch import receiver
+from django.utils import timezone
 import boto3
+import pytz
 import secrets
 
 
@@ -16,6 +18,11 @@ class Photo(models.Model):
     )
     created = models.DateTimeField(auto_now_add=True)
     path = models.CharField(max_length=100)
+
+    def created_pst(self):
+        return timezone.localtime(
+            self.created, timezone=pytz.timezone("America/Los_Angeles")
+        ).strftime("%Y-%m-%d %H:%M Pacific")
 
     def __str__(self):
         return self.path
