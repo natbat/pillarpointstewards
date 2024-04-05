@@ -168,6 +168,7 @@ class ImageUploader extends HTMLElement {
                     flex-direction: column;
                     align-items: center;
                     gap: 10px;
+                    padding-bottom: 1em;
                 }
                 #thumbnail {
                     max-width: 200px;
@@ -185,14 +186,14 @@ class ImageUploader extends HTMLElement {
             </style>
             <div id="upload-container">
                 <input type="file" id="file-input" accept="image/*" hidden>
-                <label for="file-input">Select an image to upload</label>
+                <label for="file-input">Add a photo from your shift</label>
                 <img id="thumbnail" src="" hidden>
-                <button id="upload-button" hidden>Upload Image</button>
+                <button id="upload-button" hidden>Upload photo</button>
                 <div id="progress-container" hidden>
                     <div id="progress-bar"></div>
                 </div>
                 <div id="upload-complete" hidden>
-                    Upload complete! <button id="select-another">Select another image</button>
+                    Upload complete! <button id="select-another">Select another photo</button>
                 </div>
             </div>
         `;
