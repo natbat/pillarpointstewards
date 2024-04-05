@@ -7,7 +7,9 @@ def random_token():
 
 
 class Photo(models.Model):
-    owner = models.ForeignKey("auth.User", related_name="photos", on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        "auth.User", related_name="photos", on_delete=models.CASCADE
+    )
     created = models.DateTimeField(auto_now_add=True)
     path = models.CharField(max_length=100)
 

@@ -665,16 +665,22 @@ def manage_shifts_calculator(request, program_slug):
                         "post_vars": {
                             "shift_start": as_datetime(result.day, result.shift_start),
                             "shift_end": as_datetime(result.day, result.shift_end),
-                            "lowest_tide": result.lowest_tide.isoformat()
-                            if result.lowest_tide
-                            else None,
+                            "lowest_tide": (
+                                result.lowest_tide.isoformat()
+                                if result.lowest_tide
+                                else None
+                            ),
                             "mllw_feet": result.mllw_feet,
-                            "dawn": as_datetime(result.day, result.dawn)
-                            if result.dawn
-                            else None,
-                            "dusk": as_datetime(result.day, result.dusk)
-                            if result.dusk
-                            else None,
+                            "dawn": (
+                                as_datetime(result.day, result.dawn)
+                                if result.dawn
+                                else None
+                            ),
+                            "dusk": (
+                                as_datetime(result.day, result.dusk)
+                                if result.dusk
+                                else None
+                            ),
                             "target_stewards": people_per_regular_shift,
                         },
                     },
