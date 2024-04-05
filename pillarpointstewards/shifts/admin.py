@@ -1,12 +1,22 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from .models import Photo, Shift, ShiftChange, ShiftReport, SecretCalendar
 
 
 class PhotoAdmin(admin.ModelAdmin):
     model = Photo
-    list_display = ("path", "created", "owner")
+    list_display = ("path", "created", "owner", "url")
     ordering = ("-created",)
     raw_id_fields = ("owner",)
+
+    def url(self, obj):
+        return format_html(
+            '<a href="https://s3.amazonaws.com/images.tidepoolstewards.com/{}">{}</a>',
+            obj.path,
+            obj.path,
+        )
+
+    url.short_description = "View image"
 
 
 class ShiftAdmin(admin.ModelAdmin):
