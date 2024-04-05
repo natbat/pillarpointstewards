@@ -23,7 +23,7 @@ class Photo(models.Model):
 
 @receiver(post_delete, sender=Photo)
 def delete_photo_from_s3(sender, instance, **kwargs):
-    s3 = boto3.client('s3')
+    s3 = boto3.client("s3")
     bucket_name = settings.S3_BUCKET_NAME
     key = instance.path
     try:
