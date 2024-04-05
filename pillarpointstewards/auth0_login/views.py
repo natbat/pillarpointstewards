@@ -29,14 +29,12 @@ def login(request, signup=False):
     redirect_uri = request.build_absolute_uri("/auth0-callback/")
 
     forward_url = getattr(settings, "AUTH0_FORWARD_URL", None)
-    print("forward_url", forward_url)
     if forward_url:
         redirect_uri = (
             forward_url
             + "?forward="
             + signed_base64(redirect_uri, settings.AUTH0_FORWARD_SECRET)
         )
-        print("redirect_uri", redirect_uri)
 
     state = secrets.token_hex(16)
     kwargs = {

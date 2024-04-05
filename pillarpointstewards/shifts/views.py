@@ -1,3 +1,4 @@
+import boto3
 import datetime
 from dataclasses import dataclass, asdict
 from django.contrib.admin.views.decorators import staff_member_required
@@ -20,6 +21,7 @@ from tides.views import tide_times_svg_context_for_shift, tide_times_svg_context
 from tides.models import Location
 from teams.models import Team
 from typing import Union
+from ulid import ULID
 import json
 import secrets
 
@@ -775,3 +777,63 @@ def round_to_fifteen_minutes(dt):
         * fifteen_minutes.total_seconds()
     )
     return dt_min + datetime.timedelta(seconds=rounded_seconds)
+
+
+@active_user_required
+def photo_upload_credentials(request):
+    key = datetime.date.today().strftime("%Y-%m-%d") + "/" + str(ULID()) + ".jpg"
+    content_type = "image/jpeg"
+    bucket_name = settings.S3_BUCKET_NAME
+    signed_parameters = generate_s3_signed_parameters(key, content_type, bucket_name)
+    return HttpResponse(json.dumps(signed_parameters), content_type="application/json")
+
+
+@active_user_required
+def photo_upload_complete(request):
+    key = request.POST.get("key")
+    shift_id = request.POST.get("shift_id")
+    if not key or not shift_id:
+        return HttpResponse("Missing key or shift_id", status=400)
+    photo = request.user.photos.create(path=key)
+    try:
+        shift = Shift.objects.get(pk=shift_id)
+        shift.photos.add(photo)
+    except Shift.DoesNotExist:
+        pass
+    return HttpResponse({"ok": True}, content_type="application/json")
+
+
+def generate_s3_signed_parameters(key, content_type, bucket_name, expiration=3600):
+    """
+    Generate signed parameters for uploading a file to an S3 bucket with a specific content type.
+
+    Args:
+        key (str): The key (filepath in S3) to use for the upload
+        content_type (str): The content type of the file.
+        bucket_name (str): The name of the S3 bucket.
+        expiration (int): The expiration time in seconds for the signed parameters (default is 3600 seconds).
+
+    Returns:
+        dict: A dictionary containing the URL and fields needed for the upload.
+    """
+    # Create a session using the default AWS credentials and region
+    session = boto3.Session()
+
+    # Create an S3 client
+    s3_client = session.client("s3")
+
+    try:
+        # Generate the presigned POST parameters with the specified content type
+        presigned_post = s3_client.generate_presigned_post(
+            Bucket=bucket_name,
+            Key=key,
+            Fields={"Content-Type": content_type},
+            Conditions=[
+                {"Content-Type": content_type},
+            ],
+            ExpiresIn=expiration,
+        )
+        # Return the URL and fields for the upload
+        return {"url": presigned_post["url"], "fields": presigned_post["fields"]}
+    except Exception as ex:
+        return {"error": str(ex)}

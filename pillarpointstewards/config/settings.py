@@ -34,6 +34,9 @@ AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.AllowAllUsersModelBacke
 
 SHIFTS_ICS_SECRET = os.environ.get("SHIFTS_ICS_SECRET") or ""
 
+# Photo S3 support
+S3_BUCKET_NAME = "images.tidepoolstewards.com"
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
