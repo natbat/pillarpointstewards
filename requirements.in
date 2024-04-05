@@ -16,3 +16,4 @@ astral
 django-sql-dashboard>=1.1
 exceptiongroup
 python-ulid
+boto3
