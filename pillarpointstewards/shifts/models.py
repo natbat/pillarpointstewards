@@ -1,4 +1,8 @@
+from django.conf import settings
+from django.db.models.signals import post_delete
 from django.db import models
+from django.dispatch import receiver
+import boto3
 import secrets
 
 
@@ -15,6 +19,17 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.path
+
+
+@receiver(post_delete, sender=Photo)
+def delete_photo_from_s3(sender, instance, **kwargs):
+    s3 = boto3.client('s3')
+    bucket_name = settings.S3_BUCKET_NAME
+    key = instance.path
+    try:
+        s3.delete_object(Bucket=bucket_name, Key=key)
+    except Exception as e:
+        print(f"Error deleting {key} from S3: {e}")
 
 
 class Shift(models.Model):
