@@ -91,7 +91,7 @@
             {% endif %}
 
             {% with shift.photos.all as photos %}
-              {% if photos and request.user.is_superuser %}
+              {% if photos %}
                 <h2>Photos</h2>
                 <div class="photo-gallery">
                   {% for photo in photos %}
@@ -112,9 +112,7 @@
                 </div>
                 <button type="submit" class="button">Add report</button>
               </form>
-              {% if request.user.is_superuser %}
-                <image-uploader></image-uploader>
-              {% endif %}
+              <image-uploader></image-uploader>
             {% endif %}
 
         </div>
