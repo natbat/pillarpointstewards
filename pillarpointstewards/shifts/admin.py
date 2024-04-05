@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import Shift, ShiftChange, ShiftReport, SecretCalendar
+from .models import Photo, Shift, ShiftChange, ShiftReport, SecretCalendar
+
+
+class PhotoAdmin(admin.ModelAdmin):
+    model = Photo
+    list_display = ("path", "created", "owner")
+    ordering = ("-created",)
+    raw_id_fields = ("owner",)
 
 
 class ShiftAdmin(admin.ModelAdmin):
@@ -15,6 +22,7 @@ class ShiftAdmin(admin.ModelAdmin):
     )
     ordering = ("shift_start",)
     list_filter = ("team",)
+    raw_id_fields = ("stewards", "photos")
 
     def assigned(self, obj):
         return ", ".join(obj.stewards.values_list("username", flat=True))
@@ -38,6 +46,7 @@ class ShiftReportAdmin(admin.ModelAdmin):
     raw_id_fields = ("shift", "user")
 
 
+admin.site.register(Photo, PhotoAdmin)
 admin.site.register(Shift, ShiftAdmin)
 admin.site.register(ShiftChange)
 admin.site.register(ShiftReport, ShiftReportAdmin)

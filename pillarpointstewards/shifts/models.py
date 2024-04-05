@@ -6,6 +6,15 @@ def random_token():
     return secrets.token_hex(16)
 
 
+class Photo(models.Model):
+    owner = models.ForeignKey("auth.User", related_name="photos", on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    path = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.path
+
+
 class Shift(models.Model):
     team = models.ForeignKey(
         "teams.Team",
@@ -27,6 +36,8 @@ class Shift(models.Model):
 
     stewards = models.ManyToManyField("auth.User", related_name="shifts", blank=True)
     description = models.CharField(max_length=255, blank=True, default="")
+
+    photos = models.ManyToManyField(Photo, related_name="shifts", blank=True)
 
     def can_edit(self, user):
         return self.team.is_admin(user)
