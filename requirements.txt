@@ -34,13 +34,13 @@ bleach==6.1.0 \
     --hash=sha256:0a31f1837963c41d46bbf1331b8778e1308ea0791db03cc4e7357b97cf42a8fe \
     --hash=sha256:3225f354cfc436b9789c66c4ee030194bee0568fbf9cbdad3bc8b5c26c5f12b6
     # via django-sql-dashboard
-boto3==1.34.78 \
-    --hash=sha256:227487f9a40e7963aa108f4fabc81374d65e085891a2a442c190dfd976b86a9e \
-    --hash=sha256:47a7899af97960493ed58754c838be658650c8fb231c658866f491965ddfc94f
+boto3==1.34.127 \
+    --hash=sha256:58ccdeae3a96811ecc9d5d866d8226faadbd0ee1891756e4a04d5186e9a57a64 \
+    --hash=sha256:d370befe4fb7aea5bc383057d7dad18dda5d0cf3cd3295915bcc8c8c4191905c
     # via -r requirements.in
-botocore==1.34.78 \
-    --hash=sha256:889fcfd1813fad225a5a70940c58cd4bd7a6f5ba6c9769a1d41d0c670272b75d \
-    --hash=sha256:bc10738826a4970a6d3a40ac40b9799c02b1b661c0c741a67b915b500562ab3c
+botocore==1.34.127 \
+    --hash=sha256:a377871742c40603d559103f19acb7bc93cfaf285e68f21b81637ec396099877 \
+    --hash=sha256:e14fa28c8bb141de965e700f88b196d17c67a703c7f0f5c7e14f7dd1cf636011
     # via
     #   boto3
     #   s3transfer
@@ -55,9 +55,9 @@ certifi==2024.2.2 \
     #   httpcore
     #   httpx
     #   sentry-sdk
-dj-database-url==2.1.0 \
-    --hash=sha256:04bc34b248d4c21aaa13e4ab419ae6575ef5f10f3df735ce7da97722caa356e0 \
-    --hash=sha256:f2042cefe1086e539c9da39fad5ad7f61173bf79665e69bf7e4de55fa88b135f
+dj-database-url==2.2.0 \
+    --hash=sha256:3e792567b0aa9a4884860af05fe2aa4968071ad351e033b6db632f97ac6db9de \
+    --hash=sha256:9f9b05058ddf888f1e6f840048b8d705ff9395e3b52a07165daa3d8b9360551b
     # via -r requirements.in
 django==4.1.12 \
     --hash=sha256:d02483ad49872238fa59875c1269293fe4f17ecee13c121893607cc0b284696b \
@@ -80,13 +80,13 @@ django-sql-dashboard==1.2 \
     --hash=sha256:656e9d8ecd2d0ce6a877a732f66adb69d79c4b535c5fcbc0dc5099ef97de260a \
     --hash=sha256:7bc8ee6cb212d74147216e31ec392e29f5c16bdcb5cc8e76a3715f0d527713a9
     # via -r requirements.in
-exceptiongroup==1.2.0 \
-    --hash=sha256:4bfd3996ac73b41e9b9628b04e079f193850720ea5945fc96a08633c66912f14 \
-    --hash=sha256:91f5c769735f051a4290d52edd0858999b57e5876e9f85937691bd4c9fa3ed68
+exceptiongroup==1.2.1 \
+    --hash=sha256:5258b9ed329c5bbdd31a309f53cbfb0b155341807f6ff7606a1e801a891b29ad \
+    --hash=sha256:a4785e48b045528f5bfe627b6ad554ff32def154f42372786903b7abcfe1aa16
     # via -r requirements.in
-gunicorn==21.2.0 \
-    --hash=sha256:3213aa5e8c24949e792bcacfc176fef362e7aac80b76c56f6b5122bf350722f0 \
-    --hash=sha256:88ec8bff1d634f98e61b9f65bc4bf3cd918a90806c6f5c48bc5603849ec81033
+gunicorn==22.0.0 \
+    --hash=sha256:350679f91b24062c86e386e198a15438d53a7a8207235a78ba1b53df4c4378d9 \
+    --hash=sha256:4a0b436239ff76fb33f11c07a16482c521a7e09c1ce3cc293c2330afe01bec63
     # via -r requirements.in
 h11==0.14.0 \
     --hash=sha256:8f19fbbe99e72420ff35c00b27a34cb9937e902a8b810e2c88300c6f0a3b699d \
@@ -231,9 +231,9 @@ python-dateutil==2.9.0.post0 \
     #   arrow
     #   botocore
     #   ics
-python-ulid==2.4.0.post0 \
-    --hash=sha256:45779c68b9060beb6fca72338a0620114489e1bbe274935149f14d1f776d4c43 \
-    --hash=sha256:e2c739e27e6d760136e5f411f311cdd3ec9c4c89696932fe803fa09a4dcd6ebe
+python-ulid==2.7.0 \
+    --hash=sha256:18eb595885140851a490a95b0da4447911ff69fa9f434732067b97f6956f9fe9 \
+    --hash=sha256:c81658e382f69bad8c6d365155c4ae21843ae4226b94f72c12d7adcbb545a251
     # via -r requirements.in
 pytz==2024.1 \
     --hash=sha256:2a29735ea9c18baf14b448846bde5a48030ed267578472d8955cd0e7443a9812 \
@@ -243,9 +243,9 @@ s3transfer==0.10.1 \
     --hash=sha256:5683916b4c724f799e600f41dd9e10a9ff19871bf87623cc8f491cb4f5fa0a19 \
     --hash=sha256:ceb252b11bcf87080fb7850a224fb6e05c8a776bab8f2b64b7f25b969464839d
     # via boto3
-sentry-sdk==1.44.1 \
-    --hash=sha256:24e6a53eeabffd2f95d952aa35ca52f0f4201d17f820ac9d3ff7244c665aaf68 \
-    --hash=sha256:5f75eb91d8ab6037c754a87b8501cc581b2827e923682f593bed3539ce5b3999
+sentry-sdk==2.5.1 \
+    --hash=sha256:1f87acdce4a43a523ae5aa21a3fc37522d73ebd9ec04b1dbf01aa3d173852def \
+    --hash=sha256:fbc40a78a8a9c6675133031116144f0d0940376fa6e4e1acd5624c90b0aaf58b
     # via -r requirements.in
 six==1.16.0 \
     --hash=sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926 \
