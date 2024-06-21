@@ -15,4 +15,5 @@ admin.site.register(
 admin.site.register(
     SunriseSunset,
     list_display=("location", "day", "dawn", "sunrise", "noon", "sunset", "dusk"),
+    list_filter=("location",)
 )
