@@ -19,7 +19,9 @@ After a few minutes of automated setup this should start a development server. Y
 
 ![CleanShot 2023-08-17 at 11 44 49@2x](https://github.com/natbat/pillarpointstewards/assets/9599/e34582d9-9939-4658-a27a-8e448c843849)
 
-Start a new terminal window running and run this command:
+Now you should **sign in with your Google account** to create a user.
+
+To upgrade that user to an admin, start a new terminal window running and run this command:
 
 ```bash
 ./manage.sh shell_plus
