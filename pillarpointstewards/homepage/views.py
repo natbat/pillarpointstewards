@@ -22,7 +22,7 @@ def index(request):
     if not request.user.is_authenticated:
         return render(request, "index.html")
 
-    teams = list(Team.objects.filter(members=request.user))
+    teams = list(Team.objects.filter(is_live=True, members=request.user))
 
     # if they have no teams, prompt them to enter a code
     if not teams or "join" in request.GET:

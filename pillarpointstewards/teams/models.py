@@ -13,6 +13,9 @@ class Team(models.Model):
         "tides.Location", on_delete=models.SET_NULL, null=True, blank=True
     )
     calculator_settings = models.JSONField(default=dict, blank=True)
+    is_live = models.BooleanField(
+        default=False, help_text="Is this team live on the site?"
+    )
 
     def is_admin(self, user) -> bool:
         return self.memberships.filter(user=user, is_admin=True).exists()

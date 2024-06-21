@@ -22,6 +22,16 @@ def test_homepage_logged_in(django_user_model, client, scenario):
     user.save()
     if scenario != "no-teams":
         user.teams.add(Team.objects.get(slug="pillar-point"))
+        # Add a not-live one too
+        user.teams.add(
+            Team.objects.get_or_create(
+                slug="not-live",
+                defaults={
+                    "is_live": False,
+                    "name": "Not live yet",
+                },
+            )[0]
+        )
     if scenario == "two-teams":
         user.teams.add(Team.objects.get(slug="duxbury"))
     client.force_login(user)
