@@ -287,3 +287,32 @@ def test_location_populate_sunrise_sunsets():
     assert location.sunrise_sunsets.count() == 0
     location.populate_sunrise_sunsets()
     assert location.sunrise_sunsets.count() == 365
+
+@pytest.mark.django_db
+def test_should_populate_tide_predictions():
+    # Create a location and associated tide predictions
+    location = Location.objects.create(
+        name="Test Location",
+        station_id=9414131,
+        latitude=37.49542392,
+        longitude=-122.49865193,
+        time_zone="America/Los_Angeles",
+    )
+    # Create tide predictions for the past 6 months
+    past_date = datetime.datetime.now() - datetime.timedelta(days=180)
+    TidePrediction.objects.create(
+        station_id=location.station_id,
+        dt=past_date,
+        mllw_feet=5.0,
+    )
+    # Verify that should_populate_tide_predictions returns True
+    assert TidePrediction.should_populate_tide_predictions(location.station_id) is True
+    # Create a tide prediction for less than 6 months away
+    future_date = datetime.datetime.now() + datetime.timedelta(days=179)
+    TidePrediction.objects.create(
+        station_id=location.station_id,
+        dt=future_date,
+        mllw_feet=5.0,
+    )
+    # Verify that should_populate_tide_predictions now returns False
+    assert TidePrediction.should_populate_tide_predictions(location.station_id) is False

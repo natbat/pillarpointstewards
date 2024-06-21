@@ -1,9 +1,8 @@
 from astral import LocationInfo, sun
 from django.db import models
 from django.utils.dateparse import parse_datetime
-from datetime import timezone
+from datetime import timezone, datetime, timedelta
 from urllib.parse import urlencode
-import datetime
 import httpx
 import pytz
 
@@ -54,6 +53,14 @@ class TidePrediction(models.Model):
             ignore_conflicts=True,
             batch_size=1000,
         )
+
+    @classmethod
+    def should_populate_tide_predictions(cls, station_id):
+        latest_record = cls.objects.filter(station_id=station_id).order_by('-dt').first()
+        if latest_record:
+            six_months_ahead = datetime.now() + timedelta(days=180)
+            return latest_record.dt < six_months_ahead
+        return True
 
 
 class Location(models.Model):

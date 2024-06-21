@@ -17,7 +17,7 @@ from .ics_utils import calendar
 from auth0_login.utils import active_user_required
 from homepage.models import Fragment
 from tides.views import tide_times_svg_context_for_shift, tide_times_svg_context
-from tides.models import Location
+from tides.models import Location, TidePrediction
 from teams.models import Team
 from typing import Union
 from ulid import ULID
@@ -574,6 +574,10 @@ def manage_shifts_calculator(request, program_slug):
     earliest_shift_time_buffer = data["earliest-shift-time-buffer"]
     shortest_shift_duration = data["shortest-shift-duration"]
     people_per_regular_shift = data["people-per-regular-shift"]
+
+    # Check if tide predictions need to be populated for the station
+    if TidePrediction.should_populate_tide_predictions(team.location.station_id):
+        TidePrediction.populate_for_station(team.location.station_id)
 
     with connection.cursor() as cursor:
         cursor.execute(
