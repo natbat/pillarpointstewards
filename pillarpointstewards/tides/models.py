@@ -37,7 +37,7 @@ class TidePrediction(models.Model):
                 "format": "json",
             }
         )
-        data = httpx.get(url).json()
+        data = httpx.get(url, timeout=30).json()
         cls.populate_from_data(station_id, data)
 
     @classmethod
