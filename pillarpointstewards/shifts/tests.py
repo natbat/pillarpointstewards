@@ -158,3 +158,38 @@ def test_manual_add_shift(admin_user, admin_user_in_team, client):
     assert shift.shift_start.isoformat() == "2024-01-01T13:15:00+00:00"
     assert shift.shift_end.isoformat() == "2024-01-01T15:15:00+00:00"
     assert shift.description == "Description"
+
+
+def test_save_calculator_settings(admin_user, admin_user_in_team, client):
+    team = admin_user_in_team
+    other_user = User.objects.get_or_create(username="other")[0]
+    new_settings = {"weekday-low-tide": -1.5, "weekend-low-tide": 0.5}
+    # Redirect if not a user
+    assert (
+        client.post(
+            f"/programs/{team.slug}/save-calculator-settings/",
+            new_settings,
+            content_type="application/json",
+        ).status_code
+        == 302
+    )
+    # 403 if wrong user
+    client.force_login(other_user)
+    assert (
+        client.post(
+            f"/programs/{team.slug}/save-calculator-settings/",
+            new_settings,
+            content_type="application/json",
+        ).status_code
+        == 403
+    )
+    # Now try with admin user
+    client.force_login(admin_user)
+    response = client.post(
+        f"/programs/{team.slug}/save-calculator-settings/",
+        new_settings,
+        content_type="application/json",
+    )
+    assert response.status_code == 200
+    team.refresh_from_db()
+    assert team.calculator_settings == new_settings

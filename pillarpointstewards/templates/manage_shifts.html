@@ -70,6 +70,10 @@
         <input type="number" value="{{ calculator_settings.shortest_shift_duration }}" min="0" max="360" step="15" name="shortest-shift-duration">
         <input type="range" value="{{ calculator_settings.shortest_shift_duration }}" min="0" max="360" step="15" name="range_shortest-shift-duration">
       </div>
+      <!-- Save button -->
+      <div class="input-container">
+        <button type="button" id="save-settings" class="button">Update team defaults</button>
+      </div>
     </form>
     <div id="export-results" style="display: none">
       <h3>Export results</h3>
@@ -104,6 +108,38 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     // Start monitoring the form
     setInterval(() => monitorForm(document.querySelector('#calculator-form')), 1000);
+
+    // Save settings button functionality
+    const saveButton = document.querySelector('#save-settings');
+    saveButton.addEventListener('click', function() {
+        const formData = new FormData(document.querySelector('#calculator-form'));
+        const data = Object.fromEntries(formData.entries());
+        const originalText = saveButton.innerText;
+        saveButton.innerText = 'Updating defaults...';
+        fetch('/programs/{{ team.slug }}/save-calculator-settings/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                saveButton.innerText = 'Defaults updated!';
+                setTimeout(() => {
+                  saveButton.innerText = originalText;
+                }, 1000);
+            } else {
+                alert('Failed to update defaults.');
+                saveButton.innerText = originalText;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
 });
 
 function serializeNumbers(formElement) {

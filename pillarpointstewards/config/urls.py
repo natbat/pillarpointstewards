@@ -30,6 +30,10 @@ urlpatterns = [
     path(
         "programs/<str:program_slug>/shifts/<int:shift_id>/report/", shifts.shift_report
     ),
+    path(
+        "programs/<str:program_slug>/save-calculator-settings/",
+        shifts.save_calculator_settings,
+    ),
     path("shifts/<int:shift_id>/edit/", shifts.edit_shift),
     path("shifts/<int:shift_id>/cancel/", shifts.cancel_shift),
     path("unassign-shift/<int:shift_id>/", shifts.unassign_shift),

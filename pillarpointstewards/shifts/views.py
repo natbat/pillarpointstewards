@@ -6,11 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.db import connection
 from django import forms
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
-from django.template import RequestContext
-from django.utils.html import escape
+from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from weather.models import Forecast
 from .models import Shift, ShiftChange, SecretCalendar
@@ -341,6 +340,22 @@ def calendar_instructions(request):
     )
 
 
+@require_POST
+@login_required
+def save_calculator_settings(request, program_slug):
+    try:
+        team = Team.objects.get(slug=program_slug)
+        if not team.is_admin(request.user):
+            return JsonResponse(
+                {"error": "You do not have permission to modify this team."}, status=403
+            )
+        team.calculator_settings = json.loads(request.body)
+        team.save()
+        return JsonResponse({"success": True})
+    except Team.DoesNotExist:
+        return JsonResponse({"error": "Team not found."}, status=404)
+
+
 @active_user_required
 def manage_shifts(request, program_slug):
     team = get_object_or_404(Team, slug=program_slug)
@@ -550,12 +565,9 @@ class CalculatorShift:
 @csrf_exempt
 @active_user_required
 def manage_shifts_calculator(request, program_slug):
+    team = get_object_or_404(Team, slug=program_slug)
     # Get JSON from incoming request
     data = json.loads(request.body)
-
-    team = get_object_or_404(Team, slug=program_slug)
-    team.calculator_settings = data
-    team.save()
 
     shift_buffer_before = data["shift-buffer-before"]
     shift_buffer_after = data["shift-buffer-after"]
