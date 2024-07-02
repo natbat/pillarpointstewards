@@ -370,6 +370,7 @@ def manage_shifts(request, program_slug):
         "super-low-tide": -1.5,
         "shift-buffer-before": 45,
         "shift-buffer-after": 90,
+        "latest-shift-end-time": "",
         "people-per-regular-shift": 2,
         "earliest-shift-time-buffer": 60,
         "shortest-shift-duration": 90,
@@ -572,7 +573,7 @@ def manage_shifts_calculator(request, program_slug):
     shift_buffer_before = data["shift-buffer-before"]
     shift_buffer_after = data["shift-buffer-after"]
     earliest_shift_time_buffer = data["earliest-shift-time-buffer"]
-    latest_shift_end_time = data.get("latest_shift_end_time") or None
+    latest_shift_end_time = data.get("latest-shift-end-time") or None
     shortest_shift_duration = data["shortest-shift-duration"]
     people_per_regular_shift = data["people-per-regular-shift"]
 
@@ -641,7 +642,7 @@ def manage_shifts_calculator(request, program_slug):
         if latest_shift_end_time:
             # Turn that into a Python time()
             latest_shift_as_time = datetime.time.fromisoformat(latest_shift_end_time)
-            tide["end"] = max(tide["end"], latest_shift_as_time)
+            tide["end"] = min(tide["end"], latest_shift_as_time)
 
         # Filter out the shifts that are too short
         if duration_in_minutes(tide["start"], tide["end"]) <= shortest_shift_duration:

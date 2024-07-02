@@ -154,6 +154,10 @@ function serializeNumbers(formElement) {
     formElement.querySelectorAll('input[type="number"]').forEach(input => {
         data[input.name] = parseFloat(input.value);
     });
+    // And the time fields
+    formElement.querySelectorAll('input[type="time"]').forEach(input => {
+        data[input.name] = input.value;
+    });
     return JSON.stringify(data);
 }
 let previousSerialization = "";
