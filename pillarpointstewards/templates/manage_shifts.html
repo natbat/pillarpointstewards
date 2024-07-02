@@ -64,6 +64,12 @@
         <input type="range" value="{{ calculator_settings.earliest_shift_time_buffer }}" min="0" max="180" step="15" name="range_earliest-shift-time-buffer">
         <p class="meta">Treat the start of the day as this many minutes past sunrise, to avoid sending people out for shifts that start in the dark.</p>
       </div>
+      <!-- Shifts end no later than -->
+      <div class="input-container block-container">
+        <label for="shortest-shift-duration">Shifts end no later than this time</label>
+        <input type="time" value="{{ calculator_settings.latest_shift_end_time }}" name="latest-shift-end-time">
+        <p class="meta">Optional, for example if shifts should never keep people out past 4pm</p>
+      </div>
       <!-- Shortest shift duration -->
       <div class="input-container block-container">
         <label for="shortest-shift-duration">No shifts shorter than x minutes</label>
