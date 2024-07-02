@@ -68,6 +68,9 @@ if os.environ.get("ALLOWED_HOSTS_STAR"):
 CSRF_TRUSTED_ORIGINS = [
     "https://www.pillarpointstewards.com",
     "http://localhost:8000",
+    "http://0.0.0.0:8000",
+    "http://localhost:8001",
+    "http://0.0.0.0:8001",
     "https://www.tidepoolstewards.com",
 ]
 
