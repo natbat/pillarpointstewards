@@ -22,7 +22,7 @@
   </div>
 </header> <!-- end header -->
 
-<div class="page">{% block content %}{% endblock %}</div>
+<div class="page{% if team.slug %} page-team-{{ team.slug }}{% endif %}">{% block content %}{% endblock %}</div>
 
 </body>
 </html>
