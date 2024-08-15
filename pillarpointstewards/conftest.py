@@ -24,13 +24,24 @@ def admin_user_in_team(admin_user):
 @pytest.fixture
 def admin_user_has_shift(admin_user, admin_user_in_team):
     from teams.models import Team
+    from tides.models import Location
     from django.contrib.auth.models import User
 
     dt = datetime.datetime.utcnow().replace(
         tzinfo=pytz.timezone("America/Los_Angeles")
     ) + datetime.timedelta(hours=96)
     # Create a shift in some other team as well
-    other_team = Team.objects.get_or_create(name="Other Team", slug="other-team")[0]
+    other_team = Team.objects.get_or_create(
+        name="Other Team",
+        slug="other-team",
+        location=Location.objects.get_or_create(
+            name="Laguna Beach",
+            station_id="9410580",
+            latitude=33.5414769,
+            longitude=-117.790039,
+            time_zone="America/Los_Angeles",
+        )[0],
+    )[0]
     other_user = User.objects.get_or_create(username="other")[0]
     other_team.memberships.get_or_create(user=other_user)
     other_user.shifts.create(

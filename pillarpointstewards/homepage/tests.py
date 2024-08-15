@@ -244,5 +244,79 @@ def test_backup(admin_user_has_shift, client, settings):
         "fragments": [
             {"slug": "contact_details", "fragment": "Contact details go here"}
         ],
+        "locations": [
+            {
+                "name": "Pillar Point",
+                "station_id": 9414131,
+                "latitude": 37.49542392,
+                "longitude": -122.49865193,
+                "time_zone": "America/Los_Angeles",
+            },
+            {
+                "name": "Duxbury",
+                "station_id": 9414958,
+                "latitude": 37.9015078,
+                "longitude": -122.7211458,
+                "time_zone": "America/Los_Angeles",
+            },
+            {
+                "name": "Swami's Reef",
+                "station_id": 9410230,
+                "latitude": 33.034741,
+                "longitude": -117.294032,
+                "time_zone": "America/Los_Angeles",
+            },
+            {
+                "name": "Dana Point",
+                "station_id": 9410170,
+                "latitude": 33.485,
+                "longitude": -117.735,
+                "time_zone": "America/Los_Angeles",
+            },
+            {
+                "name": "Laguna Beach",
+                "station_id": 9410580,
+                "latitude": 33.5414769,
+                "longitude": -117.790039,
+                "time_zone": "America/Los_Angeles",
+            },
+        ],
+        "teams": [
+            {
+                "id": 3,
+                "name": "Swami's Reef",
+                "slug": "swamis",
+                "description": "",
+                "location_id": 3,
+            },
+            {
+                "id": 1,
+                "name": "Pillar Point",
+                "slug": "pillar-point",
+                "description": "",
+                "location_id": 1,
+            },
+            {
+                "id": 2,
+                "name": "Duxbury",
+                "slug": "duxbury",
+                "description": "",
+                "location_id": 2,
+            },
+            {
+                "id": 4,
+                "name": "Dana Point",
+                "slug": "danapoint",
+                "description": "",
+                "location_id": 4,
+            },
+            {
+                "id": 5,
+                "name": "Other Team",
+                "slug": "other-team",
+                "description": "",
+                "location_id": 5,
+            },
+        ],
     }
     assert response.json() == expected

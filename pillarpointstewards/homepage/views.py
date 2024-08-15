@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from auth0_login.models import Auth0User
 from .models import Fragment
 from shifts.models import Shift
+from tides.models import Location
 from teams.models import Team, TeamInviteCode
 from auth0_login.utils import active_user_required
 
@@ -193,6 +194,16 @@ def backup(request):
                 .order_by("id")
             ),
             "fragments": list(Fragment.objects.values("slug", "fragment")),
+            "teams": list(
+                Team.objects.all().values(
+                    "id", "name", "slug", "description", "location_id"
+                )
+            ),
+            "locations": list(
+                Location.objects.all().values(
+                    "name", "station_id", "latitude", "longitude", "time_zone"
+                )
+            ),
         }
     )
 
