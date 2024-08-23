@@ -94,7 +94,7 @@ def render_calendar(request, team, year, month):
                 count = shift.stewards.count()
                 if count == 0:
                     classes.append("available")
-                elif count >= 2:
+                elif shift.target_stewards and count >= shift.target_stewards:
                     classes.append("full")
                 else:
                     classes.append("partfull")
