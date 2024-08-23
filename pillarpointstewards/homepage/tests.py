@@ -100,6 +100,7 @@ def test_render_calendar(admin_client, admin_user, admin_user_in_team, rf):
         dusk=make_datetime(2022, 4, 21, 20),
         shift_start=make_datetime(2022, 4, 21, 8, 30),
         shift_end=make_datetime(2022, 4, 21, 8, 30),
+        target_stewards=2,
     )
     full_shift.stewards.add(user1)
     full_shift.stewards.add(user2)
