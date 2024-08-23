@@ -4,7 +4,7 @@ https://www.pillarpointstewards.com/
 
 Login via Auth0: https://www.pillarpointstewards.com/login/
 
-### Development environment is GitHub Codespaces
+## Development environment on GitHub Codespaces
 
 Before launching Codespaces you'll need to configure these Codespaces secrets using the interface at https://github.com/settings/codespaces
 
@@ -53,6 +53,19 @@ This command will over-write `requirements.txt` with the new pinned versions.
 To upgrade your local virtual environment to the exact versions of the packages recorded in `requirements.txt` run the other command that was installed by `pip-tools`:
 
     pip-sync
+
+## Development environment on macOS
+
+On macOS, install requirements using the `requirements.in` file instead:
+```bash
+pipenv shell
+pip install -r requirements.in
+```
+Then run tests etc using patterns like this:
+```bash
+DATABASE_URL="postgresql://localhost/pillarpointstewards" \
+  pipenv run pytest pillarpointstewards $@
+```
 
 ## Where the code is
 
