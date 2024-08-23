@@ -154,15 +154,21 @@ def unassign_shift(request, shift_id):
         return HttpResponse("You were not on that shift")
 
 
+def parse_datetime(s):
+    return datetime.datetime.fromisoformat(s.split(".")[0]).astimezone(
+        datetime.timezone.utc
+    )
+
+
 @active_user_required
 def edit_shift(request, shift_id):
     shift = get_object_or_404(Shift, pk=shift_id)
     if not shift.can_edit(request.user):
         return HttpResponse("You are not allowed to edit that shift", status=403)
     if request.POST.get("start"):
-        shift.shift_start = datetime.datetime.fromisoformat(request.POST["start"])
+        shift.shift_start = parse_datetime(request.POST["start"])
     if request.POST.get("end"):
-        shift.shift_end = datetime.datetime.fromisoformat(request.POST["end"])
+        shift.shift_end = parse_datetime(request.POST["end"])
     if request.POST.get("target_stewards"):
         shift.target_stewards = int(request.POST["target_stewards"])
     if request.POST.get("description"):
@@ -607,8 +613,12 @@ def manage_shifts_calculator(request, program_slug):
         low_tide_dt = tide["low_tide_datetime"]
         new_start = low_tide_dt - datetime.timedelta(minutes=shift_buffer_before)
         new_end = low_tide_dt + datetime.timedelta(minutes=shift_buffer_after)
-        dawn = datetime.datetime.combine(tide["day"], tide["dawn"], datetime.UTC)
-        dusk = datetime.datetime.combine(tide["day"], tide["dusk"], datetime.UTC)
+        dawn = datetime.datetime.combine(
+            tide["day"], tide["dawn"], datetime.timezone.utc
+        )
+        dusk = datetime.datetime.combine(
+            tide["day"], tide["dusk"], datetime.timezone.utc
+        )
         pretend_dawn = dawn + datetime.timedelta(minutes=earliest_shift_time_buffer)
 
         if pretend_dawn > new_start:
@@ -780,10 +790,10 @@ def add_manual_shift(request, program_slug):
     team.shifts.create(
         shift_start=datetime.datetime.combine(
             form.cleaned_data["day"], form.cleaned_data["shift_start_time"]
-        ).replace(tzinfo=datetime.UTC),
+        ).replace(tzinfo=datetime.timezone.utc),
         shift_end=datetime.datetime.combine(
             form.cleaned_data["day"], form.cleaned_data["shift_end_time"]
-        ).replace(tzinfo=datetime.UTC),
+        ).replace(tzinfo=datetime.timezone.utc),
         target_stewards=form.cleaned_data["target_stewards"],
         description=form.cleaned_data["description"],
     )
@@ -792,7 +802,7 @@ def add_manual_shift(request, program_slug):
 
 def round_to_fifteen_minutes(dt):
     fifteen_minutes = datetime.timedelta(minutes=15)
-    dt_min = datetime.datetime.min.replace(tzinfo=datetime.UTC)
+    dt_min = datetime.datetime.min.replace(tzinfo=datetime.timezone.utc)
     total_seconds = (dt - dt_min).total_seconds()
     rounded_seconds = (
         round(total_seconds / fifteen_minutes.total_seconds())
