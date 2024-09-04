@@ -34,13 +34,13 @@ bleach==6.1.0 \
     --hash=sha256:0a31f1837963c41d46bbf1331b8778e1308ea0791db03cc4e7357b97cf42a8fe \
     --hash=sha256:3225f354cfc436b9789c66c4ee030194bee0568fbf9cbdad3bc8b5c26c5f12b6
     # via django-sql-dashboard
-boto3==1.35.8 \
-    --hash=sha256:06eac4757de2a9c6020381205cb902f05964caad80b56e58c8931284a133b4cb \
-    --hash=sha256:b9587131372a808bf6f99c5ed8b11be55cd113261cc3b437a917b4acc6c30bfe
+boto3==1.35.11 \
+    --hash=sha256:bdfb8dd2564e5cf2f5095fb8e3a0a4612202654c1196692dddd9bc48aadc7657 \
+    --hash=sha256:f5834dd908edda56c3da86b908693c7cd1c17c2f8150de736e9e90c56ecc78f6
     # via -r requirements.in
-botocore==1.35.8 \
-    --hash=sha256:4b820cf680ab5d778bd2fe4feeef1ff8a2b96d5c535d4638ab30f703ade282f8 \
-    --hash=sha256:adf389eb8fd87775f193300e3431d1353f925807ad3a39958172cb644f0d60a1
+botocore==1.35.11 \
+    --hash=sha256:e9b647b6cf1f63fd701c27433802d1c4342838a37fd152b40fe53b967fd19af4 \
+    --hash=sha256:f5f671f8f9566f28bed496017ea94d275ca5c253e9e4f91cd56cb7a293e37d0c
     # via
     #   boto3
     #   s3transfer
@@ -216,9 +216,9 @@ pytest==8.1.1 \
     # via
     #   pytest-django
     #   pytest-httpx
-pytest-django==4.8.0 \
-    --hash=sha256:5d054fe011c56f3b10f978f41a8efb2e5adfc7e680ef36fb571ada1f24779d90 \
-    --hash=sha256:ca1ddd1e0e4c227cf9e3e40a6afc6d106b3e70868fd2ac5798a22501271cd0c7
+pytest-django==4.9.0 \
+    --hash=sha256:1d83692cb39188682dbb419ff0393867e9904094a549a7d38a3154d5731b2b99 \
+    --hash=sha256:8bf7bc358c9ae6f6fc51b6cebb190fe20212196e6807121f11bd6a3b03428314
     # via -r requirements.in
 pytest-httpx==0.30.0 \
     --hash=sha256:6d47849691faf11d2532565d0c8e0e02b9f4ee730da31687feae315581d7520c \
