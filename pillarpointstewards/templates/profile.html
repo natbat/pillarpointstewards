@@ -33,7 +33,7 @@
       <h3>Past shifts</h3>
       <ul>
         {% for shift in past_shifts %}
-          <li>{{ shift.shift_start|date:"F j, Y" }} at {{ shift.shift_start|time:"g:i A" }}</li>
+        <li>{{ shift.team }}, <a href="{{ shift.get_absolute_url }}">{{ shift.shift_start|date:"F j Y" }} at {{ shift.shift_start|time:"g:i A" }}</a></li>
         {% endfor %}
       </ul>
     {% endif %}
