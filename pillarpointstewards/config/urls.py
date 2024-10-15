@@ -9,6 +9,7 @@ from homepage import views as homepage
 from shifts import views as shifts
 from auth0_login import views as auth0_login
 from tides import views as tides
+from profiles import views as profile_views
 from weather import views as weather
 
 
@@ -69,6 +70,8 @@ urlpatterns = [
     ),
     path("programs/<str:program_slug>/add-shift/", shifts.add_shift),
     path("programs/<str:program_slug>/add-manual-shift/", shifts.add_manual_shift),
+    path("users/<str:username>/", profile_views.user_profile, name="user_profile"),
+    path("edit-profile/", profile_views.edit_profile, name="edit_profile"),
 ]
 
 if settings.DEBUG:

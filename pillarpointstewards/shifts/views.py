@@ -25,6 +25,7 @@ from homepage.models import Fragment
 from tides.views import tide_times_svg_context_for_shift, tide_times_svg_context
 from tides.models import Location
 from teams.models import Team
+from profiles.models import UserProfile
 from typing import Union
 from ulid import ULID
 import json
@@ -840,14 +841,24 @@ def photo_upload_credentials(request):
 def photo_upload_complete(request):
     key = request.POST.get("key")
     shift_id = request.POST.get("shift_id")
-    if not key or not shift_id:
-        return HttpResponse("Missing key or shift_id", status=400)
+    is_profile_photo = request.POST.get("is_profile_photo") == "true"
+
+    if not key:
+        return HttpResponse("Missing key", status=400)
+
     photo = request.user.photos.create(path=key)
-    try:
-        shift = Shift.objects.get(pk=shift_id)
-        shift.photos.add(photo)
-    except Shift.DoesNotExist:
-        pass
+
+    if is_profile_photo:
+        profile = UserProfile.for_user(request.user)
+        profile.profile_photo = photo
+        profile.save()
+    elif shift_id and shift_id != "null":
+        try:
+            shift = Shift.objects.get(pk=shift_id)
+            shift.photos.add(photo)
+        except Shift.DoesNotExist:
+            pass
+
     return HttpResponse({"ok": True}, content_type="application/json")
 
 

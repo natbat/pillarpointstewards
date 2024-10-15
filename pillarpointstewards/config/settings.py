@@ -95,6 +95,7 @@ INSTALLED_APPS = [
     "tides",
     "teams",
     "common",
+    "profiles",
 ]
 if not DEBUG:
     INSTALLED_APPS.insert(0, "whitenoise.runserver_nostatic")

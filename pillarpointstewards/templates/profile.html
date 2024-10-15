@@ -1,0 +1,73 @@
+{% extends "base.html" %}{% load static %}
+
+{% block title %}{{ profile.name }}'s Profile{% endblock %}
+
+{% block extra_head %}
+<script src="{% static 'image-upload.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<section class="page-title">
+  <div class="title-wrapper stretch">
+    <h1 class="text"><span>{{ profile.name }}</span></h1>
+  </div>
+</section>
+
+<section class="content">
+  <div class="primary" style="padding-bottom: 3em">
+    {% if profile.profile_photo %}
+      <img src="https://s3.amazonaws.com/images.tidepoolstewards.com/{{ profile.profile_photo.path }}" alt="{{ profile_user.username }}'s profile photo" style="max-width: 200px;">
+    {% endif %}
+
+    <p>{{ profile.bio }}</p>
+
+    <h3>Upcoming shifts</h3>
+    <ul>
+      {% for shift in future_shifts %}
+        <li>{{ shift.team }}, <a href="{{ shift.get_absolute_url }}">{{ shift.shift_start|date:"F j Y" }} at {{ shift.shift_start|time:"g:i A" }}</a></li>
+      {% empty %}
+        <li>No upcoming shifts</li>
+      {% endfor %}
+    </ul>
+    {% if past_shifts %}
+      <h3>Past shifts</h3>
+      <ul>
+        {% for shift in past_shifts %}
+          <li>{{ shift.shift_start|date:"F j, Y" }} at {{ shift.shift_start|time:"g:i A" }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if can_edit %}
+      <h2>Edit your profile</h2>
+      <form method="post">
+        {% csrf_token %}
+        <div class="input-container">
+          <label for="display_name">Display name</label>
+          <input type="text" id="display_name" name="display_name" value="{{ profile.name }}">
+        </div>
+        <div class="input-container">
+          <label for="bio">Bio</label>
+          <textarea id="bio" name="bio" style="width: 60%; height: 4em">{{ profile.bio }}</textarea>
+        </div>
+        <div class="input-container">
+          <button type="submit" class="button">Save Profile</button>
+        </div>
+      </form>
+      
+      <h3>Profile Photo</h3>
+
+      <image-uploader 
+        csrf-token="{{ csrf_token }}"
+        is-profile-photo="true"
+        text="Upload a new profile photo"
+      ></image-uploader>
+      <script>
+      document.querySelector('image-uploader').addEventListener('upload-complete', function(e) {
+        window.location.reload();
+      });
+      </script>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
