@@ -122,6 +122,51 @@
     
     <p class="intro"><a href="/programs/{{ team.slug }}/">&lt; Back to homepage</a></p>
 
+    {% if is_team_admin %}
+      <div class="dropdown-block">
+        <h2 class="dropdown-title">Manage Shift Stewards (admins only)</h2>
+        <div class="dropdown-content">
+          {% if stewards %}
+            <h3>Current Stewards</h3>
+            <ul>
+              {% for steward in stewards %}
+                <li>
+                  {{ steward.username }}
+                  <form method="post" action="{% url 'manage_shift_stewards' team.slug shift.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="remove">
+                    <input type="hidden" name="user_id" value="{{ steward.id }}">
+                    <button type="submit" class="button">Remove</button>
+                  </form>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          {% if can_be_added %}
+            <h3>Add Steward</h3>
+            <form method="post" action="{% url 'manage_shift_stewards' team.slug shift.id %}">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="add">
+              <select name="user_id">
+                {% for member in can_be_added %}
+                  <option value="{{ member.id }}">{{ member.username }}</option>
+                {% endfor %}
+              </select>
+              <button type="submit" class="button">Add to shift</button>
+            </form>
+          {% endif %}
+          {% if shift_changes %}
+            <h3>Shift Changes</h3>
+            <ul>
+              {% for change in shift_changes %}
+                <li>{{ change.when }} - user {{ change.user }} was {{ change.change }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
     {% if tide_times_svg %}
       <h2>Tide on this day</h2>
       {% include "_tide_svg.html" %}

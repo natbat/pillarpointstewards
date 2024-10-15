@@ -3,10 +3,16 @@ import datetime
 from dataclasses import dataclass, asdict
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.conf import settings
 from django.db import connection
 from django import forms
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import (
+    HttpResponseRedirect,
+    HttpResponse,
+    JsonResponse,
+    HttpResponseForbidden,
+)
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
@@ -63,6 +69,13 @@ def shift(request, program_slug, shift_id):
     if user_is_on_shift:
         stewards = [s for s in stewards if s != request.user] + [request.user]
 
+    can_be_added = []
+    is_team_admin = shift.team.is_admin(request.user)
+    if is_team_admin:
+        can_be_added = [
+            user for user in shift.team.members.all() if user not in stewards
+        ]
+
     try:
         contact_details = Fragment.objects.get(
             slug="contact_details_{}".format(shift.team.slug)
@@ -87,6 +100,9 @@ def shift(request, program_slug, shift_id):
             "tide_times_svg": tide_times_svg_context_for_shift(shift),
             "shift_reports": shift_reports,
             "can_add_report": user_is_on_shift,
+            "is_team_admin": is_team_admin,
+            "can_be_added": can_be_added,
+            "shift_changes": list(shift.shift_changes.all().order_by("-when")),
         },
     )
 
@@ -869,3 +885,28 @@ def generate_s3_signed_parameters(key, content_type, bucket_name, expiration=360
         return {"url": presigned_post["url"], "fields": presigned_post["fields"]}
     except Exception as ex:
         return {"error": str(ex)}
+
+
+@login_required
+def manage_shift_stewards(request, program_slug, shift_id):
+    shift = get_object_or_404(Shift, pk=shift_id)
+    team = shift.team
+
+    if not team.is_admin(request.user):
+        return HttpResponseForbidden(
+            "You don't have permission to manage shift stewards"
+        )
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+        user_id = request.POST.get("user_id")
+        user = get_object_or_404(User, pk=user_id)
+
+        if action == "add":
+            shift.stewards.add(user)
+            shift.shift_changes.create(user=user, change="assigned-by-admin")
+        elif action == "remove":
+            shift.stewards.remove(user)
+            shift.shift_changes.create(user=user, change="removed-by-admin")
+
+    return HttpResponseRedirect(shift.get_absolute_url())

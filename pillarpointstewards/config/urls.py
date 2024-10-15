@@ -59,6 +59,11 @@ urlpatterns = [
     path("programs/<str:program_slug>/shifts/", shifts.shifts),
     path("programs/<str:program_slug>/manage-shifts/", shifts.manage_shifts),
     path(
+        "programs/<str:program_slug>/shifts/<int:shift_id>/manage-stewards/",
+        shifts.manage_shift_stewards,
+        name="manage_shift_stewards",
+    ),
+    path(
         "programs/<str:program_slug>/manage-shifts/calculator/",
         shifts.manage_shifts_calculator,
     ),
