@@ -51,7 +51,8 @@
       <!-- if there are volunteers assigned -->
       <ul class="people-list">
         {% for steward in stewards %}
-          <li><div class="pic"></div><p class="name">{{ steward }}</p>
+          <li><div class="pic"{% if steward.profile and steward.profile.thumbnail_url %} style="background-image: url({{ steward.profile.thumbnail_url }})"{% endif %}></div>
+            <p class="name"><a href="/users/{{ steward.username }}/">{{ steward.profile.name|default:steward.username }}</a></p>
             <p class="context">
               {% if steward == request.user %}
                 You are signed up to this shift
