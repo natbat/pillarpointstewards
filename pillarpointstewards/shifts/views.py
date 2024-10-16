@@ -830,8 +830,12 @@ def round_to_fifteen_minutes(dt):
 
 @active_user_required
 def photo_upload_credentials(request):
-    key = datetime.date.today().strftime("%Y-%m-%d") + "/" + str(ULID()) + ".jpg"
-    content_type = "image/jpeg"
+    thumb = request.GET.get("thumb")
+    key = datetime.date.today().strftime("%Y-%m-%d") + "/" + str(ULID())
+    if thumb:
+        key += "-thumb"
+    key += ".jpg"
+    content_type = request.GET.get("content_type", "image/jpeg")
     bucket_name = settings.S3_BUCKET_NAME
     signed_parameters = generate_s3_signed_parameters(key, content_type, bucket_name)
     return HttpResponse(json.dumps(signed_parameters), content_type="application/json")
@@ -846,7 +850,9 @@ def photo_upload_complete(request):
     if not key:
         return HttpResponse("Missing key", status=400)
 
-    photo = request.user.photos.create(path=key)
+    thumbnail_key = request.POST.get("thumbnail_key") or ""
+
+    photo = request.user.photos.create(path=key, thumbnail_path=thumbnail_key)
 
     if is_profile_photo:
         profile = UserProfile.for_user(request.user)

@@ -18,6 +18,7 @@ class Photo(models.Model):
     )
     created = models.DateTimeField(auto_now_add=True)
     path = models.CharField(max_length=100)
+    thumbnail_path = models.CharField(max_length=100, blank=True)
 
     def created_pst(self):
         return timezone.localtime(

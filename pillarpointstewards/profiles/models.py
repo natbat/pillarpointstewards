@@ -11,6 +11,13 @@ class UserProfile(models.Model):
         Photo, on_delete=models.SET_NULL, null=True, blank=True
     )
 
+    def thumbnail_url(self):
+        return (
+            f'https://s3.amazonaws.com/images.tidepoolstewards.com/{self.profile_photo.thumbnail_path}'
+            if (self.profile_photo and self.profile_photo.thumbnail_path)
+            else None
+        )
+
     def name(self):
         return self.display_name or self.user.username
 
