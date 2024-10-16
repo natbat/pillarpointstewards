@@ -13,7 +13,7 @@ class UserProfile(models.Model):
 
     def thumbnail_url(self):
         return (
-            f'https://s3.amazonaws.com/images.tidepoolstewards.com/{self.profile_photo.thumbnail_path}'
+            f"https://s3.amazonaws.com/images.tidepoolstewards.com/{self.profile_photo.thumbnail_path}"
             if (self.profile_photo and self.profile_photo.thumbnail_path)
             else None
         )
