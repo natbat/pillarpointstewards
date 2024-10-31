@@ -5,19 +5,7 @@
     <section class="page-title">
       <div class="title-wrapper stretch">
         <h1 class="text"><span>You are logged in as {{ request.user }}</span></h1>
-        <div class="page-controls">
-          <ul>
-            <li><a class="loginout" href="/logout/">Logout</a></li>
-            <li><a class="loginout" href="/users/{{ request.user.username }}/">Profile</a></li>
-            {% if is_team_admin %}
-              <li><a class="loginout" href="/programs/{{ team.slug }}/manage-shifts/">Manage shifts</a></li>
-            {% endif %}
-            {% if request.user.is_staff or request.user.is_superuser %}
-              <li><a class="loginout" href="/admin/">Admin</a></li>
-              <li><a class="loginout" href="/dashboard/">Dashboard</a></li>
-            {% endif %}
-            </ul>
-        </div>
+        {% include "_menu.html" %}
       </div>
     </section> <!-- end .page-title -->
 

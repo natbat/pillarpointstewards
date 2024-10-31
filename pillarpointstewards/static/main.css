@@ -575,6 +575,12 @@ header .title .location {
 	padding-top: 0.05em;
 
 }
+/* loginout
+manage
+admin
+dashboard
+profile */
+
 .page-controls a:hover,
 .page-controls a:focus,
 .page-controls a:active {
@@ -638,7 +644,7 @@ footer li {
 
 .pull-out {
 	font-size: 0.75rem;
-	margin-top: -5.5rem;
+	margin-top: -2.5rem;
 	background-color: rgba(255, 255, 255, 1);
 	padding: 1rem;
 	box-shadow: 1px 1px 6px rgba(0,0,0,0.4);
@@ -1434,6 +1440,10 @@ a.person-mini:active {
 	padding: 0.5em 0.8em 0 0.8em;
 	margin-bottom: 2em;
 }
+.dropdown-block.dropdown-admin {
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
 
 .dropdown-block form {
 	margin-bottom: 1em;
@@ -1469,7 +1479,6 @@ a.person-mini:active {
 	background-color: rgba(0,0,0,0.2);
 }
 .dropdown-block .dropdown-content {
-	padding-top: 1em;
 	padding-bottom: 0.2em;
 }
 

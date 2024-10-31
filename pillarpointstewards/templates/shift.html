@@ -12,21 +12,7 @@
 <section class="page-title">
   <div class="title-wrapper stretch">
     <h1 class="text"><span>Shift on {{ shift.shift_start|date:"jS F Y" }}</span></h1>
-    <div class="page-controls">
-      {% if request.user.is_authenticated %}
-        <a class="loginout" href="/logout/">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-        </svg> Logout</a>
-      {% else %}
-        <a class="loginout" href="/login/">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-        </svg> Login</a>
-      {% endif %}
-    </div>
+    {% include "_menu.html" %}
   </div>
 </section> <!-- end .page-title -->
 <section class="content">
@@ -130,14 +116,14 @@
     <p class="intro"><a href="/programs/{{ team.slug }}/">&lt; Back to homepage</a></p>
 
     {% if is_team_admin %}
-      <div class="dropdown-block">
+      <div class="dropdown-block dropdown-admin">
         <h2 class="dropdown-title">Manage Shift Stewards (admins only)</h2>
         <div class="dropdown-content">
           {% if stewards %}
             <h3>Current Stewards</h3>
             <ul>
               {% for steward in stewards %}
-                <li>
+                <li style="padding:0.3em 0">
                   {{ steward.username }}
                   <form method="post" action="{% url 'manage_shift_stewards' team.slug shift.id %}" style="display: inline;">
                     {% csrf_token %}
@@ -164,7 +150,7 @@
           {% endif %}
           {% if shift_changes %}
             <h3>Shift Changes</h3>
-            <ul>
+            <ul class="bullets">
               {% for change in shift_changes %}
                 <li>{{ change.when }} - user {{ change.user }} was {{ change.change }}</li>
               {% endfor %}
@@ -199,9 +185,9 @@
       </details><br>
     {% endif %}
   </div>
-  <div class="secondary pull-out">
+  {% if contact_details %}<div class="secondary pull-out">
     {{ contact_details|safe }}
-</div> <!-- end .secondary -->
+    </div> <!-- end .secondary -->{% endif %}
 </section>
 
 <script>

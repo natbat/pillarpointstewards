@@ -1,0 +1,17 @@
+<div class="page-controls">
+    <ul>
+      {% if request.user.is_authenticated %}
+        <li><a class="loginout" href="/logout/">Logout</a></li>
+        <li><a class="profile" href="/users/{{ request.user.username }}/">Profile</a></li>
+      {% else %}
+        <li><a class="loginout" href="/logout/">Logout</a></li>
+      {% endif %}
+      {% if is_team_admin %}
+        <li><a class="manage" href="/programs/{{ team.slug }}/manage-shifts/">Manage shifts</a></li>
+      {% endif %}
+      {% if request.user.is_staff or request.user.is_superuser %}
+        <li><a class="admin" href="/admin/">Admin</a></li>
+        <li><a class="dashboard" href="/dashboard/">Dashboard</a></li>
+      {% endif %}
+      </ul>
+  </div>
