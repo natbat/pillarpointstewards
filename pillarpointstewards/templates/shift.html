@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load tz %}
 {% load static %}
 
 {% block title %}Shift on {{ shift.shift_start|date:"jS F Y" }}{% endblock %}
@@ -82,18 +83,16 @@
         <h2 class="dropdown-title">Shift reports</h2>
           <div class="dropdown-content">
             
-            {% if shift_reports %}
+            {% if shift_reports %}{% timezone "America/Los_Angeles" %}
               <ul>
-            
                 {% for report in shift_reports %}
                   <li class="comment-container id="report-{{ report.pk }}">
                     <p class="comment-meta"><strong>{{ report.created|date:"jS F Y g:iA" }}</strong> by {{ report.user }}</p>
                     <div class="comment-block" ><p>{{ report.report }}</p></div>
                   </li>
                 {% endfor %}
-
               </ul>
-            {% endif %}
+            {% endtimezone %}{% endif %}
 
             {% with shift.photos.all as photos %}
               {% if photos %}
