@@ -22,13 +22,6 @@ class TidePrediction(models.Model):
         unique_together = ("station_id", "dt")
 
     @classmethod
-    def update_all_stations(cls):
-        for station_id in TidePrediction.objects.values_list(
-            "station_id", flat=True
-        ).distinct():
-            cls.populate_for_station(station_id)
-
-    @classmethod
     def populate_for_station(cls, station_id):
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
         end_date = yesterday + datetime.timedelta(days=180)

@@ -20,15 +20,21 @@ jobs:
       env:
         BACKUP_SECRET: ${{ secrets.BACKUP_SECRET }}
       run: |-
-        HTTP_STATUS=$(curl -X POST https://www.pillarpointstewards.com/update-all-stations/ \
-          -H "Authorization: Bearer $BACKUP_SECRET"
-          -w "%{http_code}" \
-          -o update-all-stations.json)
-        if [ $HTTP_STATUS -ge 400 ]; then
-          echo "Server returned error status: $HTTP_STATUS"
-          cat update-all-stations.json
-          exit 1
-        fi
+        stations=$(curl -s https://www.tidepoolstewards.com/update-stations/)
+        # Loop through each station in the counts
+        echo "$stations" | jq -r '.counts | keys[]' | while read -r station_id; do
+            echo "Processing station $station_id"
+            # POST request for each station
+            HTTP_STATUS=$(curl -s -w "%{http_code}" \
+              -X POST \
+              -d "station_id=$station_id" \
+              https://www.tidepoolstewards.com/update-stations/)
+            if [ $HTTP_STATUS -ge 400 ]; then
+                echo "Error: Server returned status $HTTP_STATUS for station $station_id"
+                exit 1
+            fi
+            echo "Successfully processed station $station_id"
+        done
 
     - name: Commit and push if there are changes
       run: |-

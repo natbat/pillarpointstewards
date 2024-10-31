@@ -156,14 +156,7 @@ def debug_just_svg(request, date):
 
 
 @csrf_exempt
-def update_all_stations(request):
-    secret = settings.BACKUP_SECRET
-    from_header = (request.headers.get("Authorization") or "").split("Bearer ")[-1]
-    if not secret or not secrets.compare_digest(secret, from_header):
-        return JsonResponse(
-            {"error": "Access denied - bad 'Authorization: Bearer' header"}, status=400
-        )
-
+def update_stations(request):
     def counts():
         station_counts = (
             TidePrediction.objects.values("station_id")
@@ -174,13 +167,32 @@ def update_all_stations(request):
         return {str(item["station_id"]): item["count"] for item in station_counts}
 
     if request.method == "POST":
-        before = counts()
+        secret = settings.BACKUP_SECRET
+        from_header = (request.headers.get("Authorization") or "").split("Bearer ")[-1]
+        if not secret or not secrets.compare_digest(secret, from_header):
+            return JsonResponse(
+                {"error": "Access denied - bad 'Authorization: Bearer' header"},
+                status=400,
+            )
+
+        station_id = request.POST.get("station_id")
+        if not station_id:
+            return JsonResponse({"error": "station_id required"}, status=400)
+
+        before = TidePrediction.objects.filter(station_id=station_id).count()
         start = time.time()
-        TidePrediction.update_all_stations()
+        TidePrediction.populate_for_station(int(station_id))
         end = time.time()
-        after = counts()
+        after = TidePrediction.objects.filter(station_id=station_id).count()
         return JsonResponse(
-            {"ok": True, "before": before, "after": after, "seconds": end - start}
+            {
+                "ok": True,
+                "before": before,
+                "after": after,
+                "seconds": end - start,
+            }
         )
     else:
-        return JsonResponse({"counts": counts()})
+        return JsonResponse(
+            {"counts": counts(), "datetime": str(datetime.datetime.now())}
+        )
