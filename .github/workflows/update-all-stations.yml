@@ -18,8 +18,14 @@ jobs:
 
     - name: Trigger station update and save response
       run: |-
-        curl -X POST https://www.pillarpointstewards.com/update-all-stations/ \
-          -o update-all-stations.json
+        HTTP_STATUS=$(curl -X POST https://www.pillarpointstewards.com/update-all-stations/ \
+          -w "%{http_code}" \
+          -o update-all-stations.json)
+        if [ $HTTP_STATUS -ge 400 ]; then
+          echo "Server returned error status: $HTTP_STATUS"
+          cat update-all-stations.json
+          exit 1
+        fi
 
     - name: Commit and push if there are changes
       run: |-
