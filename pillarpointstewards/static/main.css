@@ -536,10 +536,23 @@ header .title .location {
 	position: absolute;
 	right: 10%;
 	top: -1.625rem; 
-	/* padding-right: 1rem; */
 	font-size: 0.75rem;
 	font-weight: bold;
+	width: auto;
 }
+.page-controls ul,
+.page-controls ol,
+.page-controls li {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+.page-controls li {
+	margin-left: 1rem;
+}
+
+
 .page-controls svg {
 	height: 0.75rem;
 	width: 0.75rem;
@@ -554,6 +567,13 @@ header .title .location {
 	color: white;
 	text-decoration: 0;
 	opacity: 1;
+	background-image: url('icons/cog.svg');
+	background-repeat: no-repeat;
+	background-position: 0 50%;
+	background-size: 1.2em;
+	padding-left: 1.4em;
+	padding-top: 0.05em;
+
 }
 .page-controls a:hover,
 .page-controls a:focus,
