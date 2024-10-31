@@ -1,0 +1,29 @@
+name: Update all stations
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every Monday at 8am UTC
+    - cron: '0 8 * * 1'
+
+permissions:
+  contents: write
+
+jobs:
+  scheduled:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Trigger station update and save response
+      run: |-
+        curl -X POST https://www.pillarpointstewards.com/update-all-stations/ \
+          -o update-all-stations.json
+
+    - name: Commit and push if there are changes
+      run: |-
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add update-all-stations.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update stations data [skip ci]" && git push)
