@@ -97,7 +97,9 @@ def shift(request, program_slug, shift_id):
             "user_is_on_shift": user_is_on_shift,
             "stewards": stewards,
             "contact_details": contact_details,
-            "forecast": Forecast.for_date(shift.shift_start.date()),
+            "forecast": Forecast.for_date(
+                shift.team.location_id, shift.shift_start.date()
+            ),
             "tide_times_svg": tide_times_svg_context_for_shift(shift),
             "shift_reports": shift_reports,
             "can_add_report": user_is_on_shift,

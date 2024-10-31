@@ -36,8 +36,8 @@ class Forecast(models.Model):
         )
 
     @classmethod
-    def for_date(cls, date):
-        matches = list(cls.objects.filter(date=date))
+    def for_date(cls, location_id, date):
+        matches = list(cls.objects.filter(location_id=location_id, date=date))
         if matches:
             return matches[0]
         else:
