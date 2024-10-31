@@ -87,8 +87,10 @@
           {% if team.slug == "pillar-point" %}&middot; <a href="/materials/">Volunteer training materials</a>{% endif %}
         </p>
       </div>
+      {% if contact_details %}
       <div class="secondary pull-out">
           {{ contact_details|safe }}
       </div> <!-- end .secondary -->
+      {% endif %}
       </section>
 {% endblock %}
