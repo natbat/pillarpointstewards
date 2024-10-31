@@ -1,7 +1,11 @@
 from astral import LocationInfo, sun
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.db.models import Count
 from datetime import timezone
 import datetime
+import time
 import pytz
 from .models import TidePrediction
 from shifts.models import Shift
@@ -147,3 +151,28 @@ def debug_just_svg(request, date):
             )
         },
     )
+
+
+@csrf_exempt
+def update_all_stations(request):
+
+    def counts():
+        station_counts = (
+            TidePrediction.objects.values("station_id")
+            .annotate(count=Count("id"))
+            .order_by("station_id")
+            .values("station_id", "count")
+        )
+        return {str(item["station_id"]): item["count"] for item in station_counts}
+
+    if request.method == "POST":
+        before = counts()
+        start = time.time()
+        TidePrediction.update_all_stations()
+        end = time.time()
+        after = counts()
+        return JsonResponse(
+            {"ok": True, "before": before, "after": after, "seconds": end - start}
+        )
+    else:
+        return JsonResponse({"counts": counts()})

@@ -53,6 +53,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("dashboard/", include(django_sql_dashboard.urls)),
     path("sentry-debug/", trigger_error),
+    path("update-all-stations/", tides.update_all_stations),
     path("debug/tide-times/<str:date>/", tides.debug),
     path("debug/tide-times-just-svg/<str:date>/", tides.debug_just_svg),
     # /programs/ pages to support multiple programs
