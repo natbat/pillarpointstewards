@@ -472,16 +472,27 @@ header.section {
 	border-top: 2px solid #F7941D;
 }
 header .title {
-  color: #0A4B7D;
+	color: #0A4B7D;
 	margin: 0.3rem 0 0.3rem 1rem;
 	display: inline-block;
 	background-image: url('tide.png');
 	background-position: 0 50%;
 	background-repeat: no-repeat;
-    background-size: 1.6em; 
-    padding-left: 2em;
+    background-size: 3rem; 
+    padding-left: 4rem;
+    padding-top: 0;
+	padding-bottom: 0;
     font-size: 3em;
-    padding-top: 0.4em;
+}
+.two-part-title .title {
+	background-size: 4rem; 
+    padding-left: 5rem;
+    padding-top: 0.4rem;
+}
+header .title em {
+    position: relative;
+    top: -0.2em;
+    display: block;
 }
 header.header-team-goldengate .title,
 header.header-team-duxbury .title {
@@ -516,13 +527,10 @@ header .title .location {
     text-transform: uppercase;
     font-size: 0.416em;
     opacity: 0.8;
+	margin-top: 0.8rem;
   
 }
-header .title em {
-    position: relative;
-    top:-0.2em;
-    display: block;
-}
+
 
 .page-controls {
 	position: absolute;
@@ -1742,14 +1750,16 @@ ul.shift-actions a.button:active {
 
 @media (max-width: 40rem) {
     header .title {
-        font-size: 2em;
+        font-size: 2rem;
         padding-top: 0.2em;
         padding-bottom: 0.2em;
     }
-    header .title em {
-        line-height: 0.8;
-        top:0;
-    }
+	.two-part-title .title {
+		background-size: 3rem; 
+		padding-left: 4rem;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
 	.section,
 	section {
 		grid-template-columns: 1% 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1%;

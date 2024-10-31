@@ -18,7 +18,16 @@
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 <header class="section{% if team.slug %} header-team-{{ team.slug }}{% endif %}">
   <div class="stretch">
-    <a href="/" class="title-link"><h1 class="title"><span class="location">{{ team.name }}</span> <em>Tidepool Stewards</em></h1></a>
+    <a href="/" class="title-link{% if team.name %} two-part-title{% endif %}">
+      <h1 class="title">
+        {% if team.name %}
+          <span class="location">{{ team.name }}</span> 
+          <em>
+        {% endif %}
+        Tidepool Stewards
+        {% if team.name %}</em>{% endif %}
+      </h1>
+    </a>
   </div>
 </header> <!-- end header -->
 
