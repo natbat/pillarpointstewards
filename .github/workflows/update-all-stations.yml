@@ -25,17 +25,12 @@ jobs:
         echo "$stations" | jq -r '.counts | keys[]' | while read -r station_id; do
             echo "Processing station $station_id"
             # POST request for each station
-            HTTP_STATUS=$(curl -s -w "%{http_code}" \
-              -X POST \
+            curl --fail -s -X POST \
               -d "station_id=$station_id" \
+              -H "Authorization: Bearer $BACKUP_SECRET" \
               https://www.tidepoolstewards.com/update-stations/)
-            if [ $HTTP_STATUS -ge 400 ]; then
-                echo "Error: Server returned status $HTTP_STATUS for station $station_id"
-                exit 1
-            fi
             echo "Successfully processed station $station_id"
         done
-
     - name: Commit and push if there are changes
       run: |-
         git config user.name "GitHub Actions"
