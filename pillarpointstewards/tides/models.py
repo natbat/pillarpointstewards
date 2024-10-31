@@ -23,11 +23,30 @@ class TidePrediction(models.Model):
 
     @classmethod
     def populate_for_station(cls, station_id):
-        yesterday = datetime.date.today() - datetime.timedelta(days=1)
-        end_date = yesterday + datetime.timedelta(days=180)
+        # Find the most recent date in DB for this station
+        latest_date = (
+            cls.objects.filter(station_id=station_id)
+            .order_by("-dt")
+            .values_list("dt", flat=True)
+            .first()
+        ).date()
+
+        # If no data exists, start from yesterday
+        if latest_date is None:
+            start_date = datetime.date.today() - datetime.timedelta(days=1)
+        else:
+            # Start from the day after the last entry
+            start_date = latest_date + datetime.timedelta(days=1)
+
+        # Calculate end date (365 days from today)
+        end_date = datetime.date.today() + datetime.timedelta(days=365)
+
+        if start_date >= end_date:
+            return
+
         url = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?" + urlencode(
             {
-                "begin_date": yesterday.strftime("%Y%m%d"),
+                "begin_date": start_date.strftime("%Y%m%d"),
                 "end_date": end_date.strftime("%Y%m%d"),
                 "product": "predictions",
                 "station": station_id,
