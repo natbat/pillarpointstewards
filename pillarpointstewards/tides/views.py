@@ -3,6 +3,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.db.models import Count
+from django.conf import settings
+import secrets
 from datetime import timezone
 import datetime
 import time
@@ -155,6 +157,12 @@ def debug_just_svg(request, date):
 
 @csrf_exempt
 def update_all_stations(request):
+    secret = settings.BACKUP_SECRET
+    from_header = (request.headers.get("Authorization") or "").split("Bearer ")[-1]
+    if not secret or not secrets.compare_digest(secret, from_header):
+        return JsonResponse(
+            {"error": "Access denied - bad 'Authorization: Bearer' header"}, status=400
+        )
 
     def counts():
         station_counts = (

@@ -17,8 +17,11 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Trigger station update and save response
+      env:
+        BACKUP_SECRET: ${{ secrets.BACKUP_SECRET }}
       run: |-
         HTTP_STATUS=$(curl -X POST https://www.pillarpointstewards.com/update-all-stations/ \
+          -H "Authorization: Bearer $BACKUP_SECRET"
           -w "%{http_code}" \
           -o update-all-stations.json)
         if [ $HTTP_STATUS -ge 400 ]; then
