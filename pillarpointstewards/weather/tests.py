@@ -1,4 +1,5 @@
 from .models import Forecast
+from tides.models import Location
 
 
 WEATHER_JSON = {
@@ -105,13 +106,16 @@ def test_post_to_update_weather(client, db, httpx_mock):
         json=WEATHER_JSON,
     )
     assert Forecast.objects.count() == 0
-    response = client.post("/fetch-weather/", {"api_key": "xxx"})
-    assert response.status_code == 200
-    assert Forecast.objects.count() == 2
+    location_id = Location.objects.first().id
+    response = client.post(
+        "/fetch-weather/", {"api_key": "xxx", "location_id": location_id}
+    )
+    assert response.status_code == 200, response.content
 
     # Did it hit the API?
     request = httpx_mock.get_request()
     assert (
         request.url
-        == "https://api.openweathermap.org/data/2.5/onecall?lat=37.495182&lon=-122.5003437&appid=xxx"
+        == "https://api.openweathermap.org/data/2.5/onecall?lat=37.49542392&lon=-122.49865193&appid=xxx"
     )
+    assert Forecast.objects.count() == 2

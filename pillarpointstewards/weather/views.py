@@ -32,7 +32,7 @@ def fetch_weather(request):
     api_key = request.POST.get("api_key")
     location_id = request.POST.get("location_id")
     if not (api_key and location_id):
-        return JsonResponse({"error": "api_key and location_id required"})
+        return JsonResponse({"error": "api_key and location_id required"}, status=400)
     try:
         location = Location.objects.get(id=location_id)
     except Location.DoesNotExist:
