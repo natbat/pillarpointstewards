@@ -14,4 +14,16 @@ jobs:
       env:
         API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
       run: |-
-        curl -X POST -d "api_key=$API_KEY" 'https://www.pillarpointstewards.com/fetch-weather/'
+        location_ids=$(curl -s 'https://www.pillarpointstewards.com/' | \
+          jq -r '.locations[].location.id')
+
+        # Loop through each location ID
+        for id in $location_ids; do
+          echo "Fetching weather for location ID: $id"
+          curl -X POST \
+            -d "api_key=$API_KEY" \
+            -d "location_id=$id" \
+            'http://127.0.0.1:8000/fetch-weather/'
+            echo -e "\nWaiting 2 seconds before next request...\n"
+            sleep 2
+        done
