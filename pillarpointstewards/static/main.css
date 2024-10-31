@@ -539,6 +539,7 @@ header .title .location {
 	font-size: 0.75rem;
 	font-weight: bold;
 	width: auto;
+	line-height: 1.4;
 }
 .page-controls ul,
 .page-controls ol,
@@ -575,11 +576,43 @@ header .title .location {
 	padding-top: 0.05em;
 
 }
-/* loginout
-manage
-admin
-dashboard
-profile */
+.page-controls a.admin:link,
+.page-controls a.admin:visited,
+.page-controls a.admin:hover,
+.page-controls a.admin:focus,
+.page-controls a.admin:active {
+	background-image: url('icons/admin.svg');
+}
+.page-controls a.dashboard:link,
+.page-controls a.dashboard:visited,
+.page-controls a.dashboard:hover,
+.page-controls a.dashboard:focus,
+.page-controls a.dashboard:active {
+	background-image: url('icons/dashboard1.svg');
+}
+.page-controls a.manage:link,
+.page-controls a.manage:visited,
+.page-controls a.manage:hover,
+.page-controls a.manage:focus,
+.page-controls a.manage:active {
+	background-image: url('icons/manage.svg');
+}
+.page-controls a.loginout:link,
+.page-controls a.loginout:visited,
+.page-controls a.loginout:hover,
+.page-controls a.loginout:focus,
+.page-controls a.loginout:active {
+	background-image: url('icons/cog.svg');
+}
+.page-controls a.profile:link,
+.page-controls a.profile:visited,
+.page-controls a.profile:hover,
+.page-controls a.profile:focus,
+.page-controls a.profile:active {
+	background-image: url('icons/profile.svg');
+	background-size: 1em;
+}
+
 
 .page-controls a:hover,
 .page-controls a:focus,
