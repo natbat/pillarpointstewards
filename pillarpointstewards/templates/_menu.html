@@ -4,7 +4,7 @@
         <li><a class="loginout" href="/logout/">Logout</a></li>
         <li><a class="profile" href="/users/{{ request.user.username }}/">Profile</a></li>
       {% else %}
-        <li><a class="loginout" href="/logout/">Logout</a></li>
+        <li><a class="loginout" href="/login/">Login</a></li>
       {% endif %}
       {% if is_team_admin %}
         <li><a class="manage" href="/programs/{{ team.slug }}/manage-shifts/">Manage Shifts</a></li>
