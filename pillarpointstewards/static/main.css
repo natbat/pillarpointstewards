@@ -166,7 +166,7 @@ footer,
 
 a:link,
 a:visited {
-	color: #3494CC;
+	color: #2B79A7;
 	text-decoration: underline;
 }
 a:hover,
@@ -362,6 +362,7 @@ form input[type="reset"]:active {
 
 form input[type="reset"] {
 	background-color: rgba(0,0,0,0.2);
+	color: black;
 }
 
 a.button:hover,
@@ -977,13 +978,13 @@ footer li {
 }
 .day-view .minima .time {
 	margin-top: -1rem;
-	color: rgba(23,106,184,0.9);
+	color: rgba(23,106,184,1);
 
 }
 .day-view .minima .depth {
 	padding-top: 50px;
 	margin-top: 1.3rem;
-	color: rgba(23,106,184,0.9);
+	color: rgba(23,106,184,1);
 }
 
 .day-view .shift-window {
@@ -1061,7 +1062,7 @@ footer li {
 }
 .depth-view .number {
 	display: inline;
-	color: rgba(23,106,184,0.9);
+	color: rgba(23,106,184,1);
 	font-size: 0.75rem;
 	position: absolute;
 	top: 0;
@@ -1210,7 +1211,7 @@ footer li {
 .contact .context {
 	display: block;
 	font-style: italic;
-	opacity: 0.5;
+	opacity: 0.6;
 }
 .contact a:link,
 .contact a:visited,
@@ -1400,7 +1401,8 @@ footer li {
 	opacity: 0.65;
 }
 .people-list .context {
-	color: #84a5be;
+	color: #2B79A7;
+	font-style: italic;
 }
 .people-list .pic,
 .person-mini img {
@@ -1645,6 +1647,7 @@ ul.shift-actions .shift-status {
 .shift-confirmed ul.shift-actions .shift-status {
 	background-color: #9ACD31;
 	border-color: #9ACD31;
+	color: black;
 }
 .shift-suggested ul.shift-actions .shift-status {
 	background-color: #CCCCCC;
