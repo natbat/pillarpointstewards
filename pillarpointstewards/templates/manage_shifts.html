@@ -19,62 +19,62 @@
       <!-- Weekday low tide -->
       <div class="input-container block-container">
         <label for="weekday-low-tide">Weekday low tide (ft)</label>
-        <input type="number" value="{{ calculator_settings.weekday_low_tide }}" min="-2" max="8" step="0.05" name="weekday-low-tide">
+        <input type="number" value="{{ calculator_settings.weekday_low_tide }}" min="-2" max="8" step="0.05" name="weekday-low-tide" id="weekday-low-tide">
         <input type="range" value="{{ calculator_settings.weekday_low_tide }}" min="-2" max="8" step="0.05" name="range_weekday-low-tide">
       </div>
       <!-- Weekend low tide -->
       <div class="input-container block-container">
         <label for="weekend-low-tide">Weekend low tide (ft)</label>
-        <input type="number" value="{{ calculator_settings.weekend_low_tide }}" min="-2" max="8" step="0.05" name="weekend-low-tide">
+        <input type="number" value="{{ calculator_settings.weekend_low_tide }}" min="-2" max="8" step="0.05" name="weekend-low-tide" id="weekend-low-tide">
         <input type="range" value="{{ calculator_settings.weekend_low_tide }}" min="-2" max="8" step="0.05" name="range_weekend-low-tide">
       </div>
       <!-- Super low tide (ft) must be lower than both above
       <div class="input-container block-container">
         <label for="super-low-tide">Super low tide (ft)</label>
-        <input type="number" value="{{ calculator_settings.super_low_tide }}" min="-2" max="8" step="0.05" name="super-low-tide">
+        <input type="number" value="{{ calculator_settings.super_low_tide }}" min="-2" max="8" step="0.05" name="super-low-tide" id="super-low-tide">
         <input type="range" value="{{ calculator_settings.super_low_tide }}" min="-2" max="8" step="0.05" name="range_super-low-tide">
       </div> -->
       <!-- Shift buffer before -->
       <div class="input-container block-container">
         <label for="shift-buffer-before">Shift minutes before low tide</label>
-        <input type="number" value="{{ calculator_settings.shift_buffer_before }}" min="0" max="180" step="15" name="shift-buffer-before">
+        <input type="number" value="{{ calculator_settings.shift_buffer_before }}" min="0" max="180" step="15" name="shift-buffer-before" id="shift-buffer-before">
         <input type="range" value="{{ calculator_settings.shift_buffer_before }}" min="0" max="180" step="15" name="range_shift-buffer-before">
       </div>
       <!-- Shift buffer after -->
       <div class="input-container block-container">
         <label for="shift-buffer-after">Shift minutes after low tide</label>
-        <input type="number" value="{{ calculator_settings.shift_buffer_after }}" min="0" max="180" step="15" name="shift-buffer-after">
+        <input type="number" value="{{ calculator_settings.shift_buffer_after }}" min="0" max="180" step="15" name="shift-buffer-after" id="shift-buffer-after">
         <input type="range" value="{{ calculator_settings.shift_buffer_after }}" min="0" max="180" step="15" name="range_shift-buffer-after">
       </div>
       <!-- People per regular shift -->
       <div class="input-container block-container">
         <label for="people-per-regular-shift">People per shift</label>
-        <input type="number" value="{{ calculator_settings.people_per_regular_shift }}" min="1" max="15" step="1" name="people-per-regular-shift">
+        <input type="number" value="{{ calculator_settings.people_per_regular_shift }}" min="1" max="15" step="1" name="people-per-regular-shift" id="people-per-regular-shift">
         <input type="range" value="{{ calculator_settings.people_per_regular_shift }}" min="1" max="15" step="1" name="range_people-per-regular-shift">
       </div>
       <!-- People per super-low shift
       <div class="input-container block-container">
         <label for="people-per-super-low-shift">People per super-low shift</label>
-        <input type="number" value="{{ calculator_settings.people_per_super_low_shift }}" min="1" max="15" step="1" name="people-per-super-low-shift">
+        <input type="number" value="{{ calculator_settings.people_per_super_low_shift }}" min="1" max="15" step="1" name="people-per-super-low-shift" id="people-per-super-low-shift">
         <input type="range" value="{{ calculator_settings.people_per_super_low_shift }}" min="1" max="15" step="1" name="range_people-per-super-low-shift">
       </div> -->
       <!-- Earliest shift time buffer -->
       <div class="input-container block-container">
         <label for="earliest-shift-time-buffer">Earliest minutes after sunrise</label>
-        <input type="number" value="{{ calculator_settings.earliest_shift_time_buffer }}" min="0" max="180" step="15" name="earliest-shift-time-buffer">
+        <input type="number" value="{{ calculator_settings.earliest_shift_time_buffer }}" min="0" max="180" step="15" name="earliest-shift-time-buffer" id="earliest-shift-time-buffer">
         <input type="range" value="{{ calculator_settings.earliest_shift_time_buffer }}" min="0" max="180" step="15" name="range_earliest-shift-time-buffer">
         <p class="meta">Treat the start of the day as this many minutes past sunrise, to avoid sending people out for shifts that start in the dark.</p>
       </div>
       <!-- Shifts end no later than -->
       <div class="input-container block-container">
         <label for="shortest-shift-duration">Shifts end no later than this time</label>
-        <input type="time" value="{{ calculator_settings.latest_shift_end_time }}" name="latest-shift-end-time">
+        <input type="time" value="{{ calculator_settings.latest_shift_end_time }}" name="latest-shift-end-time" id="shortest-shift-duration">
         <p class="meta">Optional, for example if shifts should never keep people out past 4pm</p>
       </div>
       <!-- Shortest shift duration -->
       <div class="input-container block-container">
         <label for="shortest-shift-duration">No shifts shorter than x minutes</label>
-        <input type="number" value="{{ calculator_settings.shortest_shift_duration }}" min="0" max="360" step="15" name="shortest-shift-duration">
+        <input type="number" value="{{ calculator_settings.shortest_shift_duration }}" min="0" max="360" step="15" name="shortest-shift-duration" id="shortest-shift-duration">
         <input type="range" value="{{ calculator_settings.shortest_shift_duration }}" min="0" max="360" step="15" name="range_shortest-shift-duration">
       </div>
       <!-- Save button -->
