@@ -74,7 +74,7 @@
                 {% for report in shift_reports %}
                   <li class="comment-container id="report-{{ report.pk }}">
                     <p class="comment-meta"><strong>{{ report.created|date:"jS F Y g:iA" }}</strong> by {{ report.user }}</p>
-                    <div class="comment-block" ><p>{{ report.report }}</p></div>
+                    <div class="comment-block" ><p>{{ report.report|linebreaksbr }}</p></div>
                   </li>
                 {% endfor %}
               </ul>
@@ -98,7 +98,7 @@
               <h2>Add your shift report</h2>
               <form action="{{ shift.get_absolute_url }}report/" method="POST">{% csrf_token %}
                 <div class="input-container block-container">
-                  <textarea name="report" placeholder="Add a report"></textarea>
+                  <textarea style="height: 28em" name="report" placeholder="Add a report">{{ team.shift_report_template|default:"" }}</textarea>
                 </div>
                 <button type="submit" class="button">Add report</button>
               </form>

@@ -16,6 +16,9 @@ class Team(models.Model):
     is_live = models.BooleanField(
         default=False, help_text="Is this team live on the site?"
     )
+    shift_report_template = models.TextField(
+        blank=True, null=True, help_text="Initial template for shift reports"
+    )
 
     def is_admin(self, user) -> bool:
         return self.memberships.filter(user=user, is_admin=True).exists()
