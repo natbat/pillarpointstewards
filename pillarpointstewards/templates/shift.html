@@ -70,7 +70,7 @@
           <div class="dropdown-content">
             
             {% if shift_reports %}{% timezone "America/Los_Angeles" %}
-              <ul>
+              <ul style="padding-top:1em;">
                 {% for report in shift_reports %}
                   <li class="comment-container id="report-{{ report.pk }}">
                     <p class="comment-meta"><strong>{{ report.created|date:"jS F Y g:iA" }}</strong> by {{ report.user }}</p>
