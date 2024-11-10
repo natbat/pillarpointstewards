@@ -348,7 +348,7 @@ form input[type="reset"]:focus,
 form input[type="reset"]:hover,
 form input[type="reset"]:active {
 	display: inline-block;
-	background-color: #3494CC;
+	background-color: #2B7BAA;
 	color: white;
 	text-decoration: none;
 	padding: 0.5em 0.8em;
