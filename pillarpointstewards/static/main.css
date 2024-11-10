@@ -87,8 +87,9 @@ p {
     padding: 0;
 }
 .meta {
-    color: rgba(0,0,0,0.3);
-    font-size: 0.75rem
+    color: rgba(0,0,0,0.6);
+    font-size: 0.75rem;
+    font-style: italic;
 }
 .intro {
 	font-size: 1.5rem;
