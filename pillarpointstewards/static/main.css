@@ -570,11 +570,14 @@ header .title .location {
 	opacity: 1;
 	background-image: url('icons/cog.svg');
 	background-repeat: no-repeat;
-	background-position: 0 50%;
+	background-position: 0.1em 50%;
 	background-size: 1.2em;
-	padding-left: 1.4em;
+	background-color: black;
+	border-radius: 0.3rem;
+	padding-right: 0.4em;
+	padding-left: 1.5em;
 	padding-top: 0.05em;
-
+	padding-bottom: 0.1em;
 }
 .page-controls a.admin:link,
 .page-controls a.admin:visited,
