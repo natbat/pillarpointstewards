@@ -24,12 +24,10 @@ class TidePrediction(models.Model):
     @classmethod
     def populate_for_station(cls, station_id):
         # Find the most recent date in DB for this station
-        latest_date = (
-            cls.objects.filter(station_id=station_id)
-            .order_by("-dt")
-            .values_list("dt", flat=True)
-            .first()
-        ).date()
+        latest_date = None
+        latest_dt = cls.objects.filter(station_id=station_id).order_by("-dt").values_list("dt", flat=True).first()
+        if latest_dt:
+            latest_date = latest_dt.date()
 
         # If no data exists, start from yesterday
         if latest_date is None:
